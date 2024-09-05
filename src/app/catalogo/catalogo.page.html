@@ -1,0 +1,26 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button >
+        <ion-icon size="large" name="cart" slot="end" color="dark" class="shopping-cart-button"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-menu-button slot="start"></ion-menu-button>
+    <ion-title class="titulo">Catalogo</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-item *ngFor="let item of items">
+      <ion-thumbnail slot="start">
+        <img [src]="item.imageUrl" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ item.name }}</h2>
+        <h2 class="Linha">{{item.valor}}</h2>
+        <p>{{ item.description }}</p>
+      </ion-label>
+      <ion-button fill="clear" class="comprar">comprar</ion-button>
+    </ion-item>
+  </ion-card>
+</ion-content>

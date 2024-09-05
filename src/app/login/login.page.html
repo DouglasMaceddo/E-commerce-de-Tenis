@@ -1,0 +1,17 @@
+<ion-content  [fullscreen]="true">
+  <div class="login-container">
+    <h2>Login</h2>
+
+    <ion-item lines="none">
+      <ion-input type="email" placeholder="Email" ngModel required></ion-input>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-input type="password" placeholder="Senha" ngModel required>
+        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+      </ion-input>
+    </ion-item>
+    <ion-button expand="block">Entrar</ion-button>
+
+    <p>Não tem uma conta? <a (click)="navigateToNovaPagina()"> Crie uma aqui</a></p>
+  </div>
+</ion-content>

@@ -1,0 +1,40 @@
+.login-container {
+    padding: 10px;
+    border-radius: 50px;
+    box-shadow: 0 3px 9px #007bff;
+    width: 350px;
+    text-align: center;
+    margin: auto;
+    margin-top: 20vh;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+    color: hsl(0, 0%, 0%);
+    font-weight: bold;
+  }
+  
+  ion-input {
+    --padding-start: 0px;
+    margin-bottom: 10px;
+  }
+  
+  ion-button {
+    margin-top: 20px;
+  }
+  
+  p {
+    margin-top: 50px;
+  }
+  
+  p a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  p a:hover {
+    text-decoration: underline;
+  }
+  .cor {
+    background: #007bff
+  }

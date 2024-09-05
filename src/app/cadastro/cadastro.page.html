@@ -1,0 +1,28 @@
+<ion-content [fullscreen]="true">
+  <div class="color" class="Cadastro-container">
+    <h2>Cadastro</h2>
+
+    <ion-item lines="none">
+      <ion-input type="text" placeholder="Nome" ngModel required></ion-input>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-input type="text" placeholder="CPF" ngModel required></ion-input>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-input type="email" placeholder="Email" ngModelrequired></ion-input>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-input type="password" placeholder="Senha" ngModel required>
+        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+      </ion-input>
+      
+    </ion-item>
+
+    <ion-button expand="block" >Cadastrar</ion-button>
+
+    <p>Já tem uma conta? <a (click)="navigateToNovaPagina()">Faça login aqui</a></p>
+  </div>
+</ion-content>
