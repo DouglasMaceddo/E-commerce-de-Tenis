@@ -1,28 +1,33 @@
 ion-thumbnail {
-    --border-radius: 8px;
-    width: 120px;
-    height: 90%;
-  }
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .comprar {
-    font-weight: 700;
-    background: #2a00fb;
-    color: rgb(255, 255, 255);
-  }
-  .Linha {
-    font-weight: 700;
-  }
-  .titulo {
-    color: hsl(0, 0%, 0%);
-    font-weight: bold;
+  --border-radius: 8px;
+  width: 120px;
+  height: 90%;
 }
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.comprar {
+  font-weight: 700;
+  background: #2a00fb;
+  color: rgb(255, 255, 255);
+}
+
+.Linha {
+  font-weight: 700;
+}
+
+.titulo {
+  color: hsl(0, 0%, 0%);
+  font-weight: bold;
+}
+
 .shopping-cart-button {
-  --border-radius: 12px; /* Borda arredondada */
+  --border-radius: 12px;
+  /* Borda arredondada */
   --padding-start: 12px;
   --padding-end: 12px;
   --margin: 10px;

@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
-import { CadastroPage } from '../cadastro/cadastro.page';
-import { CadastroPageModule } from '../cadastro/cadastro.module';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
+import { TenisModalComponent } from './tenis-modal/tenis-modal.component';
+
 @Component({
   selector: 'app-catalogo',
   templateUrl: './catalogo.page.html',
   styleUrls: ['./catalogo.page.scss'],
 })
 export class CatalogoPage implements OnInit {
-  items = [
+  tenis = [
     { id: 1, name: 'Adidas', valor: '250.00', description: 'Tenis de andar tranquilo', imageUrl: 'https://cdn.dooca.store/296/products/30-off-3_1080x1080+fill_ffffff.jpg?v=1657912268&webp=0' },
     { id: 2, name: 'Nike', valor: '260.00', description: 'corrida', imageUrl: 'https://imgcentauro-a.akamaihd.net/768x768/98582041.jpg' },
     { id: 3, name: 'Nike', valor: '290.00', description: 'saidinha', imageUrl: 'https://cdn.dooca.store/100/products/tenis-nike-air-max-excee-ewt-light-soft-pink.jpg?v=1697826631' },
@@ -20,11 +19,23 @@ export class CatalogoPage implements OnInit {
     { id: 7, name: 'Air Max', valor: '300.00', description: 'sair pra andar', imageUrl: 'https://www.esportepresidente.com.br/media/catalog/product/cache/2/image/9df78eab33525d08d6e5fb8d27136e95/t/e/tenis_nike_air_max_excee_masculino_branco_e_azul.jpg' }
   ];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private modalController: ModalController) { }
 
   navigateToNovaPagina() {
     this.router.navigate(['/login']);
   }
-  ngOnInit() {
+  navegarPaginaCarrinho() {
+    this.router.navigate(['/carrinho']);
   }
+
+  async chamarModal(item: any) {
+    const modal = await this.modalController.create({
+      component: TenisModalComponent,
+      componentProps: { item }
+    });
+    return await modal.present();
+  }
+
+  ngOnInit() {}
 }
+
