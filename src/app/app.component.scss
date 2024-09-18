@@ -123,3 +123,10 @@ ion-item.selected {
     color: hsl(0, 0%, 0%);
     font-weight: bold;
 }
+.imagemMenu{ 
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 0 0 50% 0;
+}

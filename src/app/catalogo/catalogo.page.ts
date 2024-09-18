@@ -18,7 +18,7 @@ export class CatalogoPage implements OnInit {
     { id: 6, name: 'Olimpicos', valor: '300.00', description: 'sair pra andar', imageUrl:"/assets/Imagens/Olimpicos.jpg" },
     { id: 7, name: 'Air Max', valor: '300.00', description: 'sair pra andar', imageUrl:  "/assets/Imagens/Nike.jpg"}
   ];
-
+  
   constructor(private router: Router, private modalController: ModalController) { }
 
   navigateToNovaPagina() {

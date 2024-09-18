@@ -16,7 +16,11 @@
   
   ion-input {
     --padding-start: 0px;
-    margin-bottom: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;  
+      padding: 8px;          
+      background-color: #ffffff; 
   }
   
   ion-button {
