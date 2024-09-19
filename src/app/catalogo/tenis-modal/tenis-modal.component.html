@@ -12,19 +12,22 @@
     <img [src]="item.imageUrl" />
   </ion-card>
   <ion-card-header>
-    <p>{{ item.valor }}</p>
+    <p>{{ item.valor | currency }}</p> <!-- Exibindo o valor como moeda -->
     <p>{{ item.description }}</p>
   </ion-card-header>
+
   <div class="tamanhos">
-    <button class="tamanho-btn">36</button>
-    <button class="tamanho-btn">37</button>
-    <button class="tamanho-btn">38</button>
-    <button class="tamanho-btn">39</button>
-    <button class="tamanho-btn">40</button>
-    <button class="tamanho-btn">41</button>
-    <button class="tamanho-btn">42</button>
+    <button class="tamanho-btn" *ngFor="let tamanho of tamanhos" (click)="selecionarTamanho(tamanho)">
+      {{ tamanho }}
+    </button>
   </div>
+
+  <ion-item>
+    <ion-label>Quantidade</ion-label>
+    <ion-input [(ngModel)]="quantity" type="number" min="1" step="1"></ion-input>
+  </ion-item>
 </ion-content>
+
 <footer>
-  <ion-button expand="block" clas="botaoComprar">comprar</ion-button>
+  <ion-button expand="block" (click)="adicionarAoCarrinho()">Comprar</ion-button>
 </footer>

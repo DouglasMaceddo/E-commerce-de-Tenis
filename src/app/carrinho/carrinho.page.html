@@ -1,15 +1,45 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="end">
-      <ion-button (click)="voltar()">voltar</ion-button>
+      <ion-button (click)="voltar()">Voltar</ion-button>
     </ion-buttons>
     <ion-title class="titulo">Carrinho</ion-title>
   </ion-toolbar>
 </ion-header>
+
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">carrinho</ion-title>
+      <ion-title size="large">Carrinho</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <!-- Exibição dos itens no carrinho -->
+  <ion-list *ngIf="cart.length > 0; else emptyCart">
+    <ion-item *ngFor="let item of cart">
+      <ion-thumbnail slot="start">
+        <img [src]="item.imageUrl" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ item.name }}</h2>
+        <p>Quantidade: {{ item.quantity }}</p>
+        <p>Preço: {{ item.valor | currency }}</p>
+      </ion-label>
+      <ion-button (click)="removeFromCart(item)" color="danger">Remover</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-item>
+    <h2>Total: {{ getTotal() | currency }}</h2>
+  </ion-item>
+
+  <ion-button expand="full" color="primary" (click)="clearCart()">Limpar Carrinho</ion-button>
+
+  <ng-template #emptyCart>
+    <ion-item>
+      <ion-label>
+        <h2>Seu carrinho está vazio!</h2>
+      </ion-label>
+    </ion-item>
+  </ng-template>
 </ion-content>
