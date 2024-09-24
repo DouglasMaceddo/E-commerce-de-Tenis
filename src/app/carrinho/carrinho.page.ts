@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { NavController } from '@ionic/angular';
 import { CartItem } from './cart-item.model';
 import { CarrinhoService } from './carrinho.service';
@@ -24,8 +23,8 @@ export class CarrinhoPage implements OnInit {
     });
   }
 
-  removeFromCart(item: CartItem) {
-    this.carrinhoService.removeFromCart(item);
+  removerCarrinho(item: CartItem) {
+    this.carrinhoService.removerCarrinho(item);
   }
 
   getTotal() {
@@ -38,5 +37,17 @@ export class CarrinhoPage implements OnInit {
 
   voltar() {
     this.router.navigate(['/catalogo']);
+  }
+
+  aumentarQuant(item: CartItem) {
+    item.quantity++;
+    this.carrinhoService.updateCart(item);
+  }
+
+  diminuirQuant(item: CartItem) {
+    if (item.quantity > 1) {
+      item.quantity--;
+      this.carrinhoService.updateCart(item);
+    }
   }
 }

@@ -28,7 +28,7 @@ export class CarrinhoService {
     this.cartSubject.next(this.cart);
   }
 
-  removeFromCart(item: CartItem) {
+  removerCarrinho(item: CartItem) {
     this.cart = this.cart.filter(cartItem => cartItem.id !== item.id);
     this.cartSubject.next(this.cart);
   }
@@ -36,5 +36,14 @@ export class CarrinhoService {
   clearCart() {
     this.cart = [];
     this.cartSubject.next(this.cart);
+  }
+
+  updateCart(item: CartItem) {
+    const index = this.cart.findIndex(cartItem => cartItem.id === item.id);
+    if (index > -1) {
+      // Atualiza a quantidade do item
+      this.cart[index].quantity = item.quantity;
+      this.cartSubject.next(this.cart);
+    }
   }
 }
