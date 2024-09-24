@@ -8,7 +8,9 @@ import { MenuController } from '@ionic/angular';
 })
 export class AppComponent {
   public appPages = [
+    { title: 'Minha Conta', url: '/minhaconta', icon: 'person' },
     { title: 'Catalogo', url: '/catalogo', icon: 'albums' },
+    
   ];
   constructor(private router: Router, private menu: MenuController) { }
   navigateToNovaPagina() {
