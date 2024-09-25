@@ -26,7 +26,11 @@ const routes: Routes = [
   {
     path: 'minhaconta',
     loadChildren: () => import('./minhaconta/minhaconta.module').then( m => m.MinhacontaPageModule)
+  },  {
+    path: 'pagamento',
+    loadChildren: () => import('./pagamento/pagamento.module').then( m => m.PagamentoPageModule)
   },
+
 ];
 
 @NgModule({
