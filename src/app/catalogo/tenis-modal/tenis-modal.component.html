@@ -12,7 +12,7 @@
     <img [src]="item.imageUrl" />
   </ion-card>
   <ion-card-header>
-    <p>{{ item.valor | currency }}</p> <!-- Exibindo o valor como moeda -->
+    <p>{{ item.valor | currency: 'BRL' }}</p> <!-- Exibindo o valor como moeda -->
     <p>{{ item.description }}</p>
   </ion-card-header>
 
