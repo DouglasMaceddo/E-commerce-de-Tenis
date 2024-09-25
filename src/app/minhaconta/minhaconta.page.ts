@@ -24,10 +24,10 @@ export class MinhacontaPage implements OnInit {
       zip: ['', [Validators.required, Validators.pattern('^[0-9]{5}-[0-9]{3}$')]] // Formato: 12345-678
     });
   }
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
+  ngOnInit(){
+    
   }
-
+  
   onSubmit() {
     if (this.addressForm.valid) {
       console.log('Endereço cadastrado:', this.addressForm.value);
