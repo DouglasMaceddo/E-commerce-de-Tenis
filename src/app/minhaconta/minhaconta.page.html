@@ -1,15 +1,15 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Minha Conta</ion-title>
-  </ion-toolbar>
-</ion-header>
 
+<ion-header [translucent]="true"></ion-header>
+  <ion-toolbar>
+    <ion-menu-button slot="start"></ion-menu-button>
+    <ion-title class="titulo">Minha Conta</ion-title>
+  </ion-toolbar>
 <ion-content>
+  
   <ion-card>
     <ion-card-header>
       <ion-card-title>Informações da Conta</ion-card-title>
     </ion-card-header>
-
     <ion-card-content>
       <p><strong>Nome:</strong> {{ userInfo.name }}</p>
       <p><strong>Email:</strong> {{ userInfo.email }}</p>

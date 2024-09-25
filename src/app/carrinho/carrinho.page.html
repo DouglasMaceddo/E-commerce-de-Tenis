@@ -22,21 +22,21 @@
       <ion-label>
         <h2>{{ item.name }}</h2>
         <p>Quantidade: {{ item.quantity }}</p>
-        <p>Preço: {{ item.valor | currency }}</p>
+        <p>Preço: {{ item.valor | currency: 'BRL' }}</p>
       </ion-label>
       <div>
         <ion-button (click)="diminuirQuant(item)" [disabled]="item.quantity <= 1" class="botaoquant">-</ion-button>
         <span> {{ item.quantity }}</span>
         <ion-button (click)="aumentarQuant(item)" class="botaoquant">+</ion-button>
         <div>
-          <ion-button (click)="removerCarrinho(item)" color="danger">Remover</ion-button>
+          <ion-button (click)="removerCarrinho(item)" color="danger" >Remover</ion-button>
         </div>
       </div>
     </ion-item>
   </ion-list>
 
   <ion-item>
-    <h2>Total: {{ getTotal() | currency }}</h2>
+    <h2>Total: {{ getTotal() | currency: 'BRL'}}</h2> 
   </ion-item>
 
   <ion-button expand="full" color="primary" (click)="clearCart()">Limpar Carrinho</ion-button>

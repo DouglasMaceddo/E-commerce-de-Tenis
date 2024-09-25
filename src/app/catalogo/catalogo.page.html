@@ -10,6 +10,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <ion-searchbar show-clear-button="always" placeholder="Busque aqui"></ion-searchbar>
   <ion-card>
     <ion-item *ngFor="let item of tenis">
       <ion-thumbnail slot="start">
@@ -17,7 +18,7 @@
       </ion-thumbnail>
       <ion-label>
         <h2>{{ item.name }}</h2>
-        <h2 class="Linha">R$ {{item.valor}}</h2>
+        <h2 class="Linha">{{item.valor | currency: 'BRL'}}</h2>
       </ion-label>
       <ion-button fill="clear" class="comprar" (click)="chamarModal(item)">comprar</ion-button>
     </ion-item>

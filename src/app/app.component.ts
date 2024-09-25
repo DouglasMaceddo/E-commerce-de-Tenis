@@ -9,8 +9,10 @@ import { MenuController } from '@ionic/angular';
 export class AppComponent {
   public appPages = [
     { title: 'Minha Conta', url: '/minhaconta', icon: 'person' },
+    { title: 'Pagamentos', url: '/carrinho', icon: 'card' },
     { title: 'Catalogo', url: '/catalogo', icon: 'albums' },
-    
+    { title: 'Carrinho', url: '/carrinho', icon: 'cart' },
+    { title: 'Promoções', url: '/carrinho', icon: 'pricetags' },
   ];
   constructor(private router: Router, private menu: MenuController) { }
   navigateToNovaPagina() {

@@ -21,7 +21,7 @@ ion-menu.md ion-list-header {
   padding-left: 10px;
   font-size: 30px;
   color: #000000;
-  background-color: #3498db;
+  --background-color: #3498db;
 }
 
 ion-menu.md ion-list#inbox-list {
@@ -36,11 +36,8 @@ ion-menu.md ion-list#inbox-list ion-list-header {
 
 ion-menu.md ion-list#labels-list ion-list-header {
   font-size: 16px;
-
   margin-bottom: 18px;
-
   color: #757575;
-
   min-height: 26px;
 }
 
@@ -118,12 +115,14 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+
 .titulo {
-    margin-bottom: 20px;
-    color: hsl(0, 0%, 0%);
-    font-weight: bold;
+  margin-bottom: 20px;
+  color: hsl(0, 0%, 0%);
+  font-weight: bold;
 }
-.imagemMenu{ 
+
+.imagemMenu {
   width: 100%;
   height: auto;
   display: block;
