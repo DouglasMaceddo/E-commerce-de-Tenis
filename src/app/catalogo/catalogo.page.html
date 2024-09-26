@@ -2,6 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="end" (click)="navegarPaginaCarrinho()">
       <ion-button >
+        <ion-badge color="primary">{{ cartItemCount }}</ion-badge>
         <ion-icon size="large" name="cart" slot="end" color="dark" class="shopping-cart-button" ></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -24,5 +25,6 @@
     </ion-item>
   </ion-card>
 </ion-content>
+
 
 

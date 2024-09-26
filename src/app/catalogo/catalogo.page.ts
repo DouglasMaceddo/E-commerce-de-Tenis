@@ -11,6 +11,10 @@ import { CarrinhoService } from '../carrinho/carrinho.service';
   styleUrls: ['./catalogo.page.scss'],
 })
 export class CatalogoPage implements OnInit {
+
+  cartItemCount: number = 0;
+
+
   tenis = [
     { id: 1, name: 'Adidas', valor: 250.99, description: 'Tenis de andar tranquilo', imageUrl: "/assets/Imagens/Adidas1.jpg" },
     { id: 2, name: 'Nike', valor: 260.89, description: 'corrida', imageUrl: '/assets/Imagens/Nike2.jpg' },
@@ -25,8 +29,10 @@ export class CatalogoPage implements OnInit {
     private router: Router,
     private modalController: ModalController,
     private carrinhoService: CarrinhoService
-  ) { }
-
+  ) {
+    
+   }
+  
   navigateToNovaPagina() {
     this.router.navigate(['/login']);
   }
@@ -48,9 +54,11 @@ export class CatalogoPage implements OnInit {
           quantity: result.data.quantity // Pegue a quantidade do resultado do modal
         };
         this.carrinhoService.addToCart(itemToAdd);
+        
+        
       }
     });
-
+    
     return await modal.present();
   }
 
