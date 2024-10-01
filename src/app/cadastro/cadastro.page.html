@@ -1,22 +1,22 @@
-
 <ion-content [fullscreen]="true">
   <h2>Cadastro</h2>
-  <ion-item lines="none">
-    <ion-input label-placement="floating" label="NOME " type="text" ngModel required></ion-input>
-  </ion-item>
-  <ion-item lines="none">
-    <ion-input type="text" label-placement="floating" label="CPF" ngModel required></ion-input>
-  </ion-item>
-  <ion-item lines="none">
-    <ion-input type="number" label-placement="floating" label="TELEFONE" ngModel required></ion-input>
-  </ion-item>
-  <ion-item lines="none">
-    <ion-input type="email" label-placement="floating" label="EMAIL" ngModelrequired></ion-input>
-  </ion-item>
-  <ion-item lines="none">
-    <ion-input type="password" label-placement="floating" label="SENHA" ngModel required>
-    </ion-input>
-  </ion-item>
-  <ion-button expand="block">Cadastrar</ion-button>
+  <form [formGroup]="cadastroForm" (ngSubmit)="cadastrar()">
+    <ion-item lines="none">
+      <ion-input label-placement="floating" label="NOME" type="text" formControlName="nome"></ion-input>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-input type="text" label-placement="floating" label="CPF" formControlName="cpf"></ion-input>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-input type="number" label-placement="floating" label="TELEFONE" formControlName="telefone"></ion-input>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-input type="email" label-placement="floating" label="EMAIL" formControlName="login"></ion-input>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-input type="password" label-placement="floating" label="SENHA" formControlName="senha"></ion-input>
+    </ion-item>
+    <ion-button expand="block" type="submit">Cadastrar</ion-button>
+  </form>
   <p>Já tem uma conta? <a (click)="navigateToNovaPagina()">Faça login aqui</a></p>
 </ion-content>

@@ -1,16 +1,16 @@
-<ion-content  [fullscreen]="true">
+<ion-content [fullscreen]="true">
   <div class="login-container">
-    <h3>Sejam bem vindos a plazza</h3>
+    <h3>Sejam Bem Vindo</h3>
     <h2>Login</h2>
 
     <ion-item lines="none">
-      <ion-input type="email" label-placement="floating" label="EMAIL" ngModel required></ion-input>
+      <ion-input type="email" label-placement="floating" label="EMAIL" [(ngModel)]="email" required></ion-input>
     </ion-item>
     <ion-item lines="none">
-      <ion-input type="password" label-placement="floating" label="SENHA" ngModel required>
-      </ion-input>
+      <ion-input type="password" label-placement="floating" label="SENHA" [(ngModel)]="senha" required></ion-input>
     </ion-item>
-    <ion-button expand="block">Entrar</ion-button>
+
+    <ion-button expand="block" (click)="login()">Entrar</ion-button>
 
     <p>Não tem uma conta? <a (click)="navigateToNovaPagina()"> Crie uma aqui</a></p>
   </div>
