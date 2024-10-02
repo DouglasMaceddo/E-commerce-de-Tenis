@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-cadastro',
@@ -11,7 +12,7 @@ export class CadastroPage implements OnInit {
 
   cadastroForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: FormBuilder,private alertController: AlertController,
     private router: Router) { }
 
   ngOnInit() {
@@ -23,22 +24,32 @@ export class CadastroPage implements OnInit {
       senha: ['', Validators.required]
     });
   }
-  cadastrar() {
+  async cadastrar() {
     if (this.cadastroForm.valid) {
-      // Obtem os valores do formulário
-      const cadastroData = this.cadastroForm.value;
-
-      // Armazena os dados no localStorage
-      localStorage.setItem('cadastro', JSON.stringify(cadastroData));
-
-      // Você pode navegar para outra página ou mostrar uma mensagem de sucesso
-      console.log('Cadastro salvo com sucesso!', cadastroData);
-      this.router.navigate(['/login']);
+        const cadastroData = this.cadastroForm.value;
+        let existingCadastros = JSON.parse(localStorage.getItem('cadastros') || '[]');
+        if (!Array.isArray(existingCadastros)) {
+            console.error('Dados do localStorage não são um array. Inicializando como um array vazio.');
+            existingCadastros = [];
+        }
+        existingCadastros.push(cadastroData);
+        localStorage.setItem('cadastros', JSON.stringify(existingCadastros));
+        await this.presentAlert('Cadastro salvo com sucesso!', 'Seu cadastro foi realizado com sucesso.');
+        this.router.navigate(['/login']);
     } else {
-      console.log('Formulário inválido');
+        console.log('Formulário inválido');
     }
-  }
+}
 
+
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
   navigateToNovaPagina() {
     this.router.navigate(['/login']);
   }

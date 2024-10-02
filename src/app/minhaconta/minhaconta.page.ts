@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-minhaconta',
@@ -8,15 +9,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class MinhacontaPage implements OnInit {
 
-  userInfo = {
-    name: 'João da Silva',
-    email: 'joao@example.com',
-    phone: '1234-5678'
+  infoUsuario = {
+    cpf:'',
+    email: '',
+    nome: '',
+    telefone: ''
   };
 
   addressForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private router: Router) {
     this.addressForm = this.formBuilder.group({
       street: ['', Validators.required],
       city: ['', Validators.required],
@@ -24,9 +26,29 @@ export class MinhacontaPage implements OnInit {
       zip: ['', [Validators.required, Validators.pattern('^[0-9]{5}-[0-9]{3}$')]] // Formato: 12345-678
     });
   }
-  ngOnInit(){
-    
-  }
+  ngOnInit() {
+    // Recupera o login do usuário logado
+    const usuarioLogado = localStorage.getItem('usuarioLogado');
+
+    // Recupera todos os dados de cadastro do localStorage
+    const dadosUsuario = JSON.parse(localStorage.getItem('cadastros') || '[]');
+
+    if (Array.isArray(dadosUsuario) && dadosUsuario.length > 0) {
+        // Busca o usuário correspondente ao login logado
+        const usuario = dadosUsuario.find(user => user.login === usuarioLogado);
+
+        if (usuario) {
+            this.infoUsuario.cpf = usuario.cpf || 'CPF não disponível';
+            this.infoUsuario.nome = usuario.nome || 'Nome não disponível';
+            this.infoUsuario.email = usuario.login || 'Email não disponível';
+            this.infoUsuario.telefone = usuario.telefone || 'Telefone não disponível';
+        } else {
+            console.error('Usuário logado não encontrado nos dados do localStorage.');
+        }
+    } else {
+        console.error('Nenhum cadastro encontrado no localStorage.');
+    }
+}
   
   onSubmit() {
     if (this.addressForm.valid) {
@@ -34,4 +56,14 @@ export class MinhacontaPage implements OnInit {
       // Aqui você pode adicionar a lógica para salvar o endereço
     }
   }
+    sairConta(){
+      this.infoUsuario = {
+        cpf: '',
+        email: '',
+        nome: '',
+        telefone: ''
+      };
+      this.router.navigate(['/login']);
+    }
+  
 }

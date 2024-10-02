@@ -12,30 +12,32 @@ export class LoginPage implements OnInit {
   email: string = '';
   senha: string = '';
 
-  constructor(private router: Router, private alertController: AlertController) {}
+  constructor(private router: Router, private alertController: AlertController) { }
 
-  ngOnInit() {}
-
-  // Método para realizar o login
+  ngOnInit() { }
   login() {
-    // Buscar os dados de cadastro do localStorage
-    const dadosCadastro = JSON.parse(localStorage.getItem('cadastro') || '{}');
+    const cadastroData = JSON.parse(localStorage.getItem('cadastros') || '[]');
 
-    // Verificar se o localStorage tem os dados e se correspondem ao login informado
-    if (dadosCadastro && dadosCadastro.login === this.email && dadosCadastro.senha === this.senha) {
-      console.log('Login bem-sucedido!');
-      this.router.navigate(['/catalogo']); // Navegar para a página inicial ou home após o login bem-sucedido
+    if (Array.isArray(cadastroData)) {
+        const usuario = cadastroData.find(user => user.login === this.email && user.senha === this.senha);
+
+        if (usuario) {
+            console.log('Login bem-sucedido!');
+            // Salva o login do usuário logado
+            localStorage.setItem('usuarioLogado', usuario.login); 
+            this.router.navigate(['/catalogo']);
+        } else {
+            this.presentAlert('Erro', 'Email ou senha inválidos!');
+        }
     } else {
-      this.presentAlert('Erro', 'Email ou senha inválidos!');
+        this.presentAlert('Erro', 'Nenhum cadastro encontrado.');
     }
-  }
+}
 
-  // Método para navegação à página de cadastro
   navigateToNovaPagina() {
     this.router.navigate(['/cadastro']);
   }
 
-  // Apresenta alerta no caso de erro de login
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header: header,

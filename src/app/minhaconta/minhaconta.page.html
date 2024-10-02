@@ -1,19 +1,19 @@
-
 <ion-header [translucent]="true"></ion-header>
-  <ion-toolbar>
-    <ion-menu-button slot="start"></ion-menu-button>
-    <ion-title class="titulo">Minha Conta</ion-title>
-  </ion-toolbar>
+<ion-toolbar>
+  <ion-menu-button slot="start"></ion-menu-button>
+  <ion-title class="titulo">Minha Conta</ion-title>
+</ion-toolbar>
 <ion-content>
-  
+
   <ion-card>
     <ion-card-header>
       <ion-card-title>Informações da Conta</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p><strong>Nome:</strong> {{ userInfo.name }}</p>
-      <p><strong>Email:</strong> {{ userInfo.email }}</p>
-      <p><strong>Telefone:</strong> {{ userInfo.phone }}</p>
+      <p><strong>CPF:</strong> {{ infoUsuario.cpf }}</p>
+      <p><strong>Nome:</strong> {{ infoUsuario.nome }}</p>
+      <p><strong>Email:</strong> {{ infoUsuario.email }}</p>
+      <p><strong>Telefone:</strong> {{ infoUsuario.telefone }}</p>
     </ion-card-content>
   </ion-card>
 
@@ -48,4 +48,7 @@
       </form>
     </ion-card-content>
   </ion-card>
+  <div>
+    <ion-button expand="full" color="danger" (click)="sairConta()">Sair da conta</ion-button>
+  </div>
 </ion-content>
