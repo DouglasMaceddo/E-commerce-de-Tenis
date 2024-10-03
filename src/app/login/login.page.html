@@ -1,5 +1,6 @@
 <ion-content [fullscreen]="true">
   <ion-card class="login-container">
+
     <ion-card-header>
       <h3>Sejam Bem Vindo</h3>
       <h2>Login</h2></ion-card-header>
@@ -16,16 +17,15 @@
         required>
       </ion-input>
 
+
       <ion-input
         type="password"
         label="Senha"
         label-placement="floating"
         fill="outline"
         placeholder="Sua Senha"
-        [(ngModel)]="senha"
-        required="password">
+        [(ngModel)]="senha" required>
       </ion-input>
-
 
     <ion-button expand="block" (click)="login()">Entrar</ion-button>
 
