@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -12,9 +12,9 @@ export class LoginPage implements OnInit {
   email: string = '';
   senha: string = '';
 
-  constructor(private router: Router, private alertController: AlertController) { }
+  constructor(private toastController: ToastController, private router: Router) {}
+  ngOnInit(){}
 
-  ngOnInit() { }
   login() {
     const cadastroData = JSON.parse(localStorage.getItem('cadastros') || '[]');
 
@@ -24,13 +24,14 @@ export class LoginPage implements OnInit {
         if (usuario) {
             console.log('Login bem-sucedido!');
             // Salva o login do usuário logado
-            localStorage.setItem('usuarioLogado', usuario.login); 
+            localStorage.setItem('usuarioLogado', usuario.login);
             this.router.navigate(['/catalogo']);
+            this.presentToast('Login bem-sucedido!', 'success'); // Toast verde para sucesso
         } else {
-            this.presentAlert('Erro', 'Email ou senha inválidos!');
+            this.presentToast('Email ou senha inválidos!', 'danger'); // Toast vermelho para erro
         }
     } else {
-        this.presentAlert('Erro', 'Nenhum cadastro encontrado.');
+        this.presentToast('Nenhum cadastro encontrado.', 'danger'); // Toast vermelho para erro
     }
 }
 
@@ -38,14 +39,15 @@ export class LoginPage implements OnInit {
     this.router.navigate(['/cadastro']);
   }
 
-  async presentAlert(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header: header,
-      message: message,
-      buttons: ['OK'],
+  async presentToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+        message: message,
+        duration: 2000, // Tempo que o toast ficará visível
+        color: color, // Cor do toast
+        position: 'bottom', // Posição do toast na tela
+        cssClass: 'custom-toast', // Classe CSS para personalização adicional
     });
-
-    await alert.present();
-  }
+    await toast.present();
+}
 }
 
