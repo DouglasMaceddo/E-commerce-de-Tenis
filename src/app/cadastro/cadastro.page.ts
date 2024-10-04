@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 
 @Component({
@@ -12,48 +11,69 @@ import { ToastController } from '@ionic/angular';
 export class CadastroPage implements OnInit {
 
   cadastroForm!: FormGroup;
+  cpfError: boolean = false;
 
-  constructor(private formBuilder: FormBuilder,private toastController: ToastController,
+  constructor(private formBuilder: FormBuilder, private toastController: ToastController,
     private router: Router) { }
 
   ngOnInit() {
     this.cadastroForm = this.formBuilder.group({
       nome: ['', Validators.required],
-      cpf: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]], // Validação simples para 11 dígitos
-      telefone: ['', [Validators.required, Validators.pattern(/^\d{10,11}$/)]], // Validação simples para 10-11 dígitos
+      cpf: ['', [Validators.required]],
+      telefone: ['', [Validators.required,]],
       login: ['', Validators.required],
       senha: ['', Validators.required]
     });
   }
-  async cadastrar() {
-    if (this.cadastroForm.valid) {
-        const cadastroData = this.cadastroForm.value;
-        let existingCadastros = JSON.parse(localStorage.getItem('cadastros') || '[]');
-        if (!Array.isArray(existingCadastros)) {
-            console.error('Dados do localStorage não são um array. Inicializando como um array vazio.');
-            existingCadastros = [];
-        }
-        existingCadastros.push(cadastroData);
-        localStorage.setItem('cadastros', JSON.stringify(existingCadastros));
-        await this.presentToast('Cadastro salvo com sucesso!', 'success');
-        this.router.navigate(['/login']);
-    } else {
-      await this.presentToast('Formulário inválido, verifique os dados!', 'danger');
+  formatCPF(event: any) {
+    let value = event.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+    if (value.length > 11) {
+      value = value.slice(0, 11); // Limita a 11 dígitos
     }
+    // Formata o CPF
+    if (value.length > 3) {
+      value = value.replace(/(\d{3})(\d)/, '$1.$2');
+    }
+    if (value.length > 7) {
+      value = value.replace(/(\d{3})(\d)/, '$1.$2');
+    }
+    if (value.length > 10) {
+      value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    }
+
+    event.target.value = value;
+    this.cadastroForm.get('cpf')?.setValue(value); // Atualiza o formControl com o valor formatado
+
+  }
+  async cadastrar() {
+  if (this.cadastroForm.valid) {
+    const cadastroData = this.cadastroForm.value;
+    let existingCadastros = JSON.parse(localStorage.getItem('cadastros') || '[]');
+    if (!Array.isArray(existingCadastros)) {
+      console.error('Dados do localStorage não são um array. Inicializando como um array vazio.');
+      existingCadastros = [];
+    }
+    existingCadastros.push(cadastroData);
+    localStorage.setItem('cadastros', JSON.stringify(existingCadastros));
+    await this.presentToast('Cadastro salvo com sucesso!', 'success');
+    this.router.navigate(['/login']);
+  } else {
+    await this.presentToast('Formulário inválido, verifique os dados!', 'danger');
+  }
 }
 
 
 async presentToast(message: string, color: string) {
   const toast = await this.toastController.create({
-      message: message,
-      duration: 2000, // Tempo que o toast ficará visível
-      color: color, // Cor do toast
-      position: 'bottom', // Posição do toast na tela
-      cssClass: 'custom-toast', // Classe CSS para personalização adicional
+    message: message,
+    duration: 2000, // Tempo que o toast ficará visível
+    color: color, // Cor do toast
+    position: 'bottom', // Posição do toast na tela
+    cssClass: 'custom-toast', // Classe CSS para personalização adicional
   });
   await toast.present();
 }
-  navigateToNovaPagina() {
-    this.router.navigate(['/login']);
-  }
+navigateToNovaPagina() {
+  this.router.navigate(['/login']);
+}
 }

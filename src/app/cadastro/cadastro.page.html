@@ -1,28 +1,27 @@
 <ion-content class="ion-content">
   <ion-card class="register-container">
 
-  <h2>Cadastro</h2>
+    <h2>Cadastro</h2>
 
-  <form [formGroup]="cadastroForm" (ngSubmit)="cadastrar()">
+    <form [formGroup]="cadastroForm" (ngSubmit)="cadastrar()">
 
       <ion-input label-placement="floating" fill="outline" label="Nome" type="text" formControlName="nome"></ion-input>
 
-
-      <ion-input type="text" label-placement="floating" fill="outline" label="CPF" formControlName="cpf"></ion-input>
-
+      <ion-input type="text" label-placement="floating" fill="outline" label="CPF" formControlName="cpf" (ionInput)="formatCPF($event)" maxlength="14">
+      </ion-input>
 
       <ion-input type="phone" label-placement="floating" fill="outline" label="Telefone" formControlName="telefone"></ion-input>
 
+      <ion-input type="email" label-placement="floating" fill="outline" label="Email"
+        formControlName="login"></ion-input>
 
-      <ion-input type="email" label-placement="floating" fill="outline" label="Email" formControlName="login"></ion-input>
+      <ion-input type="password" label-placement="floating" fill="outline" label="Senha"
+        formControlName="senha"></ion-input>
 
+      <ion-button expand="block" type="submit">Cadastrar</ion-button>
+    </form>
 
-      <ion-input type="password" label-placement="floating" fill="outline" label="Senha" formControlName="senha"></ion-input>
+    <p>Já tem uma conta? <a (click)="navigateToNovaPagina()">Faça login aqui</a></p>
 
-    <ion-button expand="block" type="submit">Cadastrar</ion-button>
-  </form>
-
-  <p>Já tem uma conta? <a (click)="navigateToNovaPagina()">Faça login aqui</a></p>
-
-</ion-card>
+  </ion-card>
 </ion-content>
