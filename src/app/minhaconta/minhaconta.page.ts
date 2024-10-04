@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class MinhacontaPage implements OnInit {
 
   infoUsuario = {
-    cpf:'',
+    cpf: '',
     email: '',
     nome: '',
     telefone: ''
@@ -29,41 +29,40 @@ export class MinhacontaPage implements OnInit {
   ngOnInit() {
     // Recupera o login do usuário logado
     const usuarioLogado = localStorage.getItem('usuarioLogado');
-
-    // Recupera todos os dados de cadastro do localStorage
     const dadosUsuario = JSON.parse(localStorage.getItem('cadastros') || '[]');
 
     if (Array.isArray(dadosUsuario) && dadosUsuario.length > 0) {
-        // Busca o usuário correspondente ao login logado
-        const usuario = dadosUsuario.find(user => user.login === usuarioLogado);
+      const usuario = dadosUsuario.find(user => user.login === usuarioLogado);
 
-        if (usuario) {
-            this.infoUsuario.cpf = usuario.cpf || 'CPF não disponível';
-            this.infoUsuario.nome = usuario.nome || 'Nome não disponível';
-            this.infoUsuario.email = usuario.login || 'Email não disponível';
-            this.infoUsuario.telefone = usuario.telefone || 'Telefone não disponível';
-        } else {
-            console.error('Usuário logado não encontrado nos dados do localStorage.');
-        }
+      if (usuario) {
+        this.infoUsuario.cpf = usuario.cpf || 'CPF não disponível';
+        this.infoUsuario.nome = usuario.nome || 'Nome não disponível';
+        this.infoUsuario.email = usuario.login || 'Email não disponível';
+        this.infoUsuario.telefone = usuario.telefone || 'Telefone não disponível';
+      } else {
+        console.error('Usuário logado');
+      }
     } else {
-        console.error('Nenhum cadastro encontrado no localStorage.');
+      console.error('Nenhum cadastro encontrado');
     }
-}
-  
+  }
+
   onSubmit() {
     if (this.addressForm.valid) {
       console.log('Endereço cadastrado:', this.addressForm.value);
       // Aqui você pode adicionar a lógica para salvar o endereço
     }
   }
-    sairConta(){
-      this.infoUsuario = {
-        cpf: '',
-        email: '',
-        nome: '',
-        telefone: ''
-      };
-      this.router.navigate(['/login']);
-    }
-  
+  sairConta() {
+    localStorage.removeItem('usuarioLogado');
+    
+    this.infoUsuario = {
+      cpf: '',
+      email: '',
+      nome: '',
+      telefone: ''
+    };
+    this.router.navigate(['/login']);
+  }
+
 }
