@@ -24,31 +24,52 @@
 
     <ion-card-content>
       <form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
-        <ion-item>
-          <ion-label position="floating">Rua</ion-label>
-          <ion-input formControlName="street"></ion-input>
-        </ion-item>
 
-        <ion-item>
-          <ion-label position="floating">Cidade</ion-label>
-          <ion-input formControlName="city"></ion-input>
-        </ion-item>
+        <ion-input
+        type="adress"
+        label="Rua"
+        label-placement="floating"
+        fill="outline"
+        placeholder="Rua nova"
+        formControlName="street"
+        required>
+      </ion-input>
 
-        <ion-item>
-          <ion-label position="floating">Estado</ion-label>
-          <ion-input formControlName="state"></ion-input>
-        </ion-item>
+      <ion-input
+        type="adress"
+        label="Cidade"
+        label-placement="floating"
+        fill="outline"
+        placeholder="Sua Cidade"
+        formControlName="city"
+        required>
+      </ion-input>
 
-        <ion-item>
-          <ion-label position="floating">CEP</ion-label>
-          <ion-input formControlName="zip"></ion-input>
-        </ion-item>
+      <ion-input
+        type="adress"
+        label="Estado"
+        label-placement="floating"
+        fill="outline"
+        placeholder="Seu Estado"
+        formControlName="state"
+        required>
+      </ion-input>
+
+      <ion-input
+      type="adress"
+      label="Cep"
+      label-placement="floating"
+      fill="outline"
+      placeholder="12345-678"
+      formControlName="zip"
+      required>
+    </ion-input>
 
         <ion-button expand="full" type="submit">Cadastrar Endereço</ion-button>
       </form>
     </ion-card-content>
   </ion-card>
-  <div>
+  <ion-card>
     <ion-button expand="full" color="danger" (click)="sairConta()">Sair da conta</ion-button>
-  </div>
+  </ion-card>
 </ion-content>

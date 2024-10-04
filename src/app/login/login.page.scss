@@ -1,44 +1,45 @@
 .login-container {
-    padding: 10px;
-    border-radius: 50px;
-    box-shadow: 0 3px 9px #007bff;
-    width: 350px;
-    text-align: center;
-    margin: auto;
-    margin-top: 20vh;
-  }
-  
-  h2 {
-    margin-bottom: 20px;
-    color: hsl(0, 0%, 0%);
-    font-weight: bold;
-  }
-  
-  ion-input {
-    --padding-start: 0px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 10px;  
-      padding: 8px;          
-      background-color: #ffffff; 
-  }
-  
-  ion-button {
-    margin-top: 20px;
-  }
-  
-  p {
-    margin-top: 50px;
-  }
-  
-  p a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  p a:hover {
-    text-decoration: underline;
-  }
-  .cor {
-    background: #007bff
-  }
+  padding: 20px;
+  border-radius: 10px;
+  width: 350px;
+  text-align: center;
+  margin: auto;
+  margin-top: 20vh;
+  background-color: #ffffff; /* Fundo branco para o container */
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #333; /* Cor neutra para o título */
+  font-weight: bold;
+}
+
+ion-button {
+  margin-top: 20px;
+  width: 100%; /* Botão ocupa toda a largura do container */
+}
+
+p {
+  margin-top: 30px;
+}
+
+p a {
+  color: #007bff; /* Mantém a cor do link azul */
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
+
+/* Gradiente suave para o fundo */
+ion-content {
+  --background: linear-gradient(to bottom, #f0f4f8, #d9e2ec); /* Cores suaves no degradê */
+}
+ion-input {
+  margin-bottom: 15px; /* Ajuste o valor conforme necessário */
+  padding-left: 0; /* Remove o padding esquerdo para alinhar à esquerda */
+  text-align: left; /* Garante que o texto comece alinhado à esquerda */
+}
+
+

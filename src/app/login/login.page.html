@@ -1,17 +1,34 @@
 <ion-content [fullscreen]="true">
-  <div class="login-container">
-    <h3>Sejam Bem Vindo</h3>
-    <h2>Login</h2>
+  <ion-card class="login-container">
 
-    <ion-item lines="none">
-      <ion-input type="email" label-placement="floating" label="EMAIL" [(ngModel)]="email" required></ion-input>
-    </ion-item>
-    <ion-item lines="none">
-      <ion-input type="password" label-placement="floating" label="SENHA" [(ngModel)]="senha" required></ion-input>
-    </ion-item>
+    <ion-card-header>
+      <h3>Sejam Bem Vindo</h3>
+      <h2>Login</h2></ion-card-header>
+
+
+
+      <ion-input
+        type="email"
+        label="Email"
+        label-placement="floating"
+        fill="outline"
+        placeholder="Meu@email.com"
+        [(ngModel)]="email"
+        required>
+      </ion-input>
+
+
+      <ion-input
+        type="password"
+        label="Senha"
+        label-placement="floating"
+        fill="outline"
+        placeholder="Sua Senha"
+        [(ngModel)]="senha" required>
+      </ion-input>
 
     <ion-button expand="block" (click)="login()">Entrar</ion-button>
 
     <p>Não tem uma conta? <a (click)="navigateToNovaPagina()"> Crie uma aqui</a></p>
-  </div>
+  </ion-card>
 </ion-content>

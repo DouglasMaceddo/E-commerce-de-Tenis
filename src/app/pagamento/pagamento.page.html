@@ -1,34 +1,52 @@
-<ion-header [translucent]="true"></ion-header>
+<ion-content [fullscreen]="true">
 <ion-toolbar>
   <ion-menu-button slot="start"></ion-menu-button>
   <ion-title class="titulo">Pagamento</ion-title>
 </ion-toolbar>
 
-<ion-content padding>
+  <ion-card class="payment-container">
   <form (ngSubmit)="onSubmit(paymentForm)" #paymentForm="ngForm">
-    <ion-item>
-      <ion-label position="floating">Nome no Cartão</ion-label>
-      <ion-input type="text" name="cardName" ngModel required></ion-input>
-    </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Número do Cartão</ion-label>
-      <ion-input type="text" name="cardNumber" ngModel required></ion-input>
-    </ion-item>
+    <ion-input
+      type="text"
+      label="Nome no Cartão"
+      label-placement="floating"
+      fill="outline"
+      placeholder="Nome do cartão"
+      required>
+    </ion-input>
 
-    <ion-item>
-      <ion-label position="floating">Data de Validade</ion-label>
-      <ion-input type="text" name="expiryDate" ngModel placeholder="MM/AA" required></ion-input>
-    </ion-item>
+    <ion-input
+      type="text"
+      label="Número do Cartão"
+      label-placement="floating"
+      fill="outline"
+      placeholder="Número do cartão"
+      required>
+    </ion-input>
 
-    <ion-item>
-      <ion-label position="floating">CVV</ion-label>
-      <ion-input type="text" name="cvv" ngModel required></ion-input>
-    </ion-item>
+    <ion-input
+      type="text"
+      label="Data de Validade"
+      label-placement="floating"
+      fill="outline"
+      placeholder="MM/AA"
+      required>
+    </ion-input>
+
+    <ion-input
+      type="text"
+      label="CVV"
+      label-placement="floating"
+      fill="outline"
+      placeholder="CVV"
+      required>
+    </ion-input>
 
     <ion-button expand="full" type="submit" [disabled]="!paymentForm.valid">Salvar</ion-button>
-  </form>
 
+  </form>
+</ion-card>
   <ion-card *ngIf="savedCard">
     <ion-card-header>
       <ion-card-title>Dados do Cartão Salvo</ion-card-title>
@@ -39,4 +57,5 @@
       <p><strong>Data de Validade:</strong> {{ savedCard.expiryDate }}</p>
     </ion-card-content>
   </ion-card>
+
 </ion-content>

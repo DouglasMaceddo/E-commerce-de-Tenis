@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-cadastro',
@@ -12,7 +13,7 @@ export class CadastroPage implements OnInit {
 
   cadastroForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder,private alertController: AlertController,
+  constructor(private formBuilder: FormBuilder,private toastController: ToastController,
     private router: Router) { }
 
   ngOnInit() {
@@ -34,22 +35,24 @@ export class CadastroPage implements OnInit {
         }
         existingCadastros.push(cadastroData);
         localStorage.setItem('cadastros', JSON.stringify(existingCadastros));
-        await this.presentAlert('Cadastro salvo com sucesso!', 'Seu cadastro foi realizado com sucesso.');
+        await this.presentToast('Cadastro salvo com sucesso!', 'success');
         this.router.navigate(['/login']);
     } else {
-        console.log('Formulário inválido');
+      await this.presentToast('Formulário inválido, verifique os dados!', 'danger');
     }
 }
 
 
-  async presentAlert(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header: header,
+async presentToast(message: string, color: string) {
+  const toast = await this.toastController.create({
       message: message,
-      buttons: ['OK']
-    });
-    await alert.present();
-  }
+      duration: 2000, // Tempo que o toast ficará visível
+      color: color, // Cor do toast
+      position: 'bottom', // Posição do toast na tela
+      cssClass: 'custom-toast', // Classe CSS para personalização adicional
+  });
+  await toast.present();
+}
   navigateToNovaPagina() {
     this.router.navigate(['/login']);
   }

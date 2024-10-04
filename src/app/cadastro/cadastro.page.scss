@@ -1,35 +1,59 @@
+/* Container de registro com centralização */
+.register-container {
+  padding: 20px;
+  border-radius: 10px;
+  width: 350px;
+  text-align: center;
+  margin: auto;
+  margin-top: 20vh;
+  background-color: #ffffff; /* Fundo branco para o container */
+}
+
+/* Estilização do título */
 h2 {
   margin-bottom: 20px;
-  color: #000000;
+  color: #000000; /* Cor neutra para o título */
   font-weight: bold;
   text-align: center;
 }
 
-ion-input {
-  --padding-start: 0px;
-  margin-bottom: 20px;
-  border-radius: 10px;  
-  border: 1px solid #ccc;
+/* Estilização do formulário */
+.formulario {
+  background-color: #ffffff; /* Fundo branco para o formulário */
+  border-radius: 10px;
+  padding: 20px; /* Espaçamento interno */
 }
 
+/* Estilização dos campos de input */
+
+
+/* Estilização do botão */
 ion-button {
   margin-top: 20px;
+  width: 100%; /* Botão ocupa toda a largura do container */
 }
 
+/* Estilização do texto adicional */
 p {
   margin-top: 20px;
   text-align: center;
 }
 
 p a {
-  color: #007bff;
+  color: #007bff; /* Cor azul para links */
   text-decoration: none;
-
 }
 
 p a:hover {
   text-decoration: underline;
 }
-.color {
-  color: #42d96b;
+
+/* Gradiente suave para o fundo */
+ion-content {
+  --background: linear-gradient(to bottom, #f0f4f8, #d9e2ec); /* Cores suaves no degradê */
+}
+ion-input {
+  margin-bottom: 15px; /* Ajuste o valor conforme necessário */
+  padding-left: 0; /* Remove o padding esquerdo para alinhar à esquerda */
+  text-align: left; /* Garante que o texto comece alinhado à esquerda */
 }
