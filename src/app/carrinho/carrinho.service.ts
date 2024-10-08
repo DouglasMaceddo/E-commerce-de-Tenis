@@ -23,8 +23,15 @@ export class CarrinhoService {
       return;
     }
 
-    const newItem = { ...item };
-    this.cart.push(newItem);
+    const existingItem = this.cart.find(cartItem => cartItem.id === item.id);
+    if (existingItem) {
+      // Se o item já estiver no carrinho, atualize a quantidade
+      existingItem.quantity += item.quantity;
+    } else {
+      // Caso contrário, adicione o novo item
+      const newItem = { ...item };
+      this.cart.push(newItem);
+    }
 
     this.cartSubject.next([...this.cart]);
   }
@@ -40,6 +47,7 @@ export class CarrinhoService {
     }
     this.cartSubject.next([...this.cart]);
   }
+
   clearCart() {
     this.cart = [];
     this.cartSubject.next(this.cart);
@@ -52,5 +60,10 @@ export class CarrinhoService {
       this.cart[index].quantity = item.quantity;
       this.cartSubject.next(this.cart);
     }
+  }
+
+  // Novo método para contar itens no carrinho
+  getCartItemCount(): number {
+    return this.cart.reduce((count, item) => count + item.quantity, 0);
   }
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
 import { CartItem } from './cart-item.model';
 import { CarrinhoService } from './carrinho.service';
 
@@ -11,15 +10,14 @@ import { CarrinhoService } from './carrinho.service';
 })
 export class CarrinhoPage implements OnInit {
   cart: CartItem[] = [];
+  cartItemCount: number = 0;
 
-  constructor(
-    private router: Router,
-    private carrinhoService: CarrinhoService
-  ) {}
+  constructor(private router: Router, private carrinhoService: CarrinhoService) {}
 
   ngOnInit() {
     this.carrinhoService.getCart().subscribe(cart => {
       this.cart = cart;
+      this.cartItemCount = this.carrinhoService.getCartItemCount(); // Atualiza a contagem de itens
     });
   }
 
@@ -28,11 +26,13 @@ export class CarrinhoPage implements OnInit {
   }
 
   getTotal() {
-    return this.cart.reduce((total, item) => total + item.valor * item.quantity, 0);
+    return this.cart.reduce((total, item) => total + (item.valor * item.quantity), 0);
   }
 
   clearCart() {
-    this.carrinhoService.clearCart();
+    if (confirm('Tem certeza que deseja limpar o carrinho?')) {
+      this.carrinhoService.clearCart();
+    }
   }
 
   voltar() {
