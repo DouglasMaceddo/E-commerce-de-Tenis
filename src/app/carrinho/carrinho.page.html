@@ -2,6 +2,9 @@
 <ion-toolbar>
   <ion-menu-button slot="start"></ion-menu-button>
   <ion-title class="titulo">Carrinho</ion-title>
+  <ion-buttons slot="end">
+    <ion-button (click)="voltar()">Voltar</ion-button>
+  </ion-buttons>
 </ion-toolbar>
 
 <ion-content [fullscreen]="true">
@@ -27,7 +30,7 @@
         <span> {{ item.quantity }}</span>
         <ion-button (click)="aumentarQuant(item)" class="botaoquant">+</ion-button>
         <div>
-          <ion-button (click)="removerCarrinho(item)" color="danger" >Remover</ion-button>
+          <ion-button (click)="removerCarrinho(item)" color="danger">Remover</ion-button>
         </div>
       </div>
     </ion-item>

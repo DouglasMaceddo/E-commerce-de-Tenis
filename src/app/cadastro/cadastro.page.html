@@ -7,16 +7,20 @@
 
       <ion-input label-placement="floating" fill="outline" label="Nome" type="text" formControlName="nome"></ion-input>
 
-      <ion-input type="text" label-placement="floating" fill="outline" label="CPF" formControlName="cpf" (ionInput)="formatCPF($event)" maxlength="14">
-      </ion-input>
+      <ion-input type="text" label-placement="floating" fill="outline" label="cpf" formControlName="cpf"
+        (ionInput)="formatCPF($event)" maxlength="14"></ion-input>
 
-      <ion-input type="phone" label-placement="floating" fill="outline" label="Telefone" formControlName="telefone"></ion-input>
+      <ion-input type="telefone" label-placement="floating" fill="outline" label="Telefone" formControlName="telefone"
+        (ionInput)="formatTelefone($event)"></ion-input>
 
       <ion-input type="email" label-placement="floating" fill="outline" label="Email"
         formControlName="login"></ion-input>
 
       <ion-input type="password" label-placement="floating" fill="outline" label="Senha"
         formControlName="senha"></ion-input>
+
+      <ion-input type="password" label-placement="floating" fill="outline" label="ConfirmarSenha"
+        formControlName="confirmarSenha"></ion-input>
 
       <ion-button expand="block" type="submit">Cadastrar</ion-button>
     </form>
