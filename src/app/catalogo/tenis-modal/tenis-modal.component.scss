@@ -1,57 +1,35 @@
-img {
-    width: 80%;
-    height: 80%;
-    object-fit: cover;
-}
-
-p {
-    color: hsl(0, 0%, 0%);
-    font-weight: bold;
-    font-size: 100%;
-    text-align: center;
-
-}
-
-/* Estilo para o container */
-.container {
-    text-align: center;
-    margin-top: 50px;
-}
-
-/* Título */
-h3 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-}
-
-/* Estilo para o grupo de botões */
-.tamanhos {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-}
-
-/* Estilo para os botões de tamanho */
-.tamanho-btn {
-    padding: 10px 14px;
-    font-size: 1.0 rem;
-    border: 1px solid #333;
+ion-card {
+    margin: 16px;
     border-radius: 10px;
-    background-color: rgb(107, 118, 245);
-    cursor: pointer;
-    transition: background-color 0.1s, color 0.1s;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilo para o botão selecionado */
-.tamanho-btn.selecionado {
-    background-color: #333;
-    color: white;
+ion-segment-button {
+    font-size: 16px;
+    border-radius: 2px;
+    padding: 2px 2px;
+    font-size: 10 rem;
+    border: 1px solid #000000;
+    border-radius: 100px;
+    width: 5px; /* Aumenta a largura ao ativar */
+    height: 5px;
 }
 
-/* Efeito de hover */
-.tamanho-btn:hover {
-    background-color: #f0f0f0;
+.quantidade-input {
+    font-weight: bold;
+    /* Número em negrito */
 }
-.botaoComprar {
-    font-weight: bold
+
+ion-button {
+    border-radius: 8px;
 }
+
+ion-card-title {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+ion-card-subtitle {
+    font-size: 21px;
+}
+

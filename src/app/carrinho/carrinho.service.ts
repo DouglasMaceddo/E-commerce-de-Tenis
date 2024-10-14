@@ -6,63 +6,96 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class CarrinhoService {
-
   private cart: CartItem[] = [];
   private cartSubject = new BehaviorSubject<CartItem[]>(this.cart);
-
+  
   cart$ = this.cartSubject.asObservable();
 
-  constructor() { }
+  constructor() {
+    this.loadCartFromLocalStorage();
+  }
+
+  private saveCartToLocalStorage(userId: string) {
+    localStorage.setItem(`cart_${userId}`, JSON.stringify(this.cart));
+  }
+
+  private loadCartFromLocalStorage() {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      const cartData = localStorage.getItem(`cart_${userId}`);
+      if (cartData) {
+        this.cart = JSON.parse(cartData);
+        this.cartSubject.next(this.cart);
+      } else {
+        this.cart = []; // Inicializa o carrinho como vazio se não houver dados
+      }
+    }
+  }
+
+  setUserId(userId: string) {
+    // Salva o ID do usuário no localStorage
+    localStorage.setItem('userId', userId);
+    this.loadCartFromLocalStorage(); // Carrega o carrinho do novo usuário
+  }
 
   getCart() {
     return this.cartSubject.asObservable();
   }
 
   addToCart(item: CartItem) {
-    if (!item || !item.id || item.quantity <= 0) {
-      return;
-    }
+    if (!item || !item.id || item.quantity <= 0) return;
 
-    const existingItem = this.cart.find(cartItem => cartItem.id === item.id);
+    const updatedCart = [...this.cart];
+    const existingItem = updatedCart.find(cartItem => cartItem.id === item.id);
+    
     if (existingItem) {
-      // Se o item já estiver no carrinho, atualize a quantidade
       existingItem.quantity += item.quantity;
     } else {
-      // Caso contrário, adicione o novo item
-      const newItem = { ...item };
-      this.cart.push(newItem);
+      updatedCart.push({ ...item });
     }
 
-    this.cartSubject.next([...this.cart]);
+    this.cart = updatedCart;
+    const userId = localStorage.getItem('userId'); // Recupera o ID do usuário
+    if (userId) {
+      this.saveCartToLocalStorage(userId); // Salva no localStorage
+    }
+    this.cartSubject.next(updatedCart);
   }
 
   removerCarrinho(item: CartItem) {
-    if (!item || !item.id) {
-      return;
-    }
-    const index = this.cart.findIndex(cartItem => cartItem.id === item.id);
+    if (!item || !item.id) return;
 
-    if (index > -1) {
-      this.cart.splice(index, 1);
+    const updatedCart = this.cart.filter(cartItem => cartItem.id !== item.id);
+    this.cart = updatedCart;
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      this.saveCartToLocalStorage(userId);
     }
-    this.cartSubject.next([...this.cart]);
+    this.cartSubject.next(updatedCart);
   }
 
   clearCart() {
     this.cart = [];
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      this.saveCartToLocalStorage(userId);
+    }
     this.cartSubject.next(this.cart);
   }
 
   updateCart(item: CartItem) {
-    const index = this.cart.findIndex(cartItem => cartItem.id === item.id);
-    if (index > -1) {
-      // Atualiza a quantidade do item
-      this.cart[index].quantity = item.quantity;
-      this.cartSubject.next(this.cart);
+    const updatedCart = this.cart.map(cartItem => 
+      cartItem.id === item.id ? { ...cartItem, quantity: item.quantity } : cartItem
+    );
+
+    this.cart = updatedCart;
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      this.saveCartToLocalStorage(userId);
     }
+    this.cartSubject.next(updatedCart);
   }
 
-  // Novo método para contar itens no carrinho
   getCartItemCount(): number {
     return this.cart.reduce((count, item) => count + item.quantity, 0);
   }

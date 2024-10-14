@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { CarrinhoService } from '../carrinho/carrinho.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginPage implements OnInit {
   email: string = '';
   senha: string = '';
 
-  constructor(private toastController: ToastController, private router: Router) {}
+  constructor(private toastController: ToastController, private router: Router, private carrinhoService: CarrinhoService) {}
   ngOnInit(){}
 
   login() {
@@ -25,6 +26,7 @@ export class LoginPage implements OnInit {
             console.log('Login bem-sucedido!');
             // Salva o login do usuário logado
             localStorage.setItem('usuarioLogado', usuario.login);
+            this.carrinhoService.setUserId(usuario.login); // Associa o carrinho ao usuário logado
             this.router.navigate(['/catalogo']);
             this.presentToast('Login bem-sucedido!', 'success'); // Toast verde para sucesso
         } else {
@@ -34,6 +36,7 @@ export class LoginPage implements OnInit {
         this.presentToast('Nenhum cadastro encontrado.', 'danger'); // Toast vermelho para erro
     }
 }
+
 
   navigateToNovaPagina() {
     this.router.navigate(['/cadastro']);
