@@ -11,20 +11,18 @@
 
 <ion-content>
   <ion-card>
-    <img [src]="item.imageUrl" alt="{{ item.name }}" />
+    <img class="custom-image" [src]="item.imageUrl" alt="{{ item.name }}" />
     <ion-card-header>
       <ion-card-title>{{ item.name }}</ion-card-title>
       <ion-card-subtitle>{{ item.valor | currency: 'BRL' }}</ion-card-subtitle>
     </ion-card-header>
-    <ion-card-content>
-      <p>{{ item.description }}</p>
-    </ion-card-content>
   </ion-card>
 
-  <div class="tamanhos">
+  <div class="tamanho-title">
     <h3>Escolha um tamanho:</h3>
     <ion-segment>
-      <ion-segment-button *ngFor="let tamanho of tamanhos" (click)="selecionarTamanho(tamanho)">
+      <ion-segment-button *ngFor="let tamanho of tamanhos" (click)="selecionarTamanho(tamanho)"
+        class="tamanho-segment-button">
         {{ tamanho }}
       </ion-segment-button>
     </ion-segment>
@@ -34,6 +32,11 @@
     <ion-label position="floating">Quantidade</ion-label>
     <ion-input [(ngModel)]="quantity" type="number" min="1" step="1" class="quantidade-input"></ion-input>
   </ion-item>
+
+  <h3 class="tamanho-title"> Descrição do Produto</h3>
+  <ion-card-content>
+    <p>{{ item.description }}</p>
+  </ion-card-content>
 </ion-content>
 
 <footer>

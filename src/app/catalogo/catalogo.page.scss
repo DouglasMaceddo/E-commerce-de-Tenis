@@ -1,30 +1,35 @@
-ion-thumbnail {
-  --border-radius: 8px;
-  width: 120px;
-  height: 90%;
+.search-bar {
+  margin: 16px; /* Espaçamento da barra de pesquisa */
 }
 
-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.item-list {
+  padding: 0 16px; /* Espaçamento lateral da lista */
 }
 
+.item-name {
+  font-weight: bold;
+  font-size: 1.2em; /* Tamanho maior para o nome do item */
+}
+
+.item-brand {
+  color: #666; /* Cor mais suave para a marca */
+  font-size: 0.9em; /* Tamanho menor para a marca */
+}
+
+.item-price {
+  font-weight: bold;
+  color: #3880ff; /* Cor do preço */
+}
 .botaoComprar {
-  font-weight: 700;
-  background: #2a00fb;
-  color: rgb(255, 255, 255);
-  border-radius: 20px; /* Ajuste o valor conforme necessário */
+  margin-left: auto; /* Alinha o botão à direita */
+  background-color: #3880ff; /* Cor de fundo do botão */
+  color: white; /* Cor do texto */
+  border-radius: 5px; /* Bordas arredondadas */
+  padding: 5px 5px; /* Espaçamento interno do botão */
 }
-
-.Linha {
-  font-weight: 700;
-}
-
-.shopping-cart-button {
-  --border-radius: 12px;
-  /* Borda arredondada */
-  --padding-start: 12px;
-  --padding-end: 12px;
-  --margin: 10px;
+.custom {
+  width: 100px; /* ou um tamanho específico, como '200px' */
+  height: auto; /* mantém a proporção */
+  max-height: 200px; /* define uma altura máxima, se necessário */
+  object-fit: cover; /* adapta a imagem para preencher o espaço */
 }

@@ -3,33 +3,43 @@ ion-card {
     border-radius: 10px;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 }
-
-ion-segment-button {
-    font-size: 16px;
-    border-radius: 2px;
-    padding: 2px 2px;
-    font-size: 10 rem;
-    border: 1px solid #000000;
-    border-radius: 100px;
-    width: 5px; /* Aumenta a largura ao ativar */
-    height: 5px;
-}
-
 .quantidade-input {
-    font-weight: bold;
-    /* Número em negrito */
+    font-weight: bold
 }
-
 ion-button {
     border-radius: 8px;
 }
-
 ion-card-title {
     font-size: 25px;
     font-weight: bold;
 }
-
 ion-card-subtitle {
     font-size: 21px;
 }
+.custom-image {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: cover;
+}
 
+.tamanho-segment-button {
+    min-width: 10px;
+    height: 40px;
+    font-size: 16px;
+    border-radius: 8px;
+    margin: 0 5px;
+}
+.tamanho-segment-button.ion-selected {
+    background-color: #3880ff;
+    color: white;
+}
+.tamanho-segment-button:hover {
+    background-color: #3171e0;
+    color: white;
+}
+.tamanho-title{
+    text-align: center; /* Centraliza o texto */
+    margin: 20px 0; /* Margem para dar espaço acima e abaixo do título */
+    font-weight: bold
+}
