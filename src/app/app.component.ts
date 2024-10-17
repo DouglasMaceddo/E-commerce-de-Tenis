@@ -12,7 +12,7 @@ export class AppComponent {
     { title: 'Pagamentos', url: '/pagamento', icon: 'card' },
     { title: 'Catalogo', url: '/catalogo', icon: 'albums' },
     { title: 'Carrinho', url: '/carrinho', icon: 'cart' },
-    { title: 'Promoções', url: '/carrinho', icon: 'pricetags' },
+    { title: 'Promoções', url: '/carrinho', icon: 'pricetags' }
   ];
   constructor(private router: Router, private menu: MenuController) { }
   navigateToNovaPagina() {

@@ -25,47 +25,47 @@
     <ion-card-content>
       <form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
 
-        <ion-input
-        type="adress"
-        label="Rua"
-        label-placement="floating"
-        fill="outline"
-        placeholder="Rua nova"
-        formControlName="street"
-        required>
-      </ion-input>
+        <ion-input type="adress" label="Rua" label-placement="floating" fill="outline" placeholder="Rua nova"
+          formControlName="Rua" required>
+        </ion-input>
+        <div
+          *ngIf="addressForm.get('Rua')?.errors?.['required'] && (addressForm.get('Rua')?.touched || addressForm.get('Rua')?.dirty)">
+          <small>Rua é obrigatória.</small>
+        </div>
 
-      <ion-input
-        type="adress"
-        label="Cidade"
-        label-placement="floating"
-        fill="outline"
-        placeholder="Sua Cidade"
-        formControlName="city"
-        required>
-      </ion-input>
+        <ion-input type="adress" label="Cidade" label-placement="floating" fill="outline" placeholder="Sua Cidade"
+          formControlName="Cidade" required>
+        </ion-input>
+        <div
+          *ngIf="addressForm.get('Cidade')?.errors?.['required'] && (addressForm.get('Cidade')?.touched || addressForm.get('Cidade')?.dirty)">
+          <small>Cidade é obrigatória.</small>
+        </div>
+        <div
+          *ngIf="addressForm.get('Cidade')?.errors?.['minlength'] && (addressForm.get('Cidade')?.touched || addressForm.get('Cidade')?.dirty)">
+          <small>A Cidade deve ter pelo menos 3 caracteres.</small>
+        </div>
 
-      <ion-input
-        type="adress"
-        label="Estado"
-        label-placement="floating"
-        fill="outline"
-        placeholder="Seu Estado"
-        formControlName="state"
-        required>
-      </ion-input>
+        <ion-input type="adress" label="Estado" label-placement="floating" fill="outline" placeholder="Seu Estado"
+          formControlName="Estado" required>
+        </ion-input>
+        <div
+          *ngIf="addressForm.get('Estado')?.errors?.['required'] && (addressForm.get('Estado')?.touched || addressForm.get('Estado')?.dirty)">
+          <small>Estado é obrigatório.</small>
+        </div>
 
-      <ion-input
-      type="adress"
-      label="Cep"
-      label-placement="floating"
-      fill="outline"
-      placeholder="12345-678"
-      formControlName="zip"
-      required>
-    </ion-input>
+        <ion-input type="adress" label="CEP" label-placement="floating" fill="outline" placeholder="12345-678"
+          formControlName="CEP" required>
+        </ion-input>
+        <div
+          *ngIf="addressForm.get('CEP')?.errors?.['required'] && (addressForm.get('CEP')?.touched || addressForm.get('CEP')?.dirty)">
+          <small>CEP é obrigatório.</small>
+        </div>
+        <div
+          *ngIf="addressForm.get('CEP')?.errors?.['pattern'] && (addressForm.get('CEP')?.touched || addressForm.get('CEP')?.dirty)">
+          <small>Formato de CEP inválido. (Ex: 12345-678)</small>
+        </div>
 
-        <ion-button expand="full" type="submit">Cadastrar Endereço</ion-button>
+        <ion-button expand="full" type="submit" [disabled]="addressForm.invalid">Cadastrar Endereço</ion-button>
       </form>
     </ion-card-content>
   </ion-card>
