@@ -1,9 +1,0 @@
-export interface Cadastro {
-    nome: string;
-    cpf: string;
-    telefone: string;
-    email: string;
-    login: string;
-    senha: string;
-  }
-  

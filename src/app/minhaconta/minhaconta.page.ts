@@ -28,7 +28,7 @@ export class MinhacontaPage implements OnInit {
   }
   ngOnInit() {
     // Recupera o login do usuário logado
-    const usuarioLogado = localStorage.getItem('usuarioLogado');
+    const usuarioLogado = localStorage.getItem('userId');
     const dadosUsuario = JSON.parse(localStorage.getItem('cadastros') || '[]');
 
     if (Array.isArray(dadosUsuario) && dadosUsuario.length > 0) {
@@ -54,15 +54,14 @@ export class MinhacontaPage implements OnInit {
     }
   }
   sairConta() {
-    localStorage.removeItem('usuarioLogado');
-    
+    localStorage.removeItem('userId');
+    this.router.navigate(['/login']);
+
     this.infoUsuario = {
       cpf: '',
       email: '',
       nome: '',
       telefone: ''
     };
-    this.router.navigate(['/login']);
   }
-
 }
