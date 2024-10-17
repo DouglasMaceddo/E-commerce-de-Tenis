@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { CarrinhoService } from '../carrinho/carrinho.service';
+import { CarrinhoService } from '../Service/carrinho.service';
 
 @Component({
   selector: 'app-login',

@@ -1,7 +1,6 @@
 import { Component, Input, input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { IonicModule } from '@ionic/angular';
-import { CarrinhoService } from 'src/app/carrinho/carrinho.service';
+import { CarrinhoService } from 'src/app/Service/carrinho.service';
 import { ToastController } from '@ionic/angular';
 
 
