@@ -20,7 +20,7 @@ export class TenisService {
     { id: 5, name: 'Tênis Nike', Marca: 'Nike', valor: 290.99, description: 'saidinha', imageUrl: '/assets/Imagens/Nike3.jpg' },
     { id: 6, name: 'Tênis Oakley', Marca: 'Oakley', valor: 329.89, description: 'sair pra andar', imageUrl: "/assets/Imagens/Oakley1.jpg" },
     { id: 7, name: 'Tênis Oakley', Marca: 'Oakley', valor: 529.89, description: 'sair pra andar', imageUrl: "/assets/Imagens/Oakley2.jpg" },
-    { id: 8, name: 'Tênis Mizuno', Marca: 'Mizuno', valor: 1000.00, description: 'sair', imageUrl: "/assets/Imagens/Mizuno.jpg" },
+    { id: 8, name: 'Tênis Mizuno', Marca: 'Mizuno', valor: 999.99, description: 'sair', imageUrl: "/assets/Imagens/Mizuno.jpg" },
     { id: 9, name: 'Tênis Olympikus', Marca: 'Olympikus', valor: 349.99, description: 'sair pra andar', imageUrl: "/assets/Imagens/Olympikus1.jpg" },
     { id: 10, name: 'Tênis Olympikus', Marca: 'Olympikus', valor: 249.99, description: 'Conforto e Elegancia', imageUrl: "/assets/Imagens/Olympikus.jpg" },
     { id: 11, name: 'Tênis Air Max', Marca: 'Nike', valor: 329.99, description: 'sair pra andar', imageUrl: "/assets/Imagens/Nike.jpg" },
