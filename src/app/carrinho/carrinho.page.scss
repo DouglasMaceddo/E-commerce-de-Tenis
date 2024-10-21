@@ -1,7 +1,41 @@
-
+.quantidade-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
 
 .botaoquant {
-  width: 30px;
-  height: 30px;
-  --border-radius: 10px;
+  width: 100px;
+  height: 50px;
+  margin: 1 1px;
+}
+
+.quantidade {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0 10px;
+}
+
+.remover-botao {
+  width: 50px;
+  height: 8px;
+  font-size: 8px; /* Tamanho da fonte menor */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.custom {
+  width: 100px; /* ou um tamanho específico, como '200px' */
+  height: auto; /* mantém a proporção */
+  max-height: 200px; /* define uma altura máxima, se necessário */
+  object-fit: cover; /* adapta a imagem para preencher o espaço */
+}
+.nome {
+  font-weight: bold;
+}
+.Botaolimp {
+  border-radius: 10px;
+  padding: 5px 5px; /* Espaçamento interno do botão */
 }

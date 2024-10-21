@@ -8,39 +8,37 @@
 </ion-toolbar>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Carrinho</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
   <ion-list *ngIf="cart.length > 0; else emptyCart">
-    <ion-item *ngFor="let item of cart">
-      <ion-thumbnail slot="start">
-        <img [src]="item.imageUrl" />
-      </ion-thumbnail>
-      <ion-label>
-        <h2>{{ item.name }}</h2>
-        <p>Quantidade: {{ item.quantity }}</p>
-        <p>Preço: {{ item.valor | currency: 'BRL' }}</p>
-        <p>Tamanho: {{ item.tamanho }}</p>
-      </ion-label>
-      <div>
-        <ion-button (click)="diminuirQuant(item)" [disabled]="item.quantity <= 1" class="botaoquant">-</ion-button>
-        <span> {{ item.quantity }}</span>
-        <ion-button (click)="aumentarQuant(item)" class="botaoquant">+</ion-button>
-        <div>
-          <ion-button (click)="removerCarrinho(item)" color="danger">Remover</ion-button>
+    <ng-container *ngFor="let item of cart">
+      <ion-card>
+        <ion-item>
+          <ion-thumbnail slot="start" class="custom">
+            <img [src]="item.imageUrl" />
+          </ion-thumbnail>
+          <ion-label>
+            <h2 class="nome">{{ item.name }}</h2>
+            <p>Tamanho: {{ item.tamanho }}</p>
+            <p>Quantidade: {{ item.quantity }}</p>
+            <p>Preço: {{ item.valor | currency: 'BRL' }}</p>
+          </ion-label>
+        </ion-item>
+
+        <div class="quantidade-controls">
+          <ion-button (click)="diminuirQuant(item)" [disabled]="item.quantity <= 1" class="botaoquant" fill="clear">
+            <ion-icon name="remove-circle-outline"></ion-icon>
+          </ion-button>
+          <span class="quantidade">{{ item.quantity }}</span>
+          <ion-button (click)="aumentarQuant(item)" class="botaoquant" fill="clear">
+            <ion-icon name="add-circle-outline"></ion-icon>
+          </ion-button>
+          <ion-button color="danger" slot="end" (click)="removerCarrinho(item)"
+            class="remover-botao">Remover</ion-button>
         </div>
-      </div>
-    </ion-item>
+      </ion-card>
+    </ng-container>
   </ion-list>
 
-  <ion-item>
-    <h2>Total: {{ getTotal() | currency: 'BRL'}}</h2>
-  </ion-item>
-
-  <ion-button expand="full" color="primary" (click)="clearCart()">Limpar Carrinho</ion-button>
+  <ion-button expand="full" color="primary" (click)="clearCart()" class="Botaolimp">Limpar Carrinho</ion-button>
 
   <ng-template #emptyCart>
     <ion-item>
@@ -50,3 +48,9 @@
     </ion-item>
   </ng-template>
 </ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <h2>Total: {{ getTotal() | currency: 'BRL' }}</h2>
+    <ion-button slot="end">Finalizar</ion-button>
+  </ion-toolbar>
+</ion-footer>
