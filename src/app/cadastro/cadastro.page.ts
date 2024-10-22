@@ -15,20 +15,20 @@ export class CadastroPage implements OnInit {
   constructor(private formBuilder: FormBuilder, private toastController: ToastController,
     private router: Router) { }
 
-  ngOnInit() {
-    this.cadastroForm = this.formBuilder.group({
-      nome: ['', Validators.required],
-      cpf: ['', [Validators.required, this.cpfValidator]],
-      telefone: ['', [Validators.required, this.telefoneValidator]],
-      login: ['', Validators.required],
-      senha: ['', [Validators.required, Validators.minLength(6)]],
-      confirmarSenha: ['', Validators.required]
-    }, { validators: this.passwordMatchValidator });
-  }
-
-  passwordMatchValidator(form: FormGroup) {
-    return form.get('senha')?.value === form.get('confirmarSenha')?.value ? null : { mismatch: true };
-  }
+    ngOnInit() {
+      this.cadastroForm = this.formBuilder.group({
+        nome: ['', Validators.required],
+        cpf: ['', [Validators.required, this.cpfValidator]],
+        telefone: ['', [Validators.required, this.telefoneValidator]],
+        login: ['', Validators.required],
+        senha: ['', [Validators.required, Validators.minLength(6)]],
+        confirmarSenha: ['', Validators.required]
+      }, { validators: this.passwordMatchValidator });
+    }
+    
+    passwordMatchValidator(form: FormGroup) {
+      return form.get('senha')?.value === form.get('confirmarSenha')?.value ? null : { mismatch: true };
+    }
 
   cpfValidator(control: any) {
     const cpf = control.value.replace(/\D/g, ''); // Remove caracteres não numéricos
@@ -36,14 +36,6 @@ export class CadastroPage implements OnInit {
       return { invalidCpf: true }; // Validação falha se não tiver 11 dígitos
     }
     return null; // CPF válido
-  }
-
-  telefoneValidator(control: any) {
-    const telefone = control.value.replace(/\D/g, '');
-    if (telefone.length < 10 || telefone.length > 11) {
-      return { invalidTelefone: true }; // Validação falha se não estiver entre 10 e 11 dígitos
-    }
-    return null; // Telefone válido
   }
 
   formatCPF(event: any) {
@@ -63,7 +55,13 @@ export class CadastroPage implements OnInit {
     event.target.value = value;
     this.cadastroForm.get('cpf')?.setValue(value);
   }
-
+telefoneValidator(control: any) {
+    const telefone = control.value.replace(/\D/g, '');
+    if (telefone.length < 10 || telefone.length > 11) {
+      return { invalidTelefone: true }; // Validação falha se não estiver entre 10 e 11 dígitos
+    }
+    return null; // Telefone válido
+  }
   formatTelefone(event: any) {
     let value = event.target.value.replace(/\D/g, '');
     if (value.length > 11) {
@@ -95,7 +93,6 @@ export class CadastroPage implements OnInit {
       await this.presentToast('Formulário inválido, verifique os dados!', 'danger');
     }
   }
-
   async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
