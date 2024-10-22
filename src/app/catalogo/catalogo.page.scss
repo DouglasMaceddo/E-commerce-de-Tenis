@@ -33,3 +33,9 @@
   max-height: 200px; /* define uma altura máxima, se necessário */
   object-fit: cover; /* adapta a imagem para preencher o espaço */
 }
+.imagemplazza{
+  width: 600px; /* Ajuste o tamanho conforme necessário */
+  height: auto; /* Mantém a proporção da imagem */
+  //margin-right: 100px;
+  max-height: 80px
+}

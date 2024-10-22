@@ -1,7 +1,9 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar >
     <ion-menu-button slot="start"></ion-menu-button>
-    <ion-title class="titulo">Catálogo</ion-title>
+    <div>
+      <img class="imagemplazza" src="assets/icon/plazza tenis.png" alt="logo"/>
+    </div>
     <ion-buttons slot="end" (click)="navegarPaginaCarrinho()">
       <ion-button>
         <ion-badge color="primary">{{ cartItemCount }}</ion-badge>
