@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartItem } from '../Service/cart-item.model';
 import { CarrinhoService } from '../Service/carrinho.service';
+import { ToastController } from '@ionic/angular';
+import { empty } from 'rxjs';
 
 @Component({
   selector: 'app-carrinho',
@@ -12,7 +14,7 @@ export class CarrinhoPage implements OnInit {
   cart: CartItem[] = [];
   cartItemCount: number = 0;
 
-  constructor(private router: Router, private carrinhoService: CarrinhoService) {}
+  constructor(private toastController: ToastController, private router: Router, private carrinhoService: CarrinhoService) { }
 
   ngOnInit() {
     this.carrinhoService.getCart().subscribe(cart => {
@@ -49,5 +51,30 @@ export class CarrinhoPage implements OnInit {
       item.quantity--;
       this.carrinhoService.updateCart(item);
     }
+  }
+  finalizar() {
+    const usuarioLogado = localStorage.getItem('userId');
+    if (!usuarioLogado) {
+      this.router.navigate(['/login']); // Redireciona para a página de login
+      return;
+    }
+    const carrinho = this.carrinhoService.getCart();
+    this.carrinhoService.getCart().subscribe((carrinho) => {
+      if (carrinho.length === 0) {
+        this.presentToast('Seu carrinho está vazio!', 'warning');
+        return;
+      }
+    })
+    this.router.navigate(['/checkout']);
+  }
+  async presentToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      color: color,
+      position: 'bottom',
+      cssClass: 'custom-toast',
+    });
+    await toast.present();
   }
 }

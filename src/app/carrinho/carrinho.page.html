@@ -48,9 +48,10 @@
     </ion-item>
   </ng-template>
 </ion-content>
+
 <ion-footer>
   <ion-toolbar>
     <h2>Total: {{ getTotal() | currency: 'BRL' }}</h2>
-    <ion-button slot="end">Finalizar</ion-button>
+    <ion-button slot="end" (click)="finalizar()">Finalizar</ion-button>
   </ion-toolbar>
 </ion-footer>
