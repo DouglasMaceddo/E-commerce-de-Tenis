@@ -17,9 +17,7 @@
 
       <ion-input type="password" label-placement="floating" fill="outline" label="Confirmar Senha" formControlName="confirmarSenha"></ion-input>
       
-      <div *ngIf="cadastroForm.hasError('mismatch') && cadastroForm.get('confirmarSenha')?.touched">
-        As senhas não coincidem!
-      </div>
+      <div *ngIf="cadastroForm.hasError('mismatch') && cadastroForm.get('confirmarSenha')?.touched">As senhas não coincidem!</div>
 
       <ion-button expand="block" type="submit">Cadastrar</ion-button>
     </form>
