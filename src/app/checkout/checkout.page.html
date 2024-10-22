@@ -18,16 +18,16 @@
 
   <ion-card *ngIf="enderecoUsuario">
     <ion-card-header>
-      <ion-card-title >Endereço de Entrega</ion-card-title>
+      <ion-card-title class="titulo">Endereço de Entrega</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p><strong>Rua:</strong> {{ enderecoUsuario.Rua }}</p>
-      <p><strong>Cidade:</strong> {{ enderecoUsuario.Cidade }}</p>
-      <p><strong>Estado:</strong> {{ enderecoUsuario.Estado }}</p>
-      <p><strong>CEP:</strong> {{ enderecoUsuario.CEP }}</p>
+      <h2><strong>CEP:</strong> {{ enderecoUsuario.CEP }}</h2>
+      <h2><strong>Rua:</strong> {{ enderecoUsuario.Rua }}</h2>
+      <h2><strong>Cidade:</strong> {{ enderecoUsuario.Cidade }}</h2>
+      <h2><strong>Estado:</strong> {{ enderecoUsuario.Estado }}</h2>
     </ion-card-content>
   </ion-card>
-  
+
   <ion-card *ngIf="!enderecoUsuario">
     <ion-card-header>
       <ion-card-title>Nenhum endereço cadastrado</ion-card-title>
@@ -37,5 +37,18 @@
       <ion-button expand="full" (click)="cadastrarend()">Cadastrar Endereço</ion-button>
     </ion-card-content>
   </ion-card>
-  
+
+  <ion-card>
+    
+    <ion-card-title class="titulo">Seleciona o Tipo de Entrega</ion-card-title>
+
+  </ion-card>
+
+  <ion-card>
+    <ion-card-title class="titulo">Forma de Pagamento</ion-card-title>
+    <h2><ion-checkbox> PIX</ion-checkbox></h2>
+    <h2><ion-checkbox> Cartão de Crédito</ion-checkbox></h2>
+  </ion-card>
+
+
 </ion-content>
