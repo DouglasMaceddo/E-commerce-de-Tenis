@@ -18,7 +18,10 @@
 
   <ion-card *ngIf="enderecoUsuario">
     <ion-card-header>
-      <ion-card-title class="titulo">Endereço de Entrega</ion-card-title>
+      <ion-card-title>
+        <ion-icon size="large" name="home-outline" class="icone"></ion-icon>
+        Endereço de Entrega
+      </ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <h2><strong>CEP:</strong> {{ enderecoUsuario.CEP }}</h2>
@@ -39,16 +42,76 @@
   </ion-card>
 
   <ion-card>
-    
-    <ion-card-title class="titulo">Seleciona o Tipo de Entrega</ion-card-title>
+    <ion-card-header>
+      <ion-card-title>
+        <img src="assets/icon/icontruck.png" alt="Icone de Caminhão" class="icontruck" />
+        Selecione o Tipo de Entrega
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-radio-group value="entregaRapida">
+          <ion-item>
+            <ion-label>
+              Entrega Rápida
+              <p>Receba seu pedido em 5 dias úteis.</p>
+            </ion-label>
+            <ion-radio slot="start" value="entregaRapida"></ion-radio>
+          </ion-item>
 
+          <ion-item>
+            <ion-label>
+              Entrega Padrão
+              <p>Receba seu pedido em 15 dias úteis.</p>
+            </ion-label>
+            <ion-radio slot="start" value="entregaPadrao"></ion-radio>
+            <span class="badge">Grátis</span>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+    </ion-card-content>
   </ion-card>
 
   <ion-card>
-    <ion-card-title class="titulo">Forma de Pagamento</ion-card-title>
-    <h2><ion-checkbox> PIX</ion-checkbox></h2>
-    <h2><ion-checkbox> Cartão de Crédito</ion-checkbox></h2>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon size="large" name="card-outline" class="icone"></ion-icon>
+        Forma de Pagamento</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-radio-group>
+          <ion-item>
+            <ion-label>
+              Cartão de Crédito
+            </ion-label>
+            <ion-radio slot="start" value="cartaodecredito"></ion-radio>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              PIX
+            </ion-label>
+            <ion-radio slot="start" value="pix"></ion-radio>
+            <span class="badge">Aprovação em Segundos</span>
+          </ion-item>
+          <p>
+            Após a finalização do pedido, abra o app ou banco de sua preferência.<br>
+            Escolha a opção pagar com código Pix “copia e cola”, ou código QR.<br>
+            Copie e cole o código, ou escaneie o código Qr com a câmera do seu celular.<br>
+            Confira todas as informações e autorize o pagamento.<br>
+          </p>
+        </ion-radio-group>
+      </ion-list>
+    </ion-card-content>
   </ion-card>
-
-
 </ion-content>
+<ion-footer>
+  <ion-item>
+    <ion-label>Valor</ion-label>
+    <ion-select>
+      
+    </ion-select>
+  </ion-item>
+
+</ion-footer>
