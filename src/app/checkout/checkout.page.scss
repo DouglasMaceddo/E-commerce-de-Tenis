@@ -1,4 +1,33 @@
 ion-checkbox::part(container) {
-    border-radius: 6px;
-    border: 2px solid #6815ec;
-  }
+  border-radius: 6px;
+  border: 2px solid #6815ec;
+}
+
+.icontruck {
+  width: 30px;/* Defina a largura */
+  height: 20px;/* Defina a altura */
+  background-size: center;/* Ajuste conforme necessário */
+  vertical-align: middle;
+}
+.icone {
+  width: 30px;/* Defina a largura */
+  height: 20px;/* Defina a altura */
+  vertical-align: middle;
+}
+.badge {
+    background-color: #ffeb3b; /* Fundo amarelo */
+    color: #000; /* Cor do texto */
+    border-radius: 12px; /* Bordas arredondadas */
+    padding: 2px 8px; /* Espaço interno */
+    font-size: 12px; /* Tamanho da fonte */
+    margin-left: 8px; /* Espaço entre o texto e o rótulo */
+    align-self: center; /* Centraliza verticalmente no item */
+}
+strong{
+  color: #000;
+}
+ion-label h4 {
+  margin: 4px 0; /* Espaçamento entre as linhas */
+  font-size: 14px; /* Tamanho da fonte */
+  color: #666; /* Cor mais suave */
+}
