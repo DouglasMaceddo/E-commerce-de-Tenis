@@ -24,7 +24,7 @@ export class MinhacontaPage implements OnInit {
       Rua: ['', [Validators.required, Validators.minLength(5)]], // Mínimo de 5 caracteres
       Cidade: ['', [Validators.required, Validators.minLength(3)]], // Mínimo de 3 caracteres
       Estado: ['', Validators.required],
-      CEP: ['', [Validators.required,]]
+      CEP: ['', [Validators.required,Validators.pattern(/^\d{5}-\d{3}$/)]]
     });
 
   }

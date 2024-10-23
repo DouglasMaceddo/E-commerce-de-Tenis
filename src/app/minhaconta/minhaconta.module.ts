@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { MinhacontaPageRoutingModule } from './minhaconta-routing.module';
 
 import { MinhacontaPage } from './minhaconta.page';
+import { CepMaskDirective } from './Mascara-CEP/cep-mask.directive'
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { MinhacontaPage } from './minhaconta.page';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    CepMaskDirective
   ],
   declarations: [MinhacontaPage]
 })
