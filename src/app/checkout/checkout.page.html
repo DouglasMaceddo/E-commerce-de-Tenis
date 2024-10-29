@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="end" (click)="voltar()">
-      <ion-button>
+      <ion-button aria-label="Voltar">
         voltar
       </ion-button>
     </ion-buttons>
@@ -40,17 +40,16 @@
       <ion-button expand="full" (click)="cadastrarend()">Cadastrar Endereço</ion-button>
     </ion-card-content>
   </ion-card>
-
   <ion-card>
     <ion-card-header>
       <ion-card-title>
-        <img src="assets/icon/icontruck.png" alt="Icone de Caminhão" class="icontruck" />
+        <img src="assets/icon/icontruck.png" alt="Ícone de Caminhão" class="icontruck" />
         Selecione o Tipo de Entrega
       </ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <ion-radio-group value="entregaRapida">
+        <ion-radio-group (ionChange)="onTipoEntregaChange($event)" value="entregaPadrao">
           <ion-item>
             <ion-label>
               Entrega Rápida
@@ -69,14 +68,15 @@
           </ion-item>
         </ion-radio-group>
       </ion-list>
+      <p *ngIf="taxaEntrega > 0">Taxa de entrega: {{ taxaEntrega | currency: 'BRL' }}</p>
     </ion-card-content>
   </ion-card>
-
   <ion-card>
     <ion-card-header>
       <ion-card-title>
         <ion-icon size="large" name="card-outline" class="icone"></ion-icon>
-        Forma de Pagamento</ion-card-title>
+        Forma de Pagamento
+      </ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-list>
@@ -96,10 +96,10 @@
             <span class="badge">Aprovação em Segundos</span>
           </ion-item>
           <p>
-            Após a finalização do pedido, abra o app ou banco de sua preferência.<br>
-            Escolha a opção pagar com código Pix “copia e cola”, ou código QR.<br>
-            Copie e cole o código, ou escaneie o código Qr com a câmera do seu celular.<br>
-            Confira todas as informações e autorize o pagamento.<br>
+            Após a finalização do pedido, abra o app ou banco de sua preferência.<br />
+            Escolha a opção pagar com código Pix “copia e cola”, ou código QR.<br />
+            Copie e cole o código, ou escaneie o código QR com a câmera do seu celular.<br />
+            Confira todas as informações e autorize o pagamento.<br />
           </p>
         </ion-radio-group>
       </ion-list>
@@ -107,11 +107,17 @@
   </ion-card>
 </ion-content>
 <ion-footer>
-  <ion-item>
-    <ion-label>Valor</ion-label>
-    <ion-select>
-      
-    </ion-select>
-  </ion-item>
-
+  <ion-card>
+    <ion-item (click)="toggleTaxaEntrega()" style="cursor: pointer;">
+      <ion-label> Valor Total
+        <ion-icon name="chevron-down-outline">
+        </ion-icon>
+      </ion-label>
+      <ion-label slot="end">{{ totalCarrinho | currency: 'BRL' }}</ion-label>
+    </ion-item>
+    <ion-item *ngIf="mostrarTaxa">
+      <ion-label>Taxa de Entrega</ion-label>
+      <ion-label slot="end">{{ taxaEntrega | currency: 'BRL' }}</ion-label>
+    </ion-item>
+  </ion-card>
 </ion-footer>
