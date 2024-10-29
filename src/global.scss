@@ -41,11 +41,16 @@ ion-modal {
   --border-radius: 10px;
   --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   font-weight: bold;
+  display: flex;
+  align-items: center; /* Centraliza verticalmente */
+  backdrop-filter: none;
 }
 
+
 ion-modal::part(backdrop) {
-  background: rgba(209, 213, 219);
+  background: rgba(0, 0, 0, 0.5); /* Fundo escuro com opacidade, ajustando conforme necessário */
   opacity: 1;
+  
 }
 
 ion-modal ion-toolbar {
