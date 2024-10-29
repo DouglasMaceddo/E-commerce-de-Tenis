@@ -13,10 +13,9 @@ export class PagamentoPage implements OnInit {
   savedCard: any = null; // Para armazenar os dados do cartão
 
   constructor(private alertController: AlertController) {}
-  ngOnInit() {
-  
-  }
 
+  ngOnInit() {}
+  
   async onSubmit(form: NgForm) { // Especificando o tipo do parâmetro
     this.savedCard = {
       cardName: form.value.cardName,
