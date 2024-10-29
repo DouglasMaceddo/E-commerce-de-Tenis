@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { CartItem } from '../Service/cart-item.model';
 import { CarrinhoService } from '../Service/carrinho.service';
 import { ToastController } from '@ionic/angular';
-import { empty } from 'rxjs';
 
 @Component({
   selector: 'app-carrinho',
@@ -52,21 +51,24 @@ export class CarrinhoPage implements OnInit {
       this.carrinhoService.updateCart(item);
     }
   }
+
   finalizar() {
     const usuarioLogado = localStorage.getItem('userId');
     if (!usuarioLogado) {
       this.router.navigate(['/login']); // Redireciona para a página de login
       return;
     }
-    const carrinho = this.carrinhoService.getCart();
+
     this.carrinhoService.getCart().subscribe((carrinho) => {
       if (carrinho.length === 0) {
-        this.presentToast('Seu carrinho está vazio!', 'warning');
-        return;
+        this.presentToast('Seu carrinho está vazio!', 'warning'); // Exibe mensagem se o carrinho estiver vazio
+        return; // Não prossegue para o checkout
       }
-    })
+
+    });
     this.router.navigate(['/checkout']);
   }
+
   async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
