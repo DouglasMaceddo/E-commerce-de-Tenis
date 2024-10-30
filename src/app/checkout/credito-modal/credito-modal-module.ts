@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { CatalogoPageModule } from '../catalogo.module';
+import { CheckoutPageModule } from '../checkout.module';
 
 
 @NgModule({
@@ -9,7 +9,7 @@ import { CatalogoPageModule } from '../catalogo.module';
   imports: [
     CommonModule,
     IonicModule,
-    CatalogoPageModule
+    CheckoutPageModule
   ]
 })
-export class TenisModalModule { }
+export class CreditoModalModule {}
