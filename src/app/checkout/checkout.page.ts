@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CarrinhoService } from '../Service/carrinho.service';
 import { CartItem } from '../Service/cart-item.model';
+import { ModalController } from '@ionic/angular';
+import { CreditoModalComponent } from './credito-modal/credito-modal.component';
 
 @Component({
   selector: 'app-checkout',
@@ -16,7 +18,7 @@ export class CheckoutPage implements OnInit {
   tipoEntrega: string = 'entregaPadrao';
   mostrarTaxa: boolean = false;
 
-  constructor(private router: Router, private carrinhoService: CarrinhoService) { }
+  constructor(private router: Router, private carrinhoService: CarrinhoService, private modalController: ModalController,) { }
 
   ngOnInit() {
     this.carregarEndereco();
@@ -56,4 +58,11 @@ export class CheckoutPage implements OnInit {
     this.router.navigate(['/carrinho']);
   }
 
+  async chamarmodalcredito() {
+    const modal = await this.modalController.create({
+      component: CreditoModalComponent,
+      cssClass: 'custom-modal'
+    });
+    return await modal.present();
+  }
 }
