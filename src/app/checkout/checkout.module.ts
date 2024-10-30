@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { CheckoutPageRoutingModule } from './checkout-routing.module';
 
 import { CheckoutPage } from './checkout.page';
+import { CreditoModalComponent } from './credito-modal/credito-modal.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { CheckoutPage } from './checkout.page';
     IonicModule,
     CheckoutPageRoutingModule
   ],
-  declarations: [CheckoutPage]
+  declarations: [CheckoutPage, CreditoModalComponent]
 })
 export class CheckoutPageModule {}

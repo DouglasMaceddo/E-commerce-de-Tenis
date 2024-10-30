@@ -36,17 +36,22 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
 
+.titulo{
+  text-align: center;
+  font-weight: bold;
+}
+
 ion-modal {
-  --height: 80%;
-  --border-radius: 10px;
-  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  height: 80%;
+  border-radius: 15px;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   font-weight: bold;
   display: flex;
   align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  margin: auto; /* Garante a centralização */
   backdrop-filter: none;
 }
-
-
 ion-modal::part(backdrop) {
   background: rgba(0, 0, 0, 0.5); /* Fundo escuro com opacidade, ajustando conforme necessário */
   opacity: 1;
@@ -61,8 +66,4 @@ ion-input {
   margin-bottom: 15px; /* Ajuste o valor conforme necessário */
   padding-left: 0; /* Remove o padding esquerdo para alinhar à esquerda */
   text-align: left; /* Garante que o texto comece alinhado à esquerda */
-}
-.titulo{
-  text-align: center;
-  font-weight: bold;
 }
