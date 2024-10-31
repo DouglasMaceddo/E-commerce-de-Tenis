@@ -1,5 +1,5 @@
 <ion-header [translucent]="true"></ion-header>
-<ion-toolbar>
+<ion-toolbar class="corpadrao">
   <ion-menu-button slot="start"></ion-menu-button>
   <ion-title class="titulo">Minha Conta</ion-title>
 </ion-toolbar>
@@ -64,7 +64,7 @@
           *ngIf="addressForm.get('CEP')?.errors?.['pattern'] && (addressForm.get('CEP')?.touched || addressForm.get('CEP')?.dirty)">
         </div>
 
-        <ion-button expand="full" type="submit" [disabled]="addressForm.invalid">Cadastrar Endereço</ion-button>
+        <ion-button class="corpadrao" expand="full" type="submit" [disabled]="addressForm.invalid">Cadastrar Endereço</ion-button>
       </form>
     </ion-card-content>
   </ion-card>

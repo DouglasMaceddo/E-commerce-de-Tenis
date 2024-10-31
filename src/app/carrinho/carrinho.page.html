@@ -1,5 +1,5 @@
 <ion-header [translucent]="true"></ion-header>
-<ion-toolbar>
+<ion-toolbar class="corpadrao">
   <ion-menu-button slot="start"></ion-menu-button>
   <ion-title class="titulo">Carrinho</ion-title>
   <ion-buttons slot="end">
@@ -38,7 +38,7 @@
     </ng-container>
   </ion-list>
 
-  <ion-button expand="full" color="primary" (click)="clearCart()" class="Botaolimp">Limpar Carrinho</ion-button>
+  <ion-button expand="full" class="Botaolimp" (click)="clearCart()">Limpar Carrinho</ion-button>
 
   <ng-template #emptyCart>
     <ion-item>
@@ -52,6 +52,8 @@
 <ion-footer>
   <ion-toolbar>
     <h2>Total: {{ getTotal() | currency: 'BRL' }}</h2>
-    <ion-button slot="end" (click)="finalizar()">Finalizar</ion-button>
+    <ion-button class="corpadrao" slot="end" (click)="finalizar()">Finalizar
+      <ion-icon name="enter-outline"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-footer>
