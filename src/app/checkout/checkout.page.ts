@@ -61,7 +61,7 @@ export class CheckoutPage implements OnInit {
   async chamarmodalcredito() {
     const modal = await this.modalController.create({
       component: CreditoModalComponent,
-      cssClass: 'custom-modal'
+      cssClass: 'modalcredito'
     });
     return await modal.present();
   }
