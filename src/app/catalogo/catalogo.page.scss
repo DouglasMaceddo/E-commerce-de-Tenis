@@ -18,11 +18,11 @@
 
 .item-price {
   font-weight: bold;
-  color: #3880ff; /* Cor do preço */
+  color: #6A0DAD; /* Cor do preço */
 }
 .botaoComprar {
   margin-left: auto; /* Alinha o botão à direita */
-  background-color: #3880ff; /* Cor de fundo do botão */
+  background-color: #6A0DAD; /* Cor de fundo do botão */
   color: white; /* Cor do texto */
   border-radius: 5px; /* Bordas arredondadas */
   padding: 5px 5px; /* Espaçamento interno do botão */
@@ -43,4 +43,9 @@ ion-badge {
   --color: white;
   --padding-end: 5px;
   --padding-start: 5px;
+}
+.tenis-card {
+  margin: 10px; /* Espaçamento entre os cards */
+  padding: 10px; /* Ajusta o espaçamento interno */
+  --background: #ffffff; /* Fundo do card */
 }

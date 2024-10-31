@@ -1,29 +1,29 @@
-ion-modal{
-    height: 10%;
-}
-
 ion-card {
     margin: 16px;
     border-radius: 10px;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 }
+
 .quantidade-input {
     font-weight: bold
 }
+
 ion-button {
-    border-radius: 8px;
+    border-radius: 10px;
 }
+
 ion-card-title {
     font-size: 20px;
     font-weight: bold;
 }
+
 ion-card-subtitle {
     font-size: 21px;
 }
+
 .custom-image {
     width: 100%;
-    height: auto;
-    max-height: 200px;
+    height: 100%;
     object-fit: cover;
 }
 
@@ -33,12 +33,15 @@ ion-card-subtitle {
     font-size: 16px;
     border-radius: 8px;
     margin: 0 5px;
-    color:#000000
+    color:#ffffff;
+    background-color: #6A0DAD;
 }
+
 .tamanho-segment-button:hover {
-    background-color: #3171e0;
+    background-color: #fd0000; //selecionar
     color: rgb(255, 255, 255);
 }
+
 .tamanho-title{
     text-align: center; /* Centraliza o texto */
     margin: 20px 0; /* Margem para dar espaço acima e abaixo do título */

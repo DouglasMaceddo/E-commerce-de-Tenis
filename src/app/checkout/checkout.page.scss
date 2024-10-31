@@ -4,41 +4,56 @@ ion-checkbox::part(container) {
 }
 
 .icontruck {
-  width: 30px;/* Defina a largura */
-  height: 20px;/* Defina a altura */
-  background-size: center;/* Ajuste conforme necessário */
+  width: 30px;
+  /* Defina a largura */
+  height: 20px;
+  /* Defina a altura */
+  background-size: center;
+  /* Ajuste conforme necessário */
   vertical-align: middle;
 }
+
 .icone {
-  width: 30px;/* Defina a largura */
-  height: 20px;/* Defina a altura */
+  width: 30px;
+  /* Defina a largura */
+  height: 20px;
+  /* Defina a altura */
   vertical-align: middle;
 }
+
 .badge {
-    background-color: #ffeb3b; /* Fundo amarelo */
-    color: #000; /* Cor do texto */
-    border-radius: 12px; /* Bordas arredondadas */
-    padding: 2px 8px; /* Espaço interno */
-    font-size: 12px; /* Tamanho da fonte */
-    margin-left: 8px; /* Espaço entre o texto e o rótulo */
-    align-self: center; /* Centraliza verticalmente no item */
+  background: #6A0DAD;
+  color:#ffffff;
+  /* Cor do texto */
+  border-radius: 12px;
+  /* Bordas arredondadas */
+  padding: 2px 8px;
+  /* Espaço interno */
+  font-size: 12px;
+  /* Tamanho da fonte */
+  margin-left: 8px;
+  /* Espaço entre o texto e o rótulo */
+  align-self: center;
+  /* Centraliza verticalmente no item */
 }
-strong{
+
+strong {
   color: #000;
 }
+
 ion-label h4 {
-  margin: 4px 0; /* Espaçamento entre as linhas */
-  font-size: 14px; /* Tamanho da fonte */
-  color: #666; /* Cor mais suave */
+  margin: 4px 0;
+  /* Espaçamento entre as linhas */
+  font-size: 14px;
+  /* Tamanho da fonte */
+  color: #666;
+  /* Cor mais suave */
 }
+
 .text-end {
   text-align: right;
 }
 
 .footer-label {
   font-weight: bold;
-}
-.custom-modal {
-  --width: 70%;
-  --height: 80%;
 }
