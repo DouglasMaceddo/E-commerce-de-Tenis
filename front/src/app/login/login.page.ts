@@ -47,10 +47,6 @@ export class LoginPage implements OnInit {
     this.isLoading = false; // Finalizar o carregamento
   }
 
-  navigateToNovaPagina() {
-    this.router.navigate(['/cadastro']);
-  }
-
   async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
@@ -61,4 +57,9 @@ export class LoginPage implements OnInit {
     });
     await toast.present();
   }
+
+  navigateToNovaPagina() {
+    this.router.navigate(['/cadastro']);
+  }
+
 }
