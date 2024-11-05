@@ -35,37 +35,9 @@ export class MinhacontaPage implements OnInit {
     // Verifica se o CEP possui 8 dígitos
     return CEP.length === 8;
   }
-  ngOnInit() {
-    // Recupera o login do usuário logado
-    const usuariologado = localStorage.getItem('userId');
-    const dadosUsuario = JSON.parse(localStorage.getItem('cadastros') || '[]');
-
-    if (Array.isArray(dadosUsuario) && dadosUsuario.length > 0) {
-      const usuario = dadosUsuario.find(user => user.login === usuariologado);
-
-      if (usuario) {
-        this.infoUsuario.cpf = usuario.cpf || 'CPF não disponível';
-        this.infoUsuario.nome = usuario.nome || 'Nome não disponível';
-        this.infoUsuario.email = usuario.login || 'Email não disponível';
-        this.infoUsuario.telefone = usuario.telefone || 'Telefone não disponível';
-
-        // Carregar o endereço se disponível
-        const enderecos = JSON.parse(localStorage.getItem('enderecos') || '[]');
-        const enderecoUsuario = enderecos.find((endereco: any) => endereco.userId === usuariologado);
-
-        if (enderecoUsuario) {
-          this.addressForm.patchValue({
-            Rua: enderecoUsuario.Rua,
-            Cidade: enderecoUsuario.Cidade,
-            Estado: enderecoUsuario.Estado,
-            CEP: enderecoUsuario.CEP
-          });
-        }
-      } else {
-        console.error('Usuário não encontrado');
-      }
-    }
-  }
+  ngOnInit() {}
+  
+    
 
   onSubmit() {
     if (this.addressForm.valid) {

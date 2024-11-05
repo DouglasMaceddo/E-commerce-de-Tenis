@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { CarrinhoService } from '../Service/carrinho.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -19,32 +20,40 @@ export class LoginPage implements OnInit {
   ngOnInit() { }
 
   async login() {
-    // Verificar se email e senha estão preenchidos
+    // Verifica se os campos estão preenchidos
     if (!this.email || !this.senha) {
-      this.presentToast('Por favor, preencha todos os campos!', 'warning');
+      await this.presentToast('Por favor, preencha todos os campos.', 'danger');
       return;
     }
 
-    this.isLoading = true; // Iniciar o carregamento
+    try {
+      // Requisição para o endpoint de login
+      const response = await fetch(`${environment.api_url}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: this.email,
+          password: this.senha,
+        }),
+      });
 
-    const cadastroData = JSON.parse(localStorage.getItem('cadastros') || '[]');
+      // Verificando a resposta da requisição
+      const message = response.ok
+        ? 'Login bem-sucedido!'
+        : `Erro no login: ${await response.json().then((err) => err.message || 'Verifique os dados e tente novamente')}`;
 
-    if (Array.isArray(cadastroData)) {
-      const usuario = cadastroData.find(user => user.login === this.email && user.senha === this.senha);
+      await this.presentToast(message, response.ok ? 'success' : 'danger');
 
-      if (usuario) {
-        console.log('Login bem-sucedido!');
-        this.carrinhoService.setUserId(usuario.login); // Associa o carrinho ao usuário logado
-        this.router.navigate(['/catalogo']);
-        this.presentToast('Login bem-sucedido!', 'success'); // Toast verde para sucesso
-      } else {
-        this.presentToast('Email ou senha inválidos!', 'danger'); // Toast vermelho para erro
+      if (response.ok) {
+        // Caso o login seja bem-sucedido, armazena o token e navega para outra página
+        const data = await response.json();
+        localStorage.setItem('authToken', data.token);
+        this.router.navigate(['/catalogo']);  // Ou qualquer página de redirecionamento
       }
-    } else {
-      this.presentToast('Nenhum cadastro encontrado.', 'danger'); // Toast vermelho para erro
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+      await this.presentToast('Erro inesperado! Tente novamente.', 'danger');
     }
-
-    this.isLoading = false; // Finalizar o carregamento
   }
 
   async presentToast(message: string, color: string) {

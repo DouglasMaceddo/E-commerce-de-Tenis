@@ -1,7 +1,5 @@
 
 
-import { AuthService } from './../service/auth/auth.service';
-
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -19,7 +17,6 @@ export class CadastroPage implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService,
     private toastController: ToastController,
     private router: Router,
   ) {}
@@ -98,7 +95,7 @@ export class CadastroPage implements OnInit {
     }
 
     const { nome, email, senha, cpf, telefone } = this.cadastroForm.value;
-    console.log(email);
+    
     try {
         const response = await fetch(`${environment.api_url}/auth/register`, {
             method: 'POST',
