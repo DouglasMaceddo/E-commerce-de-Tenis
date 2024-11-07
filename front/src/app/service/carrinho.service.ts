@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { CartItem } from './cart-item.model';
+
 import { BehaviorSubject } from 'rxjs';
+import {CartItem} from "./cart-item.model";
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 export class CarrinhoService {
   private cart: CartItem[] = [];
   private cartSubject = new BehaviorSubject<CartItem[]>(this.cart);
-  
+
   cart$ = this.cartSubject.asObservable();
 
   constructor() {
@@ -47,7 +48,7 @@ export class CarrinhoService {
 
     const updatedCart = [...this.cart];
     const existingItem = updatedCart.find(cartItem => cartItem.id === item.id);
-    
+
     if (existingItem) {
       existingItem.quantity += item.quantity;
     } else {
@@ -84,7 +85,7 @@ export class CarrinhoService {
   }
 
   updateCart(item: CartItem) {
-    const updatedCart = this.cart.map(cartItem => 
+    const updatedCart = this.cart.map(cartItem =>
       cartItem.id === item.id ? { ...cartItem, quantity: item.quantity } : cartItem
     );
 

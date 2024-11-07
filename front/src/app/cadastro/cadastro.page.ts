@@ -14,11 +14,13 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class CadastroPage implements OnInit {
   cadastroForm!: FormGroup;
+  errorMessage: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
     private toastController: ToastController,
     private router: Router,
+
   ) {}
 
   ngOnInit() {
@@ -91,48 +93,71 @@ export class CadastroPage implements OnInit {
 
   async cadastrar() {
     if (!this.cadastroForm.valid) {
-        return await this.presentToast('Formulário inválido, verifique os dados!', 'danger');
+      await this.presentToast('Formulário inválido, verifique os dados!', 'danger');
+      return;
     }
 
     const { nome, email, senha, cpf, telefone } = this.cadastroForm.value;
-    
+
     try {
-        const response = await fetch(`${environment.api_url}/auth/register`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: nome,            // "valor_do_nome"
-                email: email,          // "valor_do_email"
-                password: senha,       // "valor_da_senha"
-                cpf: cpf,              // "valor_do_cpf"
-                telefone: telefone     // "valor_do_telefone"
-            })
-        });
+      console.log('URL da API:', `${environment.api_url}/auth/register`);
 
-        const message = response.ok
-            ? 'Registrado com sucesso'
-            : `Erro no registro: ${await response.json().then(err => err.message || 'Verifique os dados e tente novamente')}`;
+      const response = await fetch(`${environment.api_url}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: nome,
+          email: email,
+          password: senha,
+          cpf: cpf,
+          telefone: telefone
+        })
+      });
 
-        await this.presentToast(message, response.ok ? 'success' : 'danger');
-        this.router.navigate(['/login']);
+      if (!response.ok) {
+        let errorMessage = 'Ocorreu um erro inesperado.';
+
+        try {
+          const errorData = await response.json();
+          if (response.status === 409) {
+            // Verifica a mensagem de erro retornada pelo backend
+            if (errorData.message === 'E-mail já cadastrado.') {
+              await this.presentToast('E-mail já cadastrado.', 'danger');
+            } else if (errorData.message === 'CPF já cadastrado.') {
+              await this.presentToast('CPF já cadastrado.', 'danger');
+            } else if (errorData.message === 'Telefone já cadastrado.') {
+              await this.presentToast('Telefone já cadastrado.', 'danger');
+            } else {
+              await this.presentToast(errorData.message || errorMessage, 'danger');
+            }
+          } else {
+            await this.presentToast(errorMessage, 'danger');
+          }
+        } catch (jsonError) {
+          await this.presentToast(errorMessage, 'danger');
+        }
+
+        return;
+      }
+
+      // Se o cadastro for bem-sucedido
+      await this.presentToast('Registrado com sucesso', 'success');
+      this.navigateToNovaPagina();
     } catch (error) {
-        console.error('Erro ao registrar:', error);
-        await this.presentToast('Erro inesperado! Tente novamente', 'danger');
+      await this.presentToast('Ocorreu um erro inesperado. Por favor, tente novamente mais tarde.', 'danger');
     }
-}
-
+  }
 
   async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
       duration: 2000,
       color: color,
-      position: 'bottom',
+      position: 'top', // Posicione o toast no topo para maior visibilidade
       cssClass: 'custom-toast',
     });
     await toast.present();
   }
-
   navigateToNovaPagina() {
     this.router.navigate(['/login']);
   }

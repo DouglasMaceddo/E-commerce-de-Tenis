@@ -20,14 +20,14 @@ export class LoginPage implements OnInit {
   ngOnInit() { }
 
   async login() {
-    // Verifica se os campos estão preenchidos
     if (!this.email || !this.senha) {
       await this.presentToast('Por favor, preencha todos os campos.', 'danger');
       return;
     }
 
+    this.isLoading = true; // Inicia o carregamento
+
     try {
-      // Requisição para o endpoint de login
       const response = await fetch(`${environment.api_url}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -37,7 +37,6 @@ export class LoginPage implements OnInit {
         }),
       });
 
-      // Verificando a resposta da requisição
       const message = response.ok
         ? 'Login bem-sucedido!'
         : `Erro no login: ${await response.json().then((err) => err.message || 'Verifique os dados e tente novamente')}`;
@@ -45,24 +44,24 @@ export class LoginPage implements OnInit {
       await this.presentToast(message, response.ok ? 'success' : 'danger');
 
       if (response.ok) {
-        // Caso o login seja bem-sucedido, armazena o token e navega para outra página
         const data = await response.json();
-        localStorage.setItem('authToken', data.token);
-        this.router.navigate(['/catalogo']);  // Ou qualquer página de redirecionamento
+        sessionStorage.setItem('authToken', data.token);  // Armazena o token temporariamente
+        this.router.navigate(['/catalogo']);
       }
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
-      await this.presentToast('Erro inesperado! Tente novamente.', 'danger');
+      await this.presentToast('Usuário e senha incorretos, tente novamente.', 'danger');
+    } finally {
+      this.isLoading = false; // Termina o carregamento
     }
   }
 
   async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 2000, // Tempo que o toast ficará visível
-      color: color, // Cor do toast
-      position: 'bottom', // Posição do toast na tela
-      cssClass: 'custom-toast', // Classe CSS para personalização adicional
+      duration: 2000,
+      color: color,
+      position: 'bottom',
+      cssClass: 'custom-toast',
     });
     await toast.present();
   }
@@ -70,5 +69,4 @@ export class LoginPage implements OnInit {
   navigateToNovaPagina() {
     this.router.navigate(['/cadastro']);
   }
-
 }
