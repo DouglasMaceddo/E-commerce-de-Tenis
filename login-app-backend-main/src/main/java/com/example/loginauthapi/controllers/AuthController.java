@@ -7,15 +7,13 @@ import com.example.loginauthapi.dto.ResponseDTO;
 import com.example.loginauthapi.infra.security.TokenService;
 import com.example.loginauthapi.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -26,32 +24,58 @@ public class AuthController {
     private final TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody LoginRequestDTO body){
-        User user = this.repository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found"));
-        if(passwordEncoder.matches(body.password(), user.getPassword())) {
-            String token = this.tokenService.generateToken(user);
-            return ResponseEntity.ok(new ResponseDTO(user.getName(), token));
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO body) {
+        Optional<User> userOptional = repository.findByEmail(body.email());
+
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(401).body("Usuário não encontrado.");
         }
-        return ResponseEntity.badRequest().build();
+
+        User user = userOptional.get();
+        if (passwordEncoder.matches(body.password(), user.getPassword())) {
+            String token = tokenService.generateToken(user);
+            return ResponseEntity.ok(new ResponseDTO(user.getName(), token));
+        } else {
+            return ResponseEntity.status(401).body("Senha incorreta.");
+        }
     }
 
-
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody RegisterRequestDTO body){
-        Optional<User> user = this.repository.findByEmail(body.email());
-
-        if(user.isEmpty()) {
-            User newUser = new User();
-            newUser.setName(body.name());
-            newUser.setEmail(body.email());
-            newUser.setPassword(passwordEncoder.encode(body.password()));
-            newUser.setCpf(body.cpf());
-            newUser.setTelefone(body.telefone());
-            this.repository.save(newUser);
-
-            String token = this.tokenService.generateToken(newUser);
-            return ResponseEntity.ok(new ResponseDTO(newUser.getName(), token));
+    public ResponseEntity<?> register(@RequestBody RegisterRequestDTO body) {
+        // Verificar se o e-mail já existe
+        Optional<User> existingUserByEmail = repository.findByEmail(body.email());
+        if (existingUserByEmail.isPresent()) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "E-mail já cadastrado.");
+            return ResponseEntity.status(409).body(errorResponse);
         }
-        return ResponseEntity.badRequest().build();
+
+        // Verificar se o CPF já existe
+        Optional<User> existingUserByCpf = repository.findByCpf(body.cpf());
+        if (existingUserByCpf.isPresent()) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "CPF já cadastrado.");
+            return ResponseEntity.status(409).body(errorResponse);
+        }
+
+        // Verifica se o Telefone já existe
+        Optional<User> existingUserByTelefone = repository.findByTelefone(body.telefone());
+        if (existingUserByTelefone.isPresent()) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "Telefone já cadastrado.");
+            return ResponseEntity.status(409).body(errorResponse);
+        }
+
+        // Criar novo usuário se e-mail e CPF são únicos
+        User newUser = new User();
+        newUser.setName(body.name());
+        newUser.setEmail(body.email());
+        newUser.setPassword(passwordEncoder.encode(body.password()));
+        newUser.setCpf(body.cpf());
+        newUser.setTelefone(body.telefone());
+        repository.save(newUser);
+
+        String token = tokenService.generateToken(newUser);
+        return ResponseEntity.ok(new ResponseDTO(newUser.getName(), token));
     }
 }
