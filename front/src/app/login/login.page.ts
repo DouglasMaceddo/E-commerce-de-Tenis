@@ -37,23 +37,26 @@ export class LoginPage implements OnInit {
         }),
       });
 
-      const message = response.ok
-        ? 'Login bem-sucedido!'
-        : `Erro no login: ${await response.json().then((err) => err.message || 'Verifique os dados e tente novamente')}`;
-
-      await this.presentToast(message, response.ok ? 'success' : 'danger');
-
+      let message = 'Verifique os dados e tente novamente';
       if (response.ok) {
         const data = await response.json();
-        sessionStorage.setItem('authToken', data.token);  // Armazena o token temporariamente
+        sessionStorage.setItem('authToken', data.token); // Armazena o token temporariamente
         this.router.navigate(['/catalogo']);
+        message = 'Login bem-sucedido!';
+        await this.presentToast(message, 'success');
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        message = errorData.message || message;
+        await this.presentToast(message, 'danger');
       }
+
     } catch (error) {
       await this.presentToast('Usuário e senha incorretos, tente novamente.', 'danger');
     } finally {
       this.isLoading = false; // Termina o carregamento
     }
   }
+
 
   async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
