@@ -12,8 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -42,31 +40,12 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequestDTO body) {
-        // Verificar se o e-mail já existe
-        Optional<User> existingUserByEmail = repository.findByEmail(body.email());
-        if (existingUserByEmail.isPresent()) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("message", "E-mail já cadastrado.");
-            return ResponseEntity.status(409).body(errorResponse);
+        Optional<User> existingUser = repository.findByEmail(body.email());
+
+        if (existingUser.isPresent()) {
+            return ResponseEntity.status(409).body("E-mail já cadastrado.");
         }
 
-        // Verificar se o CPF já existe
-        Optional<User> existingUserByCpf = repository.findByCpf(body.cpf());
-        if (existingUserByCpf.isPresent()) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("message", "CPF já cadastrado.");
-            return ResponseEntity.status(409).body(errorResponse);
-        }
-
-        // Verifica se o Telefone já existe
-        Optional<User> existingUserByTelefone = repository.findByTelefone(body.telefone());
-        if (existingUserByTelefone.isPresent()) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("message", "Telefone já cadastrado.");
-            return ResponseEntity.status(409).body(errorResponse);
-        }
-
-        // Criar novo usuário se e-mail e CPF são únicos
         User newUser = new User();
         newUser.setName(body.name());
         newUser.setEmail(body.email());
