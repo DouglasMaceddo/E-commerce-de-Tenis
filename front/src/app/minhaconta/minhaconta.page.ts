@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import {jwtDecode} from 'jwt-decode';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Router} from "@angular/router";
+import {ToastController} from "@ionic/angular";
+import {Component, OnInit} from "@angular/core";
 
 @Component({
   selector: 'app-minhaconta',
@@ -9,11 +10,10 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./minhaconta.page.scss'],
 })
 export class MinhacontaPage implements OnInit {
-
   infoUsuario = {
+    name: '',
     cpf: '',
     email: '',
-    nome: '',
     telefone: ''
   };
 
@@ -21,13 +21,13 @@ export class MinhacontaPage implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private router: Router, private toastController: ToastController) {
     this.addressForm = this.formBuilder.group({
-      Rua: ['', [Validators.required, Validators.minLength(5)]], // Mínimo de 5 caracteres
-      Cidade: ['', [Validators.required, Validators.minLength(3)]], // Mínimo de 3 caracteres
+      Rua: ['', [Validators.required, Validators.minLength(5)]],
+      Cidade: ['', [Validators.required, Validators.minLength(3)]],
       Estado: ['', Validators.required],
-      CEP: ['', [Validators.required,Validators.pattern(/^\d{5}-\d{3}$/)]]
+      CEP: ['', [Validators.required, Validators.pattern(/^\d{5}-\d{3}$/)]]
     });
-
   }
+
   validateCEP(CEP: string): boolean {
     // Remove caracteres não numéricos
     CEP = CEP.replace(/\D/g, '');
@@ -35,19 +35,27 @@ export class MinhacontaPage implements OnInit {
     // Verifica se o CEP possui 8 dígitos
     return CEP.length === 8;
   }
-  ngOnInit() {}
-  
-    
+
+  ngOnInit() {
+    this.loadUserInfo();
+  }
+
+  loadUserInfo() {
+    const token = sessionStorage.getItem('authToken'); // Obtém o token armazenado
+    if (token) {
+      const decoded: any = jwtDecode(token); // Decodifica o token usando jwtDecode
+      this.infoUsuario = {
+        name: decoded.name,
+        cpf: decoded.cpf,
+        email: decoded.email,
+        telefone: decoded.telefone
+      };
+    }
+  }
 
   onSubmit() {
     if (this.addressForm.valid) {
-      const enderecos = JSON.parse(localStorage.getItem('enderecos') || '[]');
-      const usuarioLogado = localStorage.getItem('userId');
-      // Verifica se já existe um endereço associado ao usuário
-      const enderecoExistente = enderecos.find((endereco: any) => endereco.userId === usuarioLogado);
-
       const novoEndereco = {
-        userId: usuarioLogado,
         Rua: this.addressForm.value.Rua,
         Cidade: this.addressForm.value.Cidade,
         Estado: this.addressForm.value.Estado,
@@ -59,20 +67,6 @@ export class MinhacontaPage implements OnInit {
         return;
       }
 
-      if (enderecoExistente) {
-        // Se já existir, atualiza o endereço
-        enderecoExistente.Rua = novoEndereco.Rua;
-        enderecoExistente.Cidade = novoEndereco.Cidade;
-        enderecoExistente.Estado = novoEndereco.Estado;
-        enderecoExistente.CEP = novoEndereco.CEP;
-      } else {
-        // Se não existir, adiciona um novo endereço
-        enderecos.push(novoEndereco);
-      }
-
-      // Salva a lista de endereços de volta no localStorage
-      localStorage.setItem('enderecos', JSON.stringify(enderecos));
-
       this.presentToast('Endereço cadastrado com sucesso!', 'success');
     } else {
       this.presentToast('Por favor, preencha todos os campos corretamente.', 'danger');
@@ -83,20 +77,21 @@ export class MinhacontaPage implements OnInit {
     this.infoUsuario = {
       cpf: '',
       email: '',
-      nome: '',
+      name: '',
       telefone: ''
     };
 
-    localStorage.removeItem('userId');
+    sessionStorage.removeItem('authToken'); // Remove o token ao sair
     this.router.navigate(['/login']);
   }
+
   async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 2000, // Tempo que o toast ficará visível
-      color: color, // Cor do toast
-      position: 'bottom', // Posição do toast na tela
-      cssClass: 'custom-toast', // Classe CSS para personalização adicional
+      duration: 2000,
+      color: color,
+      position: 'bottom',
+      cssClass: 'custom-toast',
     });
     await toast.present();
   }
