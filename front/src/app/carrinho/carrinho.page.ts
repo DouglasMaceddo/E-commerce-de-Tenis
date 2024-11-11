@@ -54,10 +54,6 @@ export class CarrinhoPage implements OnInit {
 
   finalizar() {
     const usuarioLogado = localStorage.getItem('userId');
-    if (!usuarioLogado) {
-      this.router.navigate(['/login']); // Redireciona para a página de login
-      return;
-    }
 
     this.carrinhoService.getCart().subscribe((carrinho) => {
       if (carrinho.length === 0) {

@@ -4,7 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { TenisModalComponent } from './tenis-modal/tenis-modal.component';
 import { CartItem } from '../Service/cart-item.model';
 import { CarrinhoService } from '../Service/carrinho.service';
-import { TenisService, Tenis } from '../Service/tenis.service';
+import {Tenis, TenisService} from "../service/tenis.service";
 
 @Component({
   selector: 'app-catalogo',
@@ -14,7 +14,7 @@ import { TenisService, Tenis } from '../Service/tenis.service';
 export class CatalogoPage implements OnInit {
   cartItemCount: number = 0;
   searchTerm: string = '';
-  tenis: Tenis[] = [];
+  tenis: Tenis[] = []; // Array para armazenar os tênis
 
   constructor(
     private router: Router,
@@ -24,12 +24,14 @@ export class CatalogoPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.tenis = this.tenisService.getTenis();
-    this.updateCartItemCount();
-
-    this.carrinhoService.cart$.subscribe(() => {
-      this.updateCartItemCount();
-    });
+    this.tenisService.getTenis().subscribe(
+      (data) => {
+        this.tenis = data; // Atribui os dados dos tênis à variável
+      },
+      (error) => {
+        console.error('Erro ao carregar os tênis:', error);
+      }
+    );
   }
 
   navigateToNovaPagina() {
@@ -65,11 +67,11 @@ export class CatalogoPage implements OnInit {
     }
     return this.tenis.filter(tenis =>
       tenis.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      (tenis.Marca && tenis.Marca.toLowerCase().includes(this.searchTerm.toLowerCase()))
+      (tenis.marca && tenis.marca.toLowerCase().includes(this.searchTerm.toLowerCase())) // Correção no 'Marca'
     );
   }
 
   updateCartItemCount() {
-    this.cartItemCount = this.carrinhoService.getCartItemCount(); // Atualiza a contagem
+    this.cartItemCount = this.carrinhoService.getCartItemCount(); // Atualiza a contagem do carrinho
   }
 }

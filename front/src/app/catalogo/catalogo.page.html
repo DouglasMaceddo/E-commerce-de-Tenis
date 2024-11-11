@@ -14,23 +14,28 @@
 </ion-header>
 
 <ion-content>
-  <ion-searchbar show-clear-button="always" placeholder="Oque você está procurando?" [(ngModel)]="searchTerm"
-    class="search-bar"></ion-searchbar>
-    
-    <ion-list class="item-list">
-      <ion-card *ngFor="let item of filteredTenis" class="tenis-card">
-        <ion-item lines="none">
-          <ion-thumbnail slot="start" class="custom">
-            <img [src]="item.imageUrl" alt="{{ item.name }}" />
-          </ion-thumbnail>
-          <ion-label>
-            <h2 class="item-name">{{ item.name }}</h2>
-            <h5 class="item-brand">{{ item.Marca }}</h5>
-            <h2 class="item-price">{{ item.valor | currency: 'BRL' }}</h2>
-          </ion-label>
-          <ion-button fill="clear" class="botaoComprar" (click)="chamarModal(item)">Comprar</ion-button>
-        </ion-item>
-      </ion-card>
-    </ion-list>
-    
+  <!-- Barra de pesquisa -->
+  <ion-searchbar
+    show-clear-button="always"
+    placeholder="O que você está procurando?"
+    [(ngModel)]="searchTerm"
+    class="search-bar"
+  ></ion-searchbar>
+
+  <!-- Lista de tênis -->
+  <ion-list class="item-list">
+    <ion-card *ngFor="let item of filteredTenis" class="tenis-card">
+      <ion-item lines="none">
+        <ion-thumbnail slot="start" class="custom">
+          <img [src]="item.imageUrl" alt="{{ item.name }}" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2 class="item-name">{{ item.name }}</h2>
+          <h5 class="item-brand">{{ item.marca }}</h5>
+          <h2 class="item-price">{{ item.valor | currency: 'BRL' }}</h2>
+        </ion-label>
+        <ion-button fill="clear" class="botaoComprar" (click)="chamarModal(item)">Comprar</ion-button>
+      </ion-item>
+    </ion-card>
+  </ion-list>
 </ion-content>

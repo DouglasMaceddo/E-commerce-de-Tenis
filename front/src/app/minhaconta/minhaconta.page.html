@@ -10,11 +10,10 @@
       <ion-card-title class="titulo">Informações da Conta</ion-card-title>
     </ion-card-header>
     <ion-card-content>
+      <p>CPF: {{ infoUsuario.cpf }}</p>
       <p>Nome: {{ infoUsuario.name }}</p>
       <p>Email: {{ infoUsuario.email }}</p>
       <p>Telefone: {{ infoUsuario.telefone }}</p>
-      <p>CPF: {{ infoUsuario.cpf }}</p>
-
     </ion-card-content>
   </ion-card>
 
@@ -26,44 +25,25 @@
     <ion-card-content>
       <form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
 
+        <ion-input type="text" label="CEP" label-placement="floating" fill="outline" placeholder="Digite seu CEP"
+                   formControlName="CEP" (ionBlur)="buscarEnderecoPorCEP()" appCepMask aria-label="CEP" required>
+        </ion-input>
+
         <ion-input type="text" label="Rua" label-placement="floating" fill="outline" placeholder="Rua nova"
                    formControlName="Rua" required aria-label="Rua">
         </ion-input>
-        <div
-          *ngIf="addressForm.get('Rua')?.errors?.['required'] && (addressForm.get('Rua')?.touched || addressForm.get('Rua')?.dirty)">
-          <small>Rua é obrigatória.</small>
-        </div>
+
+        <ion-input type="text" label="Complemento" label-placement="floating" fill="outline" placeholder="Complemento"
+                   formControlName="Complemento" required aria-label="Complemento">
+        </ion-input>
 
         <ion-input type="text" label="Cidade" label-placement="floating" fill="outline" placeholder="Sua Cidade"
                    formControlName="Cidade" required aria-label="Cidade">
         </ion-input>
-        <div
-          *ngIf="addressForm.get('Cidade')?.errors?.['required'] && (addressForm.get('Cidade')?.touched || addressForm.get('Cidade')?.dirty)">
-          <small>Cidade é obrigatória.</small>
-        </div>
-        <div
-          *ngIf="addressForm.get('Cidade')?.errors?.['minlength'] && (addressForm.get('Cidade')?.touched || addressForm.get('Cidade')?.dirty)">
-          <small>A Cidade deve ter pelo menos 3 caracteres.</small>
-        </div>
 
         <ion-input type="text" label="Estado" label-placement="floating" fill="outline" placeholder="Seu Estado"
                    formControlName="Estado" required aria-label="Estado">
         </ion-input>
-        <div
-          *ngIf="addressForm.get('Estado')?.errors?.['required'] && (addressForm.get('Estado')?.touched || addressForm.get('Estado')?.dirty)">
-          <small>Estado é obrigatório.</small>
-        </div>
-
-        <ion-input type="text" label="CEP" label-placement="floating" fill="outline" placeholder="Digite seu CEP"
-                   formControlName="CEP" appCepMask aria-label="CEP" required>
-        </ion-input>
-        <div
-          *ngIf="addressForm.get('CEP')?.errors?.['required'] && (addressForm.get('CEP')?.touched || addressForm.get('CEP')?.dirty)">
-          <small>CEP é obrigatório.</small>
-        </div>
-        <div
-          *ngIf="addressForm.get('CEP')?.errors?.['pattern'] && (addressForm.get('CEP')?.touched || addressForm.get('CEP')?.dirty)">
-        </div>
 
         <ion-button class="corpadrao" expand="full" type="submit" [disabled]="addressForm.invalid">Cadastrar Endereço
         </ion-button>
@@ -75,3 +55,4 @@
       <ion-button expand="full" color="danger" (click)="sairConta()">Sair da conta</ion-button>
     </ion-card>
   </ion-footer>
+</ion-content>

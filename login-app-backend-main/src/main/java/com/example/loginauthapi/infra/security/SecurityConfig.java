@@ -32,11 +32,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/tenis").permitAll()  // Permite acesso público ao endpoint /api/tenis
+                        .anyRequest().authenticated()  // Exige autenticação para outros endpoints
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -1,8 +1,9 @@
 import {jwtDecode} from 'jwt-decode';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {ToastController} from "@ionic/angular";
-import {Component, OnInit} from "@angular/core";
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-minhaconta',
@@ -19,20 +20,23 @@ export class MinhacontaPage implements OnInit {
 
   addressForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private toastController: ToastController) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private toastController: ToastController,
+    private http: HttpClient // Injeção do serviço HTTP
+  ) {
     this.addressForm = this.formBuilder.group({
       Rua: ['', [Validators.required, Validators.minLength(5)]],
       Cidade: ['', [Validators.required, Validators.minLength(3)]],
       Estado: ['', Validators.required],
+      Complemento: ['', Validators.required],
       CEP: ['', [Validators.required, Validators.pattern(/^\d{5}-\d{3}$/)]]
     });
   }
 
   validateCEP(CEP: string): boolean {
-    // Remove caracteres não numéricos
     CEP = CEP.replace(/\D/g, '');
-
-    // Verifica se o CEP possui 8 dígitos
     return CEP.length === 8;
   }
 
@@ -41,9 +45,9 @@ export class MinhacontaPage implements OnInit {
   }
 
   loadUserInfo() {
-    const token = sessionStorage.getItem('authToken'); // Obtém o token armazenado
+    const token = sessionStorage.getItem('authToken');
     if (token) {
-      const decoded: any = jwtDecode(token); // Decodifica o token usando jwtDecode
+      const decoded: any = jwtDecode(token);
       this.infoUsuario = {
         name: decoded.name,
         cpf: decoded.cpf,
@@ -53,12 +57,38 @@ export class MinhacontaPage implements OnInit {
     }
   }
 
+  buscarEnderecoPorCEP() {
+    const cep = this.addressForm.get('CEP')?.value.replace(/\D/g, '');
+
+    if (this.validateCEP(cep)) {
+      this.http.get(`https://viacep.com.br/ws/${cep}/json/`).subscribe(
+        (data: any) => {
+          if (!data.erro) {
+            this.addressForm.patchValue({
+              Rua: data.logradouro,
+              Cidade: data.localidade,
+              Estado: data.uf
+            });
+          } else {
+            this.presentToast('CEP não encontrado.', 'danger');
+          }
+        },
+        (error) => {
+          this.presentToast('Erro ao buscar CEP. Tente novamente.', 'danger');
+        }
+      );
+    } else {
+      this.presentToast('CEP inválido. Verifique e tente novamente.', 'danger');
+    }
+  }
+
   onSubmit() {
     if (this.addressForm.valid) {
       const novoEndereco = {
         Rua: this.addressForm.value.Rua,
         Cidade: this.addressForm.value.Cidade,
         Estado: this.addressForm.value.Estado,
+        Complemento: this.addressForm.value.Complemento,
         CEP: this.addressForm.value.CEP
       };
 
@@ -80,8 +110,7 @@ export class MinhacontaPage implements OnInit {
       name: '',
       telefone: ''
     };
-
-    sessionStorage.removeItem('authToken'); // Remove o token ao sair
+    sessionStorage.removeItem('authToken');
     this.router.navigate(['/login']);
   }
 
