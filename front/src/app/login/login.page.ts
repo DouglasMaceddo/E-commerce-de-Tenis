@@ -43,7 +43,8 @@ export class LoginPage implements OnInit {
         sessionStorage.setItem('authToken', data.token); // Armazena o token temporariamente
         this.router.navigate(['/catalogo']);
         message = 'Login bem-sucedido!';
-        await this.presentToast(message, 'success');
+        await this.presentToast(message, 'success');  // Atualiza o userId no CarrinhoService
+
       } else {
         const errorData = await response.json().catch(() => ({}));
         message = errorData.message || message;
