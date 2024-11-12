@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { TenisModalComponent } from './tenis-modal/tenis-modal.component';
-import { CartItem } from '../Service/cart-item.model';
-import { CarrinhoService } from '../Service/carrinho.service';
+import { CartItem } from '../service/cart-item.model';
+import { CarrinhoService } from '../service/carrinho.service';
 import {Tenis, TenisService} from "../service/tenis.service";
 
 @Component({
@@ -14,7 +14,7 @@ import {Tenis, TenisService} from "../service/tenis.service";
 export class CatalogoPage implements OnInit {
   cartItemCount: number = 0;
   searchTerm: string = '';
-  tenis: Tenis[] = []; // Array para armazenar os tênis
+  tenis: Tenis[] = [];
 
   constructor(
     private router: Router,
@@ -26,7 +26,7 @@ export class CatalogoPage implements OnInit {
   ngOnInit() {
     this.tenisService.getTenis().subscribe(
       (data) => {
-        this.tenis = data; // Atribui os dados dos tênis à variável
+        this.tenis = data;
       },
       (error) => {
         console.error('Erro ao carregar os tênis:', error);
@@ -34,15 +34,15 @@ export class CatalogoPage implements OnInit {
     );
   }
 
-  navigateToNovaPagina() {
-    this.router.navigate(['/login']);
-  }
-
   navegarPaginaCarrinho() {
-    this.router.navigate(['/carrinho']);
+    console.log('Tentando navegar para a página de carrinho...');
+    this.router.navigate(['/carrinho']).catch((error) => {
+      console.error('Erro ao navegar para o carrinho:', error);
+    });
   }
 
   async chamarModal(item: any) {
+    console.log('Abrindo modal para o item:', item);
     const modal = await this.modalController.create({
       component: TenisModalComponent,
       componentProps: { item }
@@ -52,9 +52,15 @@ export class CatalogoPage implements OnInit {
       if (result.data) {
         const itemToAdd: CartItem = {
           ...item,
-          quantity: result.data.quantity // Pegue a quantidade do resultado do modal
+          quantity: result.data.quantity
         };
-        this.carrinhoService.addToCart(itemToAdd);
+        console.log('Adicionando ao carrinho:', itemToAdd);
+        this.carrinhoService.addToCart(itemToAdd).subscribe(() => {
+          this.updateCartItemCount();
+          console.log('Carrinho atualizado');
+        }, (error) => {
+          console.error('Erro ao adicionar item ao carrinho:', error);
+        });
       }
     });
 
@@ -63,15 +69,15 @@ export class CatalogoPage implements OnInit {
 
   get filteredTenis() {
     if (!this.searchTerm) {
-      return this.tenis; // Retorna todos os tênis se não houver pesquisa
+      return this.tenis;
     }
     return this.tenis.filter(tenis =>
       tenis.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      (tenis.marca && tenis.marca.toLowerCase().includes(this.searchTerm.toLowerCase())) // Correção no 'Marca'
+      (tenis.marca && tenis.marca.toLowerCase().includes(this.searchTerm.toLowerCase()))
     );
   }
 
   updateCartItemCount() {
-    this.cartItemCount = this.carrinhoService.getCartItemCount(); // Atualiza a contagem do carrinho
+    this.cartItemCount = this.carrinhoService.getCartItemCount();
   }
 }

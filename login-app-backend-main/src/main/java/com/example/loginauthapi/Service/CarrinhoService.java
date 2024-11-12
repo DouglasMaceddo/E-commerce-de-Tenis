@@ -19,29 +19,28 @@ public class CarrinhoService {
     @Autowired
     private UserRepository userRepository;
 
-    public Carrinho getCarrinho(String userId) {  // Alterado para String
-        Optional<Carrinho> carrinho = carrinhoRepository.findByUserId(userId);  // Passando String
+    public Carrinho getCarrinho(String userId) {  // userId como String
+        Optional<Carrinho> carrinho = carrinhoRepository.findByUserId(userId);  // userId como String
         return carrinho.orElseGet(() -> {
-            User user = userRepository.findById(userId).orElseThrow();  // Passando String
+            User user = userRepository.findById(userId).orElseThrow();  // userId como String
             Carrinho newCarrinho = new Carrinho(user);
             return carrinhoRepository.save(newCarrinho);
         });
     }
 
-
-    public Carrinho addItemToCarrinho(Long userId, CartItem cartItem) {
+    public Carrinho addItemToCarrinho(String userId, CartItem cartItem) {  // userId como String
         Carrinho carrinho = getCarrinho(userId);
         carrinho.addItem(cartItem);
         return carrinhoRepository.save(carrinho);
     }
 
-    public Carrinho removeItemFromCarrinho(Long userId, Long cartItemId) {
+    public Carrinho removeItemFromCarrinho(String userId, Long cartItemId) {  // userId como String
         Carrinho carrinho = getCarrinho(userId);
         carrinho.getItems().removeIf(item -> item.getId().equals(cartItemId));
         return carrinhoRepository.save(carrinho);
     }
 
-    public Carrinho clearCarrinho(Long userId) {
+    public Carrinho clearCarrinho(String userId) {  // userId como String
         Carrinho carrinho = getCarrinho(userId);
         carrinho.getItems().clear();
         return carrinhoRepository.save(carrinho);

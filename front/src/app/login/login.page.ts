@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { CarrinhoService } from '../Service/carrinho.service';
+import { CarrinhoService } from '../service/carrinho.service';
 import { environment } from 'src/environments/environment';
 
 @Component({

@@ -1,10 +1,10 @@
 package com.example.loginauthapi.controllers;
 
-
 import com.example.loginauthapi.Service.CarrinhoService;
 import com.example.loginauthapi.domain.user.Carrinho;
 import com.example.loginauthapi.domain.user.CartItem;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.loginauthapi.domain.user.User;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,31 +12,37 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/carrinho")
 public class CarrinhoController {
 
-    @Autowired
-    private CarrinhoService carrinhoService;
+    private final CarrinhoService carrinhoService;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<Carrinho> getCarrinho(@PathVariable Long userId) {
-        Carrinho carrinho = carrinhoService.getCarrinho(userId);
+    public CarrinhoController(CarrinhoService carrinhoService) {
+        this.carrinhoService = carrinhoService;
+    }
+
+    @GetMapping
+    public ResponseEntity<Carrinho> getCarrinho() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Carrinho carrinho = carrinhoService.getCarrinho(user.getId());
         return ResponseEntity.ok(carrinho);
     }
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<Carrinho> addItem(@PathVariable Long userId, @RequestBody CartItem cartItem) {
-        Carrinho carrinho = carrinhoService.addItemToCarrinho(userId, cartItem);
+    @PostMapping
+    public ResponseEntity<Carrinho> addItem(@RequestBody CartItem cartItem) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Carrinho carrinho = carrinhoService.addItemToCarrinho(user.getId(), cartItem);
         return ResponseEntity.ok(carrinho);
     }
 
-    @DeleteMapping("/{userId}/{cartItemId}")
-    public ResponseEntity<Carrinho> removeItem(@PathVariable Long userId, @PathVariable Long cartItemId) {
-        Carrinho carrinho = carrinhoService.removeItemFromCarrinho(userId, cartItemId);
+    @DeleteMapping("/{cartItemId}")
+    public ResponseEntity<Carrinho> removeItem(@PathVariable Long cartItemId) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Carrinho carrinho = carrinhoService.removeItemFromCarrinho(user.getId(), cartItemId);
         return ResponseEntity.ok(carrinho);
     }
 
-    @DeleteMapping("/clear/{userId}")
-    public ResponseEntity<Carrinho> clearCarrinho(@PathVariable Long userId) {
-        Carrinho carrinho = carrinhoService.clearCarrinho(userId);
+    @DeleteMapping("/clear")
+    public ResponseEntity<Carrinho> clearCarrinho() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Carrinho carrinho = carrinhoService.clearCarrinho(user.getId());
         return ResponseEntity.ok(carrinho);
     }
 }
-

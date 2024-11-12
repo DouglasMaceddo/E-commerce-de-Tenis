@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { NgForm } from '@angular/forms';
-import { CarrinhoService } from 'src/app/Service/carrinho.service';
+import {CarrinhoService} from "../../service/carrinho.service";
+
 
 @Component({
   selector: 'app-credito-modal',
@@ -18,7 +19,7 @@ export class CreditoModalComponent implements OnInit {
     private carrinhoService: CarrinhoService) { }
 
   ngOnInit() {
-    this.loadSavedCards(); 
+    this.loadSavedCards();
    }
 
   loadSavedCards() {

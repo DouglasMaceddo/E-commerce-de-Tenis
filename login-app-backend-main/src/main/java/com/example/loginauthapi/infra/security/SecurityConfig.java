@@ -32,7 +32,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/tenis").permitAll()  // Permite acesso público ao endpoint /api/tenis
+                        .requestMatchers(HttpMethod.GET, "/api/tenis").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/carrinho").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/carrinho").authenticated()
+
                         .anyRequest().authenticated()  // Exige autenticação para outros endpoints
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

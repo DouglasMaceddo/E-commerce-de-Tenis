@@ -1,6 +1,7 @@
 package com.example.loginauthapi.domain.user;
 
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,9 @@ public class Carrinho {
 
     @OneToMany
     private List<CartItem> items = new ArrayList<>();
+
+    public Carrinho() {
+    }
 
     // Construtor, getters e setters
     public Carrinho(User user) {

@@ -1,102 +1,62 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, catchError, of} from 'rxjs';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {map, tap} from 'rxjs/operators';
 import {CartItem} from "./cart-item.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarrinhoService {
-  private cart: CartItem[] = [];
-  private cartSubject = new BehaviorSubject<CartItem[]>(this.cart);
-
+  private cartSubject = new BehaviorSubject<CartItem[]>([]);
   cart$ = this.cartSubject.asObservable();
+  private apiUrl = 'http://localhost:8080/api/carrinho';
 
-  constructor() {
-    this.loadCartFromLocalStorage();
-  }
+  constructor(private http: HttpClient) {}
 
-  private saveCartToLocalStorage(userId: string) {
-    localStorage.setItem(`cart_${userId}`, JSON.stringify(this.cart));
-  }
-
-  private loadCartFromLocalStorage() {
-    const userId = localStorage.getItem('userId');
-    if (userId) {
-      const cartData = localStorage.getItem(`cart_${userId}`);
-      if (cartData) {
-        this.cart = JSON.parse(cartData);
-        this.cartSubject.next(this.cart);
-      } else {
-        this.cart = []; // Inicializa o carrinho como vazio se não houver dados
-      }
-    }
-  }
-
-  setUserId(userId: string) {
-    // Salva o ID do usuário no localStorage
-    localStorage.setItem('userId', userId);
-    this.loadCartFromLocalStorage(); // Carrega o carrinho do novo usuário
+  private getAuthHeaders() {
+    const token = sessionStorage.getItem('authToken');
+    console.log('Token JWT:', token);
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
   getCart() {
-    return this.cartSubject.asObservable();
+    return this.http.get<CartItem[]>(this.apiUrl, {headers: this.getAuthHeaders()}).pipe(
+      tap((cartItems) => this.cartSubject.next(cartItems))
+    );
   }
 
   addToCart(item: CartItem) {
-    if (!item || !item.id || item.quantity <= 0) return;
-
-    const updatedCart = [...this.cart];
-    const existingItem = updatedCart.find(cartItem => cartItem.id === item.id);
-
-    if (existingItem) {
-      existingItem.quantity += item.quantity;
-    } else {
-      updatedCart.push({ ...item });
-    }
-
-    this.cart = updatedCart;
-    const userId = localStorage.getItem('userId'); // Recupera o ID do usuário
-    if (userId) {
-      this.saveCartToLocalStorage(userId); // Salva no localStorage
-    }
-    this.cartSubject.next(updatedCart);
+    return this.http.post<CartItem[]>(this.apiUrl, item, { headers: this.getAuthHeaders() }).pipe(
+      tap((updatedCart) => {
+        console.log('Carrinho atualizado:', updatedCart);
+        this.cartSubject.next(updatedCart);
+      }),
+      catchError((error) => {
+        console.error('Erro ao adicionar item ao carrinho:', error);
+        return of([]); // Retorna array vazio em caso de erro
+      })
+    );
   }
 
-  removerCarrinho(item: CartItem) {
-    if (!item || !item.id) return;
-
-    const updatedCart = this.cart.filter(cartItem => cartItem.id !== item.id);
-    this.cart = updatedCart;
-    const userId = localStorage.getItem('userId');
-    if (userId) {
-      this.saveCartToLocalStorage(userId);
-    }
-    this.cartSubject.next(updatedCart);
+  removerCarrinho(itemId: number) {
+    return this.http.delete<CartItem[]>(`${this.apiUrl}/${itemId}`, {headers: this.getAuthHeaders()}).pipe(
+      tap((updatedCart) => this.cartSubject.next(updatedCart))
+    );
   }
 
   clearCart() {
-    this.cart = [];
-    const userId = localStorage.getItem('userId');
-    if (userId) {
-      this.saveCartToLocalStorage(userId);
-    }
-    this.cartSubject.next(this.cart);
+    return this.http.delete<CartItem[]>(`${this.apiUrl}/clear`, {headers: this.getAuthHeaders()}).pipe(
+      tap(() => this.cartSubject.next([]))
+    );
   }
 
   updateCart(item: CartItem) {
-    const updatedCart = this.cart.map(cartItem =>
-      cartItem.id === item.id ? { ...cartItem, quantity: item.quantity } : cartItem
-    );
-
-    this.cart = updatedCart;
-    const userId = localStorage.getItem('userId');
-    if (userId) {
-      this.saveCartToLocalStorage(userId);
-    }
-    this.cartSubject.next(updatedCart);
+    return this.addToCart(item); // Reutiliza o método addToCart para atualizar
   }
 
   getCartItemCount(): number {
-    return this.cart.reduce((count, item) => count + item.quantity, 0);
+    return this.cartSubject.getValue().reduce((count, item) => count + item.quantity, 0);
   }
 }
+
