@@ -1,4 +1,4 @@
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
@@ -26,8 +26,9 @@ export class MinhacontaPage implements OnInit {
     private carrinhoService: CarrinhoService,
     private router: Router,
     private toastController: ToastController,
-    private http: HttpClient // Injeção do serviço HTTP
+    private http: HttpClient, // Injeção do serviço HTTP
   ) {
+
     this.addressForm = this.formBuilder.group({
       Rua: ['', [Validators.required, Validators.minLength(5)]],
       Cidade: ['', [Validators.required, Validators.minLength(3)]],
