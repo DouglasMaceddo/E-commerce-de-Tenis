@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {ToastController} from "@ionic/angular";
 import {HttpClient} from '@angular/common/http';
+import {CarrinhoService} from "../service/carrinho.service";
 
 @Component({
   selector: 'app-minhaconta',
@@ -22,6 +23,7 @@ export class MinhacontaPage implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private carrinhoService: CarrinhoService,
     private router: Router,
     private toastController: ToastController,
     private http: HttpClient // Injeção do serviço HTTP
@@ -110,7 +112,17 @@ export class MinhacontaPage implements OnInit {
       name: '',
       telefone: ''
     };
+
+    // Remover o token de autenticação
     sessionStorage.removeItem('authToken');
+
+    // Remover o carrinho do usuário do sessionStorage usando o método getUserId() do CarrinhoService
+    const userId = this.carrinhoService.getCpf();  // Agora chamamos o método do serviço
+    if (userId) {
+      sessionStorage.removeItem(`cart_${userId}`);  // Remova a chave correta
+    }
+
+    // Redirecionar para a página de login
     this.router.navigate(['/login']);
   }
 
