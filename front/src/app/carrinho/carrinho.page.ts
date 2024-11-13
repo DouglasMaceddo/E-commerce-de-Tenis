@@ -1,9 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {CartItem} from '../service/cart-item.model';
-import {ToastController} from '@ionic/angular';
-import {CarrinhoService} from "../service/carrinho.service";
-
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CartItem } from '../service/cart-item.model';
+import { ToastController } from '@ionic/angular';
+import { CarrinhoService } from "../service/carrinho.service";
 
 @Component({
   selector: 'app-carrinho',
@@ -13,7 +12,6 @@ import {CarrinhoService} from "../service/carrinho.service";
 export class CarrinhoPage implements OnInit {
   cart: CartItem[] = [];
   cartItemCount: number = 0;
-  userId: string | null = sessionStorage.getItem('authToken'); // Alterado para pegar do sessionStorage
 
   constructor(private toastController: ToastController, private router: Router, private carrinhoService: CarrinhoService) {}
 
@@ -25,21 +23,26 @@ export class CarrinhoPage implements OnInit {
   }
 
   removerCarrinho(item: CartItem) {
-    this.carrinhoService.removerCarrinho(item.id).subscribe(cart => this.cart = cart);
+    this.carrinhoService.removerCarrinho(item.id).subscribe(cart => {
+      this.cart = cart;
+      this.cartItemCount = this.carrinhoService.getCartItemCount();
+    });
   }
+
   getTotal() {
-    // Verifique o tipo de 'this.cart' antes de usar reduce
     if (!Array.isArray(this.cart)) {
       console.error('this.cart não é um array:', this.cart);
-      this.cart = []; // Inicialize como um array vazio, se necessário
+      this.cart = [];
     }
     return this.cart.reduce((total, item) => total + (item.valor * item.quantity), 0);
   }
 
-
   clearCart() {
     if (confirm('Tem certeza que deseja limpar o carrinho?')) {
-      this.carrinhoService.clearCart().subscribe(() => this.cart = []);
+      this.carrinhoService.clearCart().subscribe(() => {
+        this.cart = [];
+        this.cartItemCount = 0;
+      });
     }
   }
 
@@ -51,6 +54,7 @@ export class CarrinhoPage implements OnInit {
     item.quantity++;
     this.carrinhoService.updateCart(item).subscribe(updatedCart => {
       this.cart = updatedCart;
+      this.cartItemCount = this.carrinhoService.getCartItemCount();
     });
   }
 
@@ -59,6 +63,7 @@ export class CarrinhoPage implements OnInit {
       item.quantity--;
       this.carrinhoService.updateCart(item).subscribe(updatedCart => {
         this.cart = updatedCart;
+        this.cartItemCount = this.carrinhoService.getCartItemCount();
       });
     }
   }
