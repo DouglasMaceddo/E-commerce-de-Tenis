@@ -4,7 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { TenisModalComponent } from './tenis-modal/tenis-modal.component';
 import { CartItem } from '../service/cart-item.model';
 import { CarrinhoService } from '../service/carrinho.service';
-import {Tenis, TenisService} from "../service/tenis.service";
+import { Tenis, TenisService } from "../service/tenis.service";
 
 @Component({
   selector: 'app-catalogo',
@@ -32,17 +32,14 @@ export class CatalogoPage implements OnInit {
         console.error('Erro ao carregar os tênis:', error);
       }
     );
-  }
 
-  navegarPaginaCarrinho() {
-    console.log('Tentando navegar para a página de carrinho...');
-    this.router.navigate(['/carrinho']).catch((error) => {
-      console.error('Erro ao navegar para o carrinho:', error);
+    // Atualizar contador do carrinho ao mudar
+    this.carrinhoService.cart$.subscribe(cart => {
+      this.cartItemCount = cart.reduce((count, item) => count + item.quantity, 0);
     });
   }
 
   async chamarModal(item: any) {
-    console.log('Abrindo modal para o item:', item);
     const modal = await this.modalController.create({
       component: TenisModalComponent,
       componentProps: { item }
@@ -52,15 +49,11 @@ export class CatalogoPage implements OnInit {
       if (result.data) {
         const itemToAdd: CartItem = {
           ...item,
-          quantity: result.data.quantity
+          quantity: result.data.quantity,
+          tamanho: result.data.tamanho
         };
         console.log('Adicionando ao carrinho:', itemToAdd);
-        this.carrinhoService.addToCart(itemToAdd).subscribe(() => {
-          this.updateCartItemCount();
-          console.log('Carrinho atualizado');
-        }, (error) => {
-          console.error('Erro ao adicionar item ao carrinho:', error);
-        });
+        this.carrinhoService.addToCart(itemToAdd);
       }
     });
 
@@ -77,7 +70,9 @@ export class CatalogoPage implements OnInit {
     );
   }
 
-  updateCartItemCount() {
-    this.cartItemCount = this.carrinhoService.getCartItemCount();
+  navegarPaginaCarrinho() {
+    this.router.navigate(['/carrinho']).catch((error) => {
+      console.error('Erro ao navegar para o carrinho:', error);
+    });
   }
 }
