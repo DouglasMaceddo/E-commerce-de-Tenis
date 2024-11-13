@@ -12,6 +12,8 @@ export class AppComponent {
     { title: 'Minha Conta', url: '/minhaconta', icon: 'person' },
     { title: 'Catalogo', url: '/catalogo', icon: 'albums' },
     { title: 'Carrinho', url: '/carrinho', icon: 'cart' },
+    { title: 'Meus Pedidos', url: '/pedidos', icon: 'layers' }
+    
   ];
 
   constructor(private router: Router, private menu: MenuController) {}

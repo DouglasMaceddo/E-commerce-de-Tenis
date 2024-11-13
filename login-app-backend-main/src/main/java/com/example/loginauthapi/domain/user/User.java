@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -21,4 +23,10 @@ public class User {
     private String password;
     private String cpf;
     private String telefone;
+
+    // Relacionamento de um para muitos
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Orders> orders;
+
+
 }
