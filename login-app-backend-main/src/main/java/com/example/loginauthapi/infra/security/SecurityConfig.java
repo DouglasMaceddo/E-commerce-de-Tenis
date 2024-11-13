@@ -33,8 +33,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/tenis").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/carrinho").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/api/carrinho").authenticated()
 
                         .anyRequest().authenticated()  // Exige autenticação para outros endpoints
                 )
