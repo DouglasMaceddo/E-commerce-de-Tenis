@@ -41,10 +41,10 @@ export class LoginPage implements OnInit {
       if (response.ok) {
         const data = await response.json();
         sessionStorage.setItem('authToken', data.token); // Armazena o token temporariamente
+        this.carrinhoService.resetCartForNewUser(); // Carrega o carrinho correto para o usuário logado
         this.router.navigate(['/catalogo']);
         message = 'Login bem-sucedido!';
-        await this.presentToast(message, 'success');  // Atualiza o userId no CarrinhoService
-
+        await this.presentToast(message, 'success');
       } else {
         const errorData = await response.json().catch(() => ({}));
         message = errorData.message || message;
@@ -57,7 +57,6 @@ export class LoginPage implements OnInit {
       this.isLoading = false; // Termina o carregamento
     }
   }
-
 
   async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({

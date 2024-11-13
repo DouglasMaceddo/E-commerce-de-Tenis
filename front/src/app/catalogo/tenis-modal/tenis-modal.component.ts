@@ -10,11 +10,10 @@ import { CarrinhoService } from "../../service/carrinho.service";
 })
 export class TenisModalComponent implements OnInit {
   @Input() item: any;
-  quantity: number = 1; // Valor padrão da quantidade
-  tamanhos: number[] = [36, 37, 38, 39, 40, 41, 42]; // Lista de tamanhos disponíveis
-  tamanhoSelecionado: number | null = null; // Tamanho selecionado
+  quantity: number = 1;
+  tamanhos: number[] = [36, 37, 38, 39, 40, 41, 42];
+  tamanhoSelecionado: number | null = null;
 
-  // Variável para desabilitar o botão de adicionar
   isAddButtonDisabled: boolean = true;
 
   constructor(
@@ -24,32 +23,31 @@ export class TenisModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // A cada vez que o item é recebido, atualize a disponibilidade do botão
     this.atualizarBotaoAdicionar();
   }
 
   selecionarTamanho(tamanho: number) {
     this.tamanhoSelecionado = tamanho;
-    this.atualizarBotaoAdicionar(); // Atualiza o botão quando o tamanho é selecionado
+    this.atualizarBotaoAdicionar();
   }
 
   atualizarBotaoAdicionar() {
-    // Desabilita o botão se a quantidade for 0 ou o tamanho não for selecionado
     this.isAddButtonDisabled = this.quantity <= 0 || this.tamanhoSelecionado === null;
   }
 
   async adicionarAoCarrinho() {
     if (!this.isAddButtonDisabled) {
+      const itemToAdd = {
+        ...this.item,
+        quantity: this.quantity,
+        tamanho: this.tamanhoSelecionado
+      };
+
       try {
-        await this.carrinhoService.addToCart({
-          ...this.item,
-          quantity: this.quantity,
-          tamanho: this.tamanhoSelecionado
-        }).toPromise(); // Espera a resposta da requisição
+        await this.carrinhoService.addToCart(itemToAdd).toPromise();
         this.presentToast('Item adicionado ao carrinho com sucesso!');
         this.modalController.dismiss();
       } catch (error) {
-        console.error('Erro ao adicionar item ao carrinho:', error);
         await this.presentToast('Houve um erro ao adicionar o item ao carrinho. Tente novamente.');
       }
     } else {
@@ -62,7 +60,7 @@ export class TenisModalComponent implements OnInit {
       message,
       duration: 3000,
       position: 'bottom',
-      color: message.includes('adicionado') ? 'success' : 'danger' // Cor do toast com base na mensagem
+      color: message.includes('adicionado') ? 'success' : 'danger'
     });
     toast.present();
   }
