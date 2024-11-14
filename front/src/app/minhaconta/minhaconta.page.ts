@@ -21,7 +21,6 @@ export class MinhacontaPage implements OnInit {
   };
 
   addressForm: FormGroup;
-  enderecos: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -43,7 +42,6 @@ export class MinhacontaPage implements OnInit {
 
   ngOnInit() {
     this.loadUserInfo();
-    this.loadEnderecos();
   }
 
   validateCEP(CEP: string): boolean {
@@ -65,17 +63,6 @@ export class MinhacontaPage implements OnInit {
         telefone: decoded.telefone
       };
     }
-  }
-
-  loadEnderecos() {
-    this.enderecoService.getEnderecos().subscribe(
-      (response) => {
-        this.enderecos = response; // Armazenar os endereços recebidos da API
-      },
-      (error) => {
-        console.error('Erro ao buscar endereços:', error);
-      }
-    );
   }
   
   // Buscar o endereço pelo CEP
