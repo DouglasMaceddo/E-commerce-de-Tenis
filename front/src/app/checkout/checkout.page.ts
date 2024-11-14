@@ -4,6 +4,7 @@ import { CartItem } from '../service/cart-item.model';
 import { ModalController } from '@ionic/angular';
 import { CreditoModalComponent } from './credito-modal/credito-modal.component';
 import { CarrinhoService } from "../service/carrinho.service";
+import { EnderecoService } from '../service/endereco.service';
 
 @Component({
   selector: 'app-checkout',
@@ -11,7 +12,7 @@ import { CarrinhoService } from "../service/carrinho.service";
   styleUrls: ['./checkout.page.scss'],
 })
 export class CheckoutPage implements OnInit {
-  enderecoUsuario: any;
+  enderecos: any[] = [];
   cart: CartItem[] = [];
   totalCarrinho: number = 0;
   taxaEntrega: number = 0;
@@ -22,17 +23,12 @@ export class CheckoutPage implements OnInit {
     private router: Router,
     private carrinhoService: CarrinhoService,
     private modalController: ModalController,
+    private enderecoService: EnderecoService,
   ) {}
 
   ngOnInit() {
-    this.carregarEndereco();
+    this.loadEnderecos();
     this.carregarCarrinho();
-  }
-
-  carregarEndereco() {
-    const usuarioLogado = sessionStorage.getItem('authToken'); // Alterado para pegar do sessionStorage
-    const enderecos = JSON.parse(localStorage.getItem('enderecos') || '[]');
-    this.enderecoUsuario = enderecos.find((endereco: any) => endereco.userId === usuarioLogado);
   }
 
   carregarCarrinho() {
@@ -42,19 +38,28 @@ export class CheckoutPage implements OnInit {
     });
   }
 
-
   getTotal() {
     if (!Array.isArray(this.cart)) {
       this.cart = []; // Garantir que é um array, caso contrário, inicialize como um array vazio
     }
-    return this.cart.reduce((total, item) => total + (item.valor * item.quantity), 0);
+    return this.cart.reduce((total, item) => total + (item.valor * item.quantity), 0) + this.taxaEntrega;
   }
 
+  loadEnderecos() {
+    this.enderecoService.getEnderecos().subscribe(
+      (response) => {
+        this.enderecos = response; // Armazenar os endereços recebidos da API
+      },
+      (error) => {
+        console.error('Erro ao buscar endereços:', error);
+      }
+    );
+  }
 
   onTipoEntregaChange(event: any) {
     this.tipoEntrega = event.detail.value;
     this.taxaEntrega = this.tipoEntrega === 'entregaRapida' ? 15 : 0;
-    this.totalCarrinho = this.getTotal();
+    this.totalCarrinho = this.getTotal(); // Recalcular o total com a taxa de entrega
   }
 
   toggleTaxaEntrega() {
@@ -77,4 +82,3 @@ export class CheckoutPage implements OnInit {
     return await modal.present();
   }
 }
-
