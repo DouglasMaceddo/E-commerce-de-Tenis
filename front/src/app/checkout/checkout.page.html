@@ -17,22 +17,24 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-card *ngIf="enderecoUsuario">
+  <ion-card *ngIf="enderecos.length > 0">
     <ion-card-header>
       <ion-card-title>
         <ion-icon size="large" name="home-outline" class="icone"></ion-icon>
         Endereço de Entrega
       </ion-card-title>
     </ion-card-header>
-    <ion-card-content>
-      <h2><strong>CEP:</strong> {{ enderecoUsuario.CEP }}</h2>
-      <h2><strong>Rua:</strong> {{ enderecoUsuario.Rua }}</h2>
-      <h2><strong>Cidade:</strong> {{ enderecoUsuario.Cidade }}</h2>
-      <h2><strong>Estado:</strong> {{ enderecoUsuario.Estado }}</h2>
+    <ion-card-content *ngFor="let endereco of enderecos">
+      <p>Cep: {{ endereco.cep }}</p>
+      <p>Rua: {{ endereco.rua }}</p>
+      <p>Complemento: {{ endereco.complemento }}</p>
+      <p>Cidade: {{ endereco.cidade }}</p>
+      <p>Estado: {{ endereco.estado }}</p>
     </ion-card-content>
   </ion-card>
-
-  <ion-card *ngIf="!enderecoUsuario">
+  
+  
+  <ion-card *ngIf="enderecos.length === 0">
     <ion-card-header>
       <ion-card-title>Nenhum endereço cadastrado</ion-card-title>
     </ion-card-header>
@@ -41,6 +43,7 @@
       <ion-button expand="full" (click)="cadastrarend()">Cadastrar Endereço</ion-button>
     </ion-card-content>
   </ion-card>
+  
   <ion-card>
     <ion-card-header>
       <ion-card-title>
