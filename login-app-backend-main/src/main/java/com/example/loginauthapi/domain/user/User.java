@@ -26,14 +26,14 @@ public class User {
     private String cpf;
     private String telefone;
 
-<<<<<<< Updated upstream
+
     // Relacionamento de um para muitos
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference  // Aqui informamos que queremos serializar a lista de Orders
     private List<Orders> orders;
-=======
+
 
     @OneToMany(mappedBy = "user")
     private List<Endereco> enderecos;
->>>>>>> Stashed changes
+
 }
