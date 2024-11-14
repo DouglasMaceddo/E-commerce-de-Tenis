@@ -2,6 +2,7 @@ package com.example.loginauthapi.controllers;
 
 import com.example.loginauthapi.domain.user.Orders;
 import com.example.loginauthapi.domain.user.User;
+import com.example.loginauthapi.dto.CreateOrderDTO;
 import com.example.loginauthapi.dto.ResponseDTO;
 import com.example.loginauthapi.repositories.OrdersRepository;
 import com.example.loginauthapi.repositories.UserRepository;
@@ -23,21 +24,32 @@ public class OrdersController {
     private final UserRepository userRepository;
     private final TokenService tokenService; // Serviço que valida e extrai dados do JWT
 
+    private User getAuthenticatedUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
     // Criação de um pedido - só pode ser feito por usuário autenticado
     @PostMapping
-    public ResponseEntity<?> createOrder(@RequestBody Orders order) {
-        // Recuperar o usuário autenticado diretamente do SecurityContextHolder
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ResponseEntity<?> createOrder(@RequestBody CreateOrderDTO createOrderDTO) {
+        User user = getAuthenticatedUser();
 
         if (user == null) {
             return ResponseEntity.status(401).body("Usuário não autenticado.");
         }
 
-        order.setUser(user); // Relacionando o pedido ao usuário autenticado
-        ordersRepository.save(order); // Salvando o pedido no banco
+        Orders order = new Orders();
+        order.setName(createOrderDTO.getName());
+        order.setMarca(createOrderDTO.getMarca());
+        order.setValor(createOrderDTO.getValor());
+        order.setDescription(createOrderDTO.getDescription());
+        order.setImageUrl(createOrderDTO.getImageUrl());
+        order.setUser(user);
+
+        ordersRepository.save(order);
 
         return ResponseEntity.status(201).body(new ResponseDTO(user.getName(), "Pedido criado com sucesso."));
     }
+
 
     // Listar todos os pedidos do usuário autenticado
     @GetMapping
