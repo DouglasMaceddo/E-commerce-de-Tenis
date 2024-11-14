@@ -15,7 +15,7 @@ export class CheckoutPage implements OnInit {
   cart: CartItem[] = [];
   totalCarrinho: number = 0;
   taxaEntrega: number = 0;
-  tipoEntrega: string = 'entregaPadrao'; // Tipo de entrega inicial (padrão)
+  tipoEntrega: string = 'entregaPadrao';
   mostrarTaxa: boolean = false;
 
   constructor(
@@ -29,64 +29,52 @@ export class CheckoutPage implements OnInit {
     this.carregarCarrinho();
   }
 
-  // Carregar o endereço do usuário a partir do localStorage
   carregarEndereco() {
-    const usuarioLogado = sessionStorage.getItem('authToken'); // Obter o authToken do sessionStorage
-    const enderecos = JSON.parse(localStorage.getItem('enderecos') || '[]'); // Pega os endereços salvos no localStorage
-    // Encontra o endereço correspondente ao usuário logado
+    const usuarioLogado = sessionStorage.getItem('authToken'); // Alterado para pegar do sessionStorage
+    const enderecos = JSON.parse(localStorage.getItem('enderecos') || '[]');
     this.enderecoUsuario = enderecos.find((endereco: any) => endereco.userId === usuarioLogado);
   }
 
-  // Carregar os itens do carrinho
   carregarCarrinho() {
     this.carrinhoService.getCart().subscribe(cart => {
-      this.cart = cart || [];  // Garantir que o carrinho seja um array
-      this.totalCarrinho = this.getTotal();  // Calcular o total do carrinho
+      this.cart = cart || [];  // Garantir que 'cart' seja um array
+      this.totalCarrinho = this.getTotal();
     });
   }
 
-  // Calcular o total do carrinho (somando o valor de cada item multiplicado pela sua quantidade)
+
   getTotal() {
     if (!Array.isArray(this.cart)) {
-      this.cart = []; // Caso o carrinho não seja um array, inicializa como array vazio
+      this.cart = []; // Garantir que é um array, caso contrário, inicialize como um array vazio
     }
     return this.cart.reduce((total, item) => total + (item.valor * item.quantity), 0);
   }
 
-  // Alterar o tipo de entrega (rápida ou padrão)
+
   onTipoEntregaChange(event: any) {
-    this.tipoEntrega = event.detail.value;  // Atualiza o tipo de entrega
-    this.calcularTaxaEntrega();  // Recalcula a taxa de entrega
-    this.totalCarrinho = this.getTotal();  // Recalcula o total do carrinho
+    this.tipoEntrega = event.detail.value;
+    this.taxaEntrega = this.tipoEntrega === 'entregaRapida' ? 15 : 0;
+    this.totalCarrinho = this.getTotal();
   }
 
-  // Calcular a taxa de entrega com base no tipo de entrega
-  calcularTaxaEntrega() {
-    this.taxaEntrega = this.tipoEntrega === 'entregaRapida' ? 15 : 0;  // Se entrega rápida, taxa de R$ 15
-    this.mostrarTaxa = this.taxaEntrega > 0;  // Exibe a taxa se for maior que 0
-  }
-
-  // Alternar a visibilidade da taxa de entrega
   toggleTaxaEntrega() {
-    this.mostrarTaxa = !this.mostrarTaxa;  // Alterna a visibilidade da taxa
+    this.mostrarTaxa = !this.mostrarTaxa;
   }
 
-  // Redireciona para a página de cadastro de endereço
   cadastrarend() {
-    this.router.navigate(['/minhaconta']);  // Navega para a página de "Minha Conta"
+    this.router.navigate(['/minhaconta']);
   }
 
-  // Voltar para a página do carrinho
   voltar() {
-    this.router.navigate(['/carrinho']);  // Navega de volta para o carrinho
+    this.router.navigate(['/carrinho']);
   }
 
-  // Abre o modal de pagamento com cartão de crédito
   async chamarmodalcredito() {
     const modal = await this.modalController.create({
       component: CreditoModalComponent,
-      cssClass: 'modalcredito'  // Classe CSS para customizar o modal
+      cssClass: 'modalcredito'
     });
-    return await modal.present();  // Exibe o modal
+    return await modal.present();
   }
 }
+
