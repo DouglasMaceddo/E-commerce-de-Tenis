@@ -2,49 +2,74 @@
   <ion-toolbar class="corpadrao">
     <ion-title class="titulo">Adicione Cartão de Crédito</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="fecharmodal()" fill="clear"> fechar
-      </ion-button>
+      <ion-button (click)="fecharmodal()" fill="clear"> Fechar </ion-button>
     </ion-buttons>
   </ion-toolbar>
 
   <ion-card>
     <form (ngSubmit)="onSubmit(paymentForm)" #paymentForm="ngForm">
       <ion-item>
-        <ion-label position="floating"></ion-label>
-        <ion-input type="text" placeholder="Nome do cartão" required ngModel name="cardName"
-          #cardName="ngModel"></ion-input>
+        <ion-label position="floating">Nome do Cartão</ion-label>
+        <ion-input 
+          type="text" 
+          placeholder="Nome do cartão" 
+          required 
+          ngModel 
+          name="cardName" 
+          #cardName="ngModel"
+        ></ion-input>
         <ion-icon name="person" slot="start"></ion-icon>
       </ion-item>
       <div *ngIf="cardName.invalid && cardName.touched" class="error-message">Nome é obrigatório</div>
 
       <ion-item>
-        <ion-label position="floating"></ion-label>
-        <ion-input type="text" placeholder="Número do cartão" required maxlength="16" minlength="16" ngModel
-          name="cardNumber" #cardNumber="ngModel"></ion-input>
+        <ion-label position="floating">Número do Cartão</ion-label>
+        <ion-input 
+          type="text" 
+          placeholder="Número do cartão" 
+          required 
+          maxlength="16" 
+          minlength="16" 
+          ngModel
+          name="cardNumber" 
+          #cardNumber="ngModel"
+        ></ion-input>
         <ion-icon name="card" slot="start"></ion-icon>
       </ion-item>
       <div *ngIf="cardNumber.invalid && cardNumber.touched" class="error-message">Número do cartão é inválido</div>
 
       <ion-item>
-        <ion-label position="floating"></ion-label>
-        <ion-input type="text" placeholder="MM/AA" required ngModel name="expiryDate" #expiryDate="ngModel"
-          maxlength="6" (ionInput)="formatExpiryDate($event)">
-        </ion-input>
+        <ion-label position="floating">Data de Validade</ion-label>
+        <ion-input 
+          type="text" 
+          placeholder="MM/AA" 
+          required 
+          ngModel 
+          name="expiryDate" 
+          #expiryDate="ngModel"
+          maxlength="5" 
+          (ionInput)="formatExpiryDate($event)"
+        ></ion-input>
         <ion-icon name="calendar" slot="start"></ion-icon>
       </ion-item>
-      <div *ngIf="expiryDate.invalid && expiryDate.touched" class="error-message">
-        Data de validade é obrigatória
-      </div>
+      <div *ngIf="expiryDate.invalid && expiryDate.touched" class="error-message">Data de validade é obrigatória</div>
 
       <ion-item>
-        <ion-label position="floating"></ion-label>
-        <ion-input type="text" placeholder="CVV" required maxlength="3" minlength="3" ngModel name="cvv"
-          #cvv="ngModel"></ion-input>
+        <ion-label position="floating">CVV</ion-label>
+        <ion-input 
+          type="text" 
+          placeholder="CVV" 
+          required 
+          maxlength="3" 
+          minlength="3" 
+          ngModel 
+          name="cvv"
+          #cvv="ngModel"
+        ></ion-input>
         <ion-icon name="lock-closed" slot="start"></ion-icon>
       </ion-item>
       <div *ngIf="cvv.invalid && cvv.touched" class="error-message">CVV é inválido</div>
 
-      <!-- Botão de Salvar -->
       <ion-button expand="full" type="submit" class="corpadrao" [disabled]="!paymentForm.valid">Salvar</ion-button>
     </form>
   </ion-card>
@@ -62,5 +87,7 @@
       </ion-card>
     </div>
   </ion-item>
+  <!-- Carregando Spinner -->
+  
 
 </ion-content>

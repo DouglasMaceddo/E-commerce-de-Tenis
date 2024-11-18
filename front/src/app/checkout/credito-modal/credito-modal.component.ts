@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { NgForm } from '@angular/forms';
 import {CarrinhoService} from "../../service/carrinho.service";
+import { CartaoCreditoService } from 'src/app/service/cartao-credito.service';
 
 
 @Component({
@@ -13,20 +14,27 @@ export class CreditoModalComponent implements OnInit {
 
   savedCard: any = null;
   savedCards: any[] = []; // Lista para armazenar os cartões salvos
+  isLoading = false;
 
   constructor(private alertController: AlertController,
     private modalController: ModalController,
-    private carrinhoService: CarrinhoService) { }
+    private cartaoCreditoService: CartaoCreditoService) { }
 
   ngOnInit() {
     this.loadSavedCards();
    }
 
-  loadSavedCards() {
+   loadSavedCards() {
     const userId = localStorage.getItem('userId'); // Obtenha o ID do usuário logado
     if (userId) {
-      const savedCards = JSON.parse(localStorage.getItem(`CartãoDeCredito_${userId}`) || '[]'); // Obtenha os cartões salvos
-      this.savedCards = savedCards; // Armazene os cartões na propriedade
+      this.cartaoCreditoService.getSavedCards(Number(userId)).subscribe(
+        (data) => {
+          this.savedCards = data; // Armazene os cartões recuperados
+        },
+        (error) => {
+          console.error('Erro ao carregar cartões:', error);
+        }
+      );
     }
   }
 
@@ -41,10 +49,10 @@ export class CreditoModalComponent implements OnInit {
     // Limita a entrada ao formato "MM/AAAA" (7 caracteres no total)
     input.value = value.slice(0, 5);
   }
-  async onSubmit(form: NgForm) {
-    // Obtenha o ID do usuário logado
-    const userId = localStorage.getItem('userId'); // Agora usamos o localStorage para obter o ID do usuário
 
+  async onSubmit(form: NgForm) {
+    const userId = localStorage.getItem('userId');
+    
     if (!userId) {
       const alert = await this.alertController.create({
         header: 'Erro!',
@@ -52,28 +60,38 @@ export class CreditoModalComponent implements OnInit {
         buttons: ['OK'],
       });
       await alert.present();
-      return; // Retorna se o usuário não estiver logado
+      return;
     }
 
-    this.savedCard = {
+    const card = {
       cardName: form.value.cardName,
       cardNumber: form.value.cardNumber,
       expiryDate: form.value.expiryDate,
       cvv: form.value.cvv,
+      userId: Number(userId), // Associa o cartão ao ID do usuário
     };
 
-    // Salve os dados do cartão no localStorage
-    const savedCards = JSON.parse(localStorage.getItem(`CartãoDeCredito_${userId}`) || '[]'); // Obtenha os cartões salvos
-    savedCards.push(this.savedCard); // Adicione o novo cartão
-    localStorage.setItem(`CartãoDeCredito_${userId}`, JSON.stringify(savedCards)); // Salve novamente no localStorage
+    this.isLoading = true;
 
-    const alert = await this.alertController.create({
-      header: 'Sucesso!',
-      message: 'Dados do cartão salvos com sucesso.',
-      buttons: ['OK'],
-    });
-
-    await alert.present();
+    this.cartaoCreditoService.saveCard(card).subscribe(
+      async (response) => {
+        const alert = await this.alertController.create({
+          header: 'Sucesso!',
+          message: 'Dados do cartão salvos com sucesso.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+        this.loadSavedCards(); // Atualiza a lista de cartões após o sucesso
+      },
+      async (error) => {
+        const alert = await this.alertController.create({
+          header: 'Erro!',
+          message: 'Não foi possível salvar os dados do cartão.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+      }
+    );
   }
 
   fecharmodal() {
