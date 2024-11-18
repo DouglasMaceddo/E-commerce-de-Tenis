@@ -2,7 +2,7 @@ import { jwtDecode } from 'jwt-decode';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { ToastController } from "@ionic/angular";
+import { NavController, ToastController } from "@ionic/angular";
 import { HttpClient } from '@angular/common/http';
 import { CarrinhoService } from "../service/carrinho.service";
 import { EnderecoService } from '../service/endereco.service';
@@ -29,6 +29,7 @@ export class MinhacontaPage implements OnInit {
     private router: Router,
     private toastController: ToastController,
     private http: HttpClient, // Injeção do serviço HTTP
+    private navCtrl: NavController
   ) {
 
     this.addressForm = this.formBuilder.group({
@@ -48,8 +49,6 @@ export class MinhacontaPage implements OnInit {
     CEP = CEP.replace(/\D/g, ''); // Remove qualquer caractere não numérico
     return CEP.length === 8; // Valida se o CEP tem 8 dígitos
   }
-
-
 
   // Carregar as informações do usuário a partir do token JWT
   loadUserInfo() {
@@ -131,7 +130,9 @@ export class MinhacontaPage implements OnInit {
     }
   }
 
-
+  voltar(){
+    this.navCtrl.back();
+  }
 
   // Função para sair da conta (Logout)
   sairConta() {

@@ -25,12 +25,15 @@
       </ion-card-title>
     </ion-card-header>
     <ion-card-content *ngFor="let endereco of enderecos">
-      <p>Cep: {{ endereco.cep }}</p>
+      <p>CEP: {{ endereco.cep }}</p>
       <p>Rua: {{ endereco.rua }}</p>
       <p>Complemento: {{ endereco.complemento }}</p>
       <p>Cidade: {{ endereco.cidade }}</p>
       <p>Estado: {{ endereco.estado }}</p>
     </ion-card-content>
+    <ion-button class="cadastroend" (click)="cadastrarend()">
+      Cadastre Outro Endereço
+    </ion-button>
   </ion-card>
   
   

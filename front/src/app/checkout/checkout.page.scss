@@ -53,3 +53,12 @@ ion-label h4 {
 .footer-label {
   font-weight: bold;
 }
+
+.cadastroend {
+  font-size: 15px;
+  --background: #6A0DAD;
+  text-align: center;
+  display: flex;
+  justify-content: center;  /* Centraliza horizontalmente */
+  align-items: center;      /* Centraliza verticalmente */
+}
