@@ -19,18 +19,19 @@ public class CartaoCreditoController {
 
     @PostMapping("/salvar")
     public ResponseEntity<String> salvarCartao(@RequestBody @Valid CartaoCredito cartaoCredito) {
-        // Lógica para salvar o cartão
+        cartaoCreditoService.saveCard(cartaoCredito);
         return ResponseEntity.ok("Cartão salvo com sucesso");
     }
 
+
     @GetMapping("/buscar/{userId}")
-    public ResponseEntity<List<CartaoCredito>> buscarCartoes(@PathVariable Long userId) {
+    public ResponseEntity<List<CartaoCredito>> buscarCartoes(@PathVariable String userId) {
         List<CartaoCredito> savedCards = cartaoCreditoService.getSavedCards(userId);
         return ResponseEntity.ok(savedCards);
     }
 
     @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<Void> deletarCartao(@PathVariable Long id) {
+    public ResponseEntity<Void> deletarCartao(@PathVariable String id) {
         cartaoCreditoService.deleteCard(id);
         return ResponseEntity.noContent().build();
     }
