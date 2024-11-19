@@ -1,15 +1,26 @@
 package com.example.loginauthapi.domain.user;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+
 @Data
 @Entity
 public class CartaoCredito {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Se desejar gerar automaticamente o ID
+    private Long id;
+
+    @NotNull(message = "O ID do usuário é obrigatório")
+    private String userId;
 
     @NotNull(message = "O nome do cartão é obrigatório")
     private String cardName;
