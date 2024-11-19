@@ -17,11 +17,11 @@ public class CartaoCreditoService {
         return cartaoCreditoRepository.save(cartaoCredito);
     }
 
-    public List<CartaoCredito> getSavedCards(Long userId) {
+    public List<CartaoCredito> getSavedCards(String userId) {
         return cartaoCreditoRepository.findByUserId(userId);
     }
 
-    public void deleteCard(Long id) {
+    public void deleteCard(String id) {
         cartaoCreditoRepository.deleteById(id);
     }
 }
