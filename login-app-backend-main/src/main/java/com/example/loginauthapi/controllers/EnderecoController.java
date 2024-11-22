@@ -5,12 +5,17 @@ import com.example.loginauthapi.domain.user.User;
 import com.example.loginauthapi.repositories.EnderecoRepository;
 import com.example.loginauthapi.repositories.UserRepository;
 import com.example.loginauthapi.infra.security.TokenService;
+import jakarta.validation.Valid;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
+@Data
 @RestController
-@RequestMapping("/user/Endereco")
+@RequestMapping("/user/endereco")
 @RequiredArgsConstructor
 public class EnderecoController {
 
@@ -19,10 +24,11 @@ public class EnderecoController {
     private final TokenService tokenService;
 
     @PostMapping
-    public ResponseEntity<?> salvarEndereco(@RequestBody Endereco endereco, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<ApiResponse> salvarOuAtualizarEndereco(
+            @Valid @RequestBody Endereco endereco,
+            @RequestHeader("Authorization") String token) {
         // Validar o token
         String userEmail = tokenService.validateToken(token.replace("Bearer ", ""));
-
         if (userEmail == null) {
             return ResponseEntity.status(403).body(new ApiResponse("Token inválido ou expirado.", false));
         }
@@ -31,22 +37,40 @@ public class EnderecoController {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        // Associar o endereço ao usuário
-        endereco.setUser(user);
+        // Verificar se o usuário já tem um endereço cadastrado
+        Optional<Endereco> enderecoExistente = enderecoRepository.findFirstByUser(user);
 
-        // Salvar o endereço no banco de dados
-        enderecoRepository.save(endereco);
+        if (enderecoExistente.isPresent()) {
+            // Atualizar o endereço existente
+            Endereco enderecoAtualizado = enderecoExistente.get();
+            enderecoAtualizado.setCep(endereco.getCep());
+            enderecoAtualizado.setRua(endereco.getRua());
+            enderecoAtualizado.setComplemento(endereco.getComplemento());
+            enderecoAtualizado.setCidade(endereco.getCidade());
+            enderecoAtualizado.setEstado(endereco.getEstado());
 
-        return ResponseEntity.status(201).body(new ApiResponse("Endereço salvo com sucesso!", true));
+            // Salvar o endereço atualizado
+            enderecoRepository.save(enderecoAtualizado);
+
+            return ResponseEntity.ok(new ApiResponse("Endereço atualizado com sucesso!", true, enderecoAtualizado));
+        } else {
+            // Associar o novo endereço ao usuário
+            endereco.setUser(user);
+
+            // Salvar o novo endereço no banco de dados
+            Endereco novoEndereco = enderecoRepository.save(endereco);
+
+            return ResponseEntity.status(201)
+                    .body(new ApiResponse("Endereço salvo com sucesso!", true, novoEndereco));
+        }
     }
 
     @GetMapping
-    public ResponseEntity<?> getEnderecos(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<ApiResponse> getEnderecos(@RequestHeader("Authorization") String token) {
         // Validar o token
         String userEmail = tokenService.validateToken(token.replace("Bearer ", ""));
-
         if (userEmail == null) {
-            return ResponseEntity.status(403).body("Token inválido ou expirado.");
+            return ResponseEntity.status(403).body(new ApiResponse("Token inválido ou expirado.", false));
         }
 
         // Encontrar o usuário pelo email
@@ -54,33 +78,24 @@ public class EnderecoController {
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         // Retornar os endereços do usuário
-        return ResponseEntity.ok(user.getEnderecos());
+        return ResponseEntity.ok(new ApiResponse("Endereços carregados com sucesso!", true, user.getEnderecos()));
     }
 
     // Classe ApiResponse
     public static class ApiResponse {
         private String message;
         private boolean success;
+        private Object data;
 
         public ApiResponse(String message, boolean success) {
             this.message = message;
             this.success = success;
         }
 
-        public String getMessage() {
-            return message;
-        }
-
-        public boolean isSuccess() {
-            return success;
-        }
-
-        public void setMessage(String message) {
+        public ApiResponse(String message, boolean success, Object data) {
             this.message = message;
-        }
-
-        public void setSuccess(boolean success) {
             this.success = success;
+            this.data = data;
         }
     }
 }

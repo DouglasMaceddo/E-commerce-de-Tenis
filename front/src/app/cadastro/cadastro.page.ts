@@ -131,17 +131,17 @@ export class CadastroPage implements OnInit {
     );
   }
 
-
   async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 2000,
+      duration: 1000,
       color: color,
       position: 'top', // Posicione o toast no topo para maior visibilidade
       cssClass: 'custom-toast',
     });
     await toast.present();
   }
+  
   navigateToNovaPagina() {
     this.router.navigate(['/login']);
   }

@@ -58,7 +58,7 @@ export class TenisModalComponent implements OnInit {
   async presentToast(message: string) {
     const toast = await this.toastController.create({
       message,
-      duration: 3000,
+      duration: 1000,
       position: 'bottom',
       color: message.includes('adicionado') ? 'success' : 'danger'
     });

@@ -50,4 +50,7 @@ export class AuthService {
     sessionStorage.removeItem('username');
     this.currentUserSubject.next(null);
   }
+  isLoggedIn(): boolean {
+    return !!sessionStorage.getItem('authToken');
+  }
 }

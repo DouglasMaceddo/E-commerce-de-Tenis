@@ -21,6 +21,7 @@ export class MinhacontaPage implements OnInit {
   };
 
   addressForm: FormGroup;
+  enderecos: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,7 +29,7 @@ export class MinhacontaPage implements OnInit {
     private enderecoService: EnderecoService,
     private router: Router,
     private toastController: ToastController,
-    private http: HttpClient, // Injeção do serviço HTTP
+    private http: HttpClient,
     private navCtrl: NavController
   ) {
 
@@ -64,7 +65,23 @@ export class MinhacontaPage implements OnInit {
     }
   }
   
-  // Buscar o endereço pelo CEP
+  carregarEnderecos() {
+    this.enderecoService.getEnderecos().subscribe({
+      next: (response) => {
+        if (response.success) {
+          // Exibe os endereços no console ou os armazena em uma variável local
+          console.log(response.data);
+          this.presentToast('Endereços carregados com sucesso!', 'success');
+        } else {
+          this.presentToast('Não foi possível carregar os endereços.', 'danger');
+        }
+      },
+      error: () => {
+        this.presentToast('Erro ao carregar os endereços. Tente novamente mais tarde.', 'danger');
+      }
+    });
+  }
+
   buscarEnderecoPorCEP() {
     const cep = this.addressForm.get('CEP')?.value.replace(/\D/g, '');
 
@@ -89,9 +106,9 @@ export class MinhacontaPage implements OnInit {
       this.presentToast('CEP inválido. Verifique e tente novamente.', 'danger');
     }
   }
+  
   onSubmit() {
     if (this.addressForm.valid) {
-      // Objeto para enviar ao backend com os campos corretos
       const novoEndereco = {
         cep: this.addressForm.value.CEP,       // Corrigido para 'cep' conforme esperado no backend
         rua: this.addressForm.value.Rua,       // Corrigido para 'rua'
@@ -106,7 +123,6 @@ export class MinhacontaPage implements OnInit {
         return;
       }
 
-      // Exibe um toast de "loading" ou uma barra de progresso para indicar que a requisição está sendo processada
       this.presentToast('Salvando endereço...', 'primary');
 
       // Chama o serviço para salvar o endereço
@@ -114,15 +130,14 @@ export class MinhacontaPage implements OnInit {
         (response) => {
           // Sucesso
           if (response.success) {
-            this.presentToast('Endereço cadastrado com sucesso!', 'success');
+            this.presentToast('Endereço atualizado com sucesso!', 'success');
+            this.carregarEnderecos();
           } else {
-            this.presentToast('Erro ao salvar o endereço. Tente novamente.', 'danger');
+            this.presentToast('Erro ao atualizar o endereço. Tente novamente.', 'danger');
           }
         },
         (error) => {
-          // Erro na requisição
-          console.error('Erro ao salvar o endereço', error);
-          this.presentToast('Erro ao salvar o endereço. Tente novamente mais tarde.', 'danger');
+          this.presentToast('Erro ao atualizar o endereço. Tente novamente mais tarde.', 'danger');
         }
       );
     } else {
@@ -134,7 +149,6 @@ export class MinhacontaPage implements OnInit {
     this.navCtrl.back();
   }
 
-  // Função para sair da conta (Logout)
   sairConta() {
     this.infoUsuario = {
       cpf: '',
@@ -145,18 +159,14 @@ export class MinhacontaPage implements OnInit {
 
     // Remover o token de autenticação
     sessionStorage.removeItem('authToken');
-
-    // Remover o carrinho do usuário do sessionStorage usando o método getUserId() do CarrinhoService
     const userId = this.carrinhoService.getCpf();
     if (userId) {
       sessionStorage.removeItem(`cart_${userId}`);
     }
-
-    // Redirecionar para a página de login
+    
     this.router.navigate(['/login']);
   }
 
-  // Função para mostrar toast (mensagem de feedback)
   async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,

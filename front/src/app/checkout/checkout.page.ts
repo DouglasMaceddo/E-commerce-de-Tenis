@@ -27,7 +27,6 @@ export class CheckoutPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadEnderecos();
     this.carregarCarrinho();
   }
 
@@ -45,16 +44,6 @@ export class CheckoutPage implements OnInit {
     return this.cart.reduce((total, item) => total + (item.valor * item.quantity), 0) + this.taxaEntrega;
   }
 
-  loadEnderecos() {
-    this.enderecoService.getEnderecos().subscribe(
-      (response) => {
-        this.enderecos = response; // Armazenar os endereços recebidos da API
-      },
-      (error) => {
-        console.error('Erro ao buscar endereços:', error);
-      }
-    );
-  }
 
   onTipoEntregaChange(event: any) {
     this.tipoEntrega = event.detail.value;
@@ -64,6 +53,17 @@ export class CheckoutPage implements OnInit {
 
   toggleTaxaEntrega() {
     this.mostrarTaxa = !this.mostrarTaxa;
+  }
+
+  carregarEnderecos() {
+    this.enderecoService.getEnderecos().subscribe({
+      next: (response) => {
+        if (response.success) {
+          // Exibe os endereços no console ou os armazena em uma variável local
+          console.log(response.data);
+        }
+      },
+    });
   }
 
   cadastrarend() {

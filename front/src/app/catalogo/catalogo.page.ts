@@ -52,7 +52,6 @@ export class CatalogoPage implements OnInit {
           quantity: result.data.quantity,
           tamanho: result.data.tamanho
         };
-        console.log('Adicionando ao carrinho:', itemToAdd);
         this.carrinhoService.addToCart(itemToAdd);
       }
     });
@@ -72,7 +71,6 @@ export class CatalogoPage implements OnInit {
 
   navegarPaginaCarrinho() {
     this.router.navigate(['/carrinho']).catch((error) => {
-      console.error('Erro ao navegar para o carrinho:', error);
     });
   }
 }

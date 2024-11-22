@@ -12,15 +12,9 @@ export class EnderecoService {
 
   constructor(private http: HttpClient) {}
 
-  // Método para salvar o endereço
   salvarEndereco(endereco: any): Observable<any> {
-    // Recuperando o token JWT do sessionStorage
     const token = sessionStorage.getItem('authToken');
-
-    // Configurando os cabeçalhos da requisição com o token
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    // Enviando a requisição POST com os dados do endereço e o token JWT
     return this.http.post(this.apiUrl, endereco, { headers });
   }
 

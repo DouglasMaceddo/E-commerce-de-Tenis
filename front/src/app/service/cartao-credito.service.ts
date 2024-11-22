@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class CartaoCreditoService {
 
-  private apiUrl = 'http://localhost:8080/api/cartao'; // URL do backend (ajuste conforme sua configuração)
+  private apiUrl = 'http://localhost:8080/api/cartao';
 
   constructor(private http: HttpClient) { }
 
