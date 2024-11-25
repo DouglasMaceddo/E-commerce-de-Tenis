@@ -27,7 +27,7 @@ public class EnderecoController {
     public ResponseEntity<ApiResponse> salvarOuAtualizarEndereco(
             @Valid @RequestBody Endereco endereco,
             @RequestHeader("Authorization") String token) {
-        // Validar o token
+
         String userEmail = tokenService.validateToken(token.replace("Bearer ", ""));
         if (userEmail == null) {
             return ResponseEntity.status(403).body(new ApiResponse("Token inválido ou expirado.", false));
@@ -44,6 +44,7 @@ public class EnderecoController {
             // Atualizar o endereço existente
             Endereco enderecoAtualizado = enderecoExistente.get();
             enderecoAtualizado.setCep(endereco.getCep());
+            enderecoAtualizado.setBairro(endereco.getBairro());
             enderecoAtualizado.setRua(endereco.getRua());
             enderecoAtualizado.setComplemento(endereco.getComplemento());
             enderecoAtualizado.setCidade(endereco.getCidade());

@@ -15,6 +15,7 @@
         private Long id;
 
         private String cep;
+        private String bairro;
         private String rua;
         private String complemento;
         private String cidade;

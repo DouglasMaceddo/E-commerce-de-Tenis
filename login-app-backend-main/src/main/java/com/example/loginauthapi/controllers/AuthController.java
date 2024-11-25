@@ -62,6 +62,7 @@ public class AuthController {
 
         Endereco endereco = new Endereco();
         endereco.setCep(body.cep());
+        endereco.setBairro(body.bairro());
         endereco.setRua(body.rua());
         endereco.setComplemento(body.complemento());
         endereco.setCidade(body.cidade());
