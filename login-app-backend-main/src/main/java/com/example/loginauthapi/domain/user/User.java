@@ -33,7 +33,7 @@ public class User {
     private List<Orders> orders;
 
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Endereco> endereco;
 
 }

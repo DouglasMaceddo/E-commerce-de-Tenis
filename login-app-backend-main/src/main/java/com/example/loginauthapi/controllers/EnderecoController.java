@@ -2,42 +2,36 @@ package com.example.loginauthapi.controllers;
 
 import com.example.loginauthapi.domain.user.Endereco;
 import com.example.loginauthapi.domain.user.User;
+import com.example.loginauthapi.infra.security.TokenService;
 import com.example.loginauthapi.repositories.EnderecoRepository;
 import com.example.loginauthapi.repositories.UserRepository;
 import jakarta.validation.Valid;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 import java.util.Optional;
 
-@Data
 @RestController
-@RequestMapping("/user/endereco")
+@RequestMapping("/endereco")
 @RequiredArgsConstructor
 public class EnderecoController {
 
     private final EnderecoRepository enderecoRepository;
     private final UserRepository userRepository;
+    private final TokenService tokenService; // Serviço que valida e extrai dados do JWT
 
     // Método para obter o usuário autenticado
     private User getAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
-            throw new RuntimeException("Usuário não autenticado");
-        }
-        String userEmail = authentication.getName(); // Recupera o e-mail do usuário autenticado
-        return userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     // Salvar ou Atualizar Endereço
     @PostMapping
-    public ResponseEntity<ApiResponse> salvarOuAtualizarEndereco(@Valid @RequestBody Endereco endereco) {
+    public ResponseEntity<?> salvarOuAtualizarEndereco(@Valid @RequestBody Endereco endereco) {
         User user = getAuthenticatedUser();
 
         // Verificar se o usuário já tem um endereço cadastrado
@@ -69,7 +63,7 @@ public class EnderecoController {
 
     // Buscar todos os endereços do usuário
     @GetMapping
-    public ResponseEntity<ApiResponse> getEnderecos() {
+    public ResponseEntity<?> getEnderecos() {
         User user = getAuthenticatedUser();
 
         // Recuperar a lista de endereços do usuário
@@ -91,6 +85,30 @@ public class EnderecoController {
         public ApiResponse(String message, boolean success, Object data) {
             this.message = message;
             this.success = success;
+            this.data = data;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public boolean isSuccess() {
+            return success;
+        }
+
+        public void setSuccess(boolean success) {
+            this.success = success;
+        }
+
+        public Object getData() {
+            return data;
+        }
+
+        public void setData(Object data) {
             this.data = data;
         }
     }

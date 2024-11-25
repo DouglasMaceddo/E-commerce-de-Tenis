@@ -21,7 +21,7 @@
         private String cidade;
         private String estado;
 
-        @ManyToOne(fetch = FetchType.LAZY)
+        @ManyToOne
         @JoinColumn(name = "user_id")
         @JsonBackReference  // Aqui evitamos a serialização do campo 'user' em Orders
         private User user;
