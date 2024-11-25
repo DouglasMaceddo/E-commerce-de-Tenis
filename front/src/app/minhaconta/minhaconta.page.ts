@@ -35,6 +35,7 @@ export class MinhacontaPage implements OnInit {
 
     this.addressForm = this.formBuilder.group({
       Rua: ['', [Validators.required, Validators.minLength(5)]],
+      Bairro: ['', Validators.required],
       Cidade: ['', [Validators.required, Validators.minLength(3)]],
       Estado: ['', Validators.required],
       Complemento: ['', Validators.required],
@@ -44,6 +45,7 @@ export class MinhacontaPage implements OnInit {
 
   ngOnInit() {
     this.loadUserInfo();
+    this.carregarEnderecos();
   }
 
   validateCEP(CEP: string): boolean {
@@ -69,8 +71,7 @@ export class MinhacontaPage implements OnInit {
     this.enderecoService.getEnderecos().subscribe({
       next: (response) => {
         if (response.success) {
-          // Exibe os endereços no console ou os armazena em uma variável local
-          console.log(response.data);
+          this.enderecos = response.data;
           this.presentToast('Endereços carregados com sucesso!', 'success');
         } else {
           this.presentToast('Não foi possível carregar os endereços.', 'danger');
@@ -91,6 +92,7 @@ export class MinhacontaPage implements OnInit {
           if (!data.erro) {
             this.addressForm.patchValue({
               Rua: data.logradouro,
+              Bairro: data.bairro,
               Cidade: data.localidade,
               Estado: data.uf
             });
@@ -117,31 +119,18 @@ export class MinhacontaPage implements OnInit {
         complemento: this.addressForm.value.Complemento // Corrigido para 'complemento'
       };
 
-      // Valida o CEP antes de enviar a requisição
-      if (!this.validateCEP(novoEndereco.cep)) {
-        this.presentToast('CEP inválido. Verifique e tente novamente.', 'danger');
-        return;
-      }
-
-      this.presentToast('Salvando endereço...', 'primary');
-
-      // Chama o serviço para salvar o endereço
-      this.enderecoService.salvarEndereco(novoEndereco).subscribe(
-        (response) => {
-          // Sucesso
+      this.enderecoService.salvarEndereco(novoEndereco).subscribe({
+        next: (response) => {
           if (response.success) {
             this.presentToast('Endereço atualizado com sucesso!', 'success');
             this.carregarEnderecos();
           } else {
-            this.presentToast('Erro ao atualizar o endereço. Tente novamente.', 'danger');
+            this.presentToast('Erro ao atualizar o endereço.', 'danger');
           }
         },
-        (error) => {
-          this.presentToast('Erro ao atualizar o endereço. Tente novamente mais tarde.', 'danger');
-        }
-      );
+      });
     } else {
-      this.presentToast('Por favor, preencha todos os campos corretamente.', 'warning');
+      this.presentToast('Preencha os campos corretamente.', 'warning');
     }
   }
 
