@@ -115,7 +115,7 @@ export class MinhacontaPage implements OnInit {
       const novoEndereco = {
         cep: this.addressForm.value.CEP,       // 'cep' conforme esperado no backend
         rua: this.addressForm.value.Rua,
-        bairro: this.addressForm.value.Bairr,       // 'rua'
+        bairro: this.addressForm.value.Bairro,       // 'rua'
         cidade: this.addressForm.value.Cidade, // 'cidade'
         estado: this.addressForm.value.Estado, // 'estado'
         complemento: this.addressForm.value.Complemento // 'complemento'

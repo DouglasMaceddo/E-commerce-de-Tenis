@@ -5,6 +5,7 @@ import { ModalController } from '@ionic/angular';
 import { CreditoModalComponent } from './credito-modal/credito-modal.component';
 import { CarrinhoService } from "../service/carrinho.service";
 import { EnderecoService } from '../service/endereco.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-checkout',
@@ -24,10 +25,12 @@ export class CheckoutPage implements OnInit {
     private carrinhoService: CarrinhoService,
     private modalController: ModalController,
     private enderecoService: EnderecoService,
+    private toastController: ToastController
   ) {}
 
   ngOnInit() {
     this.carregarCarrinho();
+    this.carregarEnderecos();
   }
 
   carregarCarrinho() {
@@ -59,10 +62,15 @@ export class CheckoutPage implements OnInit {
     this.enderecoService.getEnderecos().subscribe({
       next: (response) => {
         if (response.success) {
-          // Exibe os endereços no console ou os armazena em uma variável local
-          console.log(response.data);
+          this.enderecos = response.data;
+          this.presentToast('Endereços carregados com sucesso!', 'success');
+        } else {
+          this.presentToast('Não foi possível carregar os endereços.', 'danger');
         }
       },
+      error: () => {
+        this.presentToast('Erro ao carregar os endereços. Tente novamente mais tarde.', 'danger');
+      }
     });
   }
 
@@ -80,5 +88,16 @@ export class CheckoutPage implements OnInit {
       cssClass: 'modalcredito'
     });
     return await modal.present();
+  }
+
+  async presentToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      color: color,
+      position: 'bottom',
+      cssClass: 'custom-toast',
+    });
+    await toast.present();
   }
 }
