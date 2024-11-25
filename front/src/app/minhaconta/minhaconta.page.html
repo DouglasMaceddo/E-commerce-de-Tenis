@@ -3,11 +3,12 @@
   <ion-menu-button slot="start"></ion-menu-button>
   <ion-title class="titulo">Minha Conta</ion-title>
   <ion-buttons slot="end">
-    <ion-button click="voltar()"> Voltar</ion-button>
+    <ion-button (click)="voltar()">Voltar</ion-button>
   </ion-buttons>
 </ion-toolbar>
-<ion-content>
 
+
+<ion-content>
   <ion-card>
     <ion-card-header>
       <ion-card-title class="titulo">Informações da Conta</ion-card-title>
@@ -30,27 +31,27 @@
       <form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
 
         <ion-input type="text" label="CEP" label-placement="floating" fill="outline" placeholder="Digite seu CEP"
-                   formControlName="CEP" (ionBlur)="buscarEnderecoPorCEP()" appCepMask aria-label="CEP" required>
+          formControlName="CEP" (ionBlur)="buscarEnderecoPorCEP()" appCepMask aria-label="CEP" required>
         </ion-input>
 
         <ion-input type="text" label="Rua" label-placement="floating" fill="outline" placeholder="Rua nova"
-                   formControlName="Rua" required aria-label="Rua">
+          formControlName="Rua" required aria-label="Rua">
         </ion-input>
 
         <ion-input type="text" label="Bairro" label-placement="floating" fill="outline" placeholder="Seu bairro"
-                   formControlName="Bairro" required aria-label="Bairro">
+          formControlName="Bairro" required aria-label="Bairro">
         </ion-input>
 
         <ion-input type="text" label="Complemento" label-placement="floating" fill="outline" placeholder="Complemento"
-                   formControlName="Complemento" required aria-label="Complemento">
+          formControlName="Complemento" required aria-label="Complemento">
         </ion-input>
 
         <ion-input type="text" label="Cidade" label-placement="floating" fill="outline" placeholder="Sua Cidade"
-                   formControlName="Cidade" required aria-label="Cidade">
+          formControlName="Cidade" required aria-label="Cidade">
         </ion-input>
 
         <ion-input type="text" label="Estado" label-placement="floating" fill="outline" placeholder="Seu Estado"
-                   formControlName="Estado" required aria-label="Estado">
+          formControlName="Estado" required aria-label="Estado">
         </ion-input>
 
         <ion-button class="corpadrao" expand="full" type="submit" [disabled]="addressForm.invalid">Atualizar Endereço
