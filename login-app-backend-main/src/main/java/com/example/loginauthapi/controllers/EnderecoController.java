@@ -4,13 +4,15 @@ import com.example.loginauthapi.domain.user.Endereco;
 import com.example.loginauthapi.domain.user.User;
 import com.example.loginauthapi.repositories.EnderecoRepository;
 import com.example.loginauthapi.repositories.UserRepository;
-import com.example.loginauthapi.infra.security.TokenService;
 import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Data
@@ -21,21 +23,22 @@ public class EnderecoController {
 
     private final EnderecoRepository enderecoRepository;
     private final UserRepository userRepository;
-    private final TokenService tokenService;
 
-    @PostMapping
-    public ResponseEntity<ApiResponse> salvarOuAtualizarEndereco(
-            @Valid @RequestBody Endereco endereco,
-            @RequestHeader("Authorization") String token) {
-
-        String userEmail = tokenService.validateToken(token.replace("Bearer ", ""));
-        if (userEmail == null) {
-            return ResponseEntity.status(403).body(new ApiResponse("Token inválido ou expirado.", false));
+    // Método para obter o usuário autenticado
+    private User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("Usuário não autenticado");
         }
-
-        // Encontrar o usuário pelo email
-        User user = userRepository.findByEmail(userEmail)
+        String userEmail = authentication.getName(); // Recupera o e-mail do usuário autenticado
+        return userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    }
+
+    // Salvar ou Atualizar Endereço
+    @PostMapping
+    public ResponseEntity<ApiResponse> salvarOuAtualizarEndereco(@Valid @RequestBody Endereco endereco) {
+        User user = getAuthenticatedUser();
 
         // Verificar se o usuário já tem um endereço cadastrado
         Optional<Endereco> enderecoExistente = enderecoRepository.findFirstByUser(user);
@@ -52,7 +55,6 @@ public class EnderecoController {
 
             // Salvar o endereço atualizado
             enderecoRepository.save(enderecoAtualizado);
-
             return ResponseEntity.ok(new ApiResponse("Endereço atualizado com sucesso!", true, enderecoAtualizado));
         } else {
             // Associar o novo endereço ao usuário
@@ -60,29 +62,22 @@ public class EnderecoController {
 
             // Salvar o novo endereço no banco de dados
             Endereco novoEndereco = enderecoRepository.save(endereco);
-
             return ResponseEntity.status(201)
                     .body(new ApiResponse("Endereço salvo com sucesso!", true, novoEndereco));
         }
     }
 
+    // Buscar todos os endereços do usuário
     @GetMapping
-    public ResponseEntity<ApiResponse> getEnderecos(@RequestHeader("Authorization") String token) {
-        // Validar o token
-        String userEmail = tokenService.validateToken(token.replace("Bearer ", ""));
-        if (userEmail == null) {
-            return ResponseEntity.status(403).body(new ApiResponse("Token inválido ou expirado.", false));
-        }
+    public ResponseEntity<ApiResponse> getEnderecos() {
+        User user = getAuthenticatedUser();
 
-        // Encontrar o usuário pelo email
-        User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
-        // Retornar os endereços do usuário
-        return ResponseEntity.ok(new ApiResponse("Endereços carregados com sucesso!", true, user.getEnderecos()));
+        // Recuperar a lista de endereços do usuário
+        List<Endereco> enderecos = user.getEndereco(); // Supondo que 'getEnderecos()' seja o método correto
+        return ResponseEntity.ok(new ApiResponse("Endereços carregados com sucesso!", true, enderecos));
     }
 
-    // Classe ApiResponse
+    // Classe ApiResponse (usada para resposta padronizada)
     public static class ApiResponse {
         private String message;
         private boolean success;

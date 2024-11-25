@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class EnderecoService {
 
   // URL da API para salvar o endereço
-  private apiUrl = 'http://localhost:8080/user/Endereco';  // Ajustado para refletir o endpoint correto
+  private apiUrl = 'http://localhost:8080/user/endereco';
 
   constructor(private http: HttpClient) {}
 

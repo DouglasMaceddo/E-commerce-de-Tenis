@@ -1,5 +1,6 @@
     package com.example.loginauthapi.domain.user;
 
+    import com.fasterxml.jackson.annotation.JsonBackReference;
     import jakarta.persistence.*;
     import lombok.*;
 
@@ -13,7 +14,6 @@
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
-
         private String cep;
         private String bairro;
         private String rua;
@@ -21,7 +21,8 @@
         private String cidade;
         private String estado;
 
-        @ManyToOne
-        @JoinColumn(name = "user_id", nullable = false) // Chave estrangeira que associa o endereço ao usuário
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "user_id")
+        @JsonBackReference  // Aqui evitamos a serialização do campo 'user' em Orders
         private User user;
     }

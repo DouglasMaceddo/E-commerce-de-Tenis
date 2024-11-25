@@ -111,23 +111,29 @@ export class MinhacontaPage implements OnInit {
   
   onSubmit() {
     if (this.addressForm.valid) {
+      // Captura os valores do formulário e formata corretamente
       const novoEndereco = {
-        cep: this.addressForm.value.CEP,       // Corrigido para 'cep' conforme esperado no backend
-        rua: this.addressForm.value.Rua,       // Corrigido para 'rua'
-        cidade: this.addressForm.value.Cidade, // Corrigido para 'cidade'
-        estado: this.addressForm.value.Estado, // Corrigido para 'estado'
-        complemento: this.addressForm.value.Complemento // Corrigido para 'complemento'
+        cep: this.addressForm.value.CEP,       // 'cep' conforme esperado no backend
+        rua: this.addressForm.value.Rua,
+        bairro: this.addressForm.value.Bairr,       // 'rua'
+        cidade: this.addressForm.value.Cidade, // 'cidade'
+        estado: this.addressForm.value.Estado, // 'estado'
+        complemento: this.addressForm.value.Complemento // 'complemento'
       };
-
+  
+      // Chama o serviço para salvar o novo endereço
       this.enderecoService.salvarEndereco(novoEndereco).subscribe({
         next: (response) => {
           if (response.success) {
             this.presentToast('Endereço atualizado com sucesso!', 'success');
-            this.carregarEnderecos();
+            this.carregarEnderecos(); // Recarrega os endereços após salvar
           } else {
             this.presentToast('Erro ao atualizar o endereço.', 'danger');
           }
         },
+        error: () => {
+          this.presentToast('Erro ao salvar o endereço. Tente novamente.', 'danger');
+        }
       });
     } else {
       this.presentToast('Preencha os campos corretamente.', 'warning');

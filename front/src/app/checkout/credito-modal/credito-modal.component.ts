@@ -51,7 +51,7 @@ export class CreditoModalComponent implements OnInit {
   }
 
   async onSubmit(form: NgForm) {
-    const userId = localStorage.getItem('userId');
+    const userId = sessionStorage.getItem('authToken');
     
     if (!userId) {
       const alert = await this.alertController.create({
