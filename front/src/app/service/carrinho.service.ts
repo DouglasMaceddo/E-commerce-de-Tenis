@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {CartItem} from './cart-item.model';
-import {jwtDecode as jwt_decode} from 'jwt-decode';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { CartItem } from './cart-item.model';
+import { jwtDecode as jwt_decode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,7 @@ import {jwtDecode as jwt_decode} from 'jwt-decode';
 export class CarrinhoService {
   private cartSubject = new BehaviorSubject<CartItem[]>([]);
   cart$ = this.cartSubject.asObservable();
+  private readonly TEMP_CART_KEY = 'temp_cart'; // Chave para o carrinho temporário
 
   constructor() {
     this.loadCart();
@@ -19,46 +20,64 @@ export class CarrinhoService {
     const token = sessionStorage.getItem('authToken');
     if (token) {
       const decodedToken: any = jwt_decode(token);
-      return decodedToken?.cpf || null;  // Alterado para pegar o CPF
+      return decodedToken?.cpf || null; // Alterado para pegar o CPF
     }
     return null;
   }
 
   // Método para gerar a chave única para o carrinho, considerando o CPF
-  private getCartKey(): string | null {
+  private getCartKey(): string {
     const cpf = this.getCpf();
-    if (cpf) {
-      return `cart_${cpf}`;  // Chave única para cada usuário logado, usando o CPF
-    }
-    return null;  // Retorna null para não criar carrinho para usuários não autenticados
+    return cpf ? `cart_${cpf}` : this.TEMP_CART_KEY; // Carrinho temporário para usuários não autenticados
   }
 
   // Carrega o carrinho do sessionStorage com base na chave única
   private loadCart() {
     const cartKey = this.getCartKey();
-    if (cartKey) {
-      const savedCart = sessionStorage.getItem(cartKey);
-      if (savedCart) {
-        this.cartSubject.next(JSON.parse(savedCart));
-      } else {
-        this.cartSubject.next([]); // Carrinho vazio se não houver dados salvos
-      }
+    const savedCart = sessionStorage.getItem(cartKey);
+    if (savedCart) {
+      this.cartSubject.next(JSON.parse(savedCart));
     } else {
-      this.cartSubject.next([]);  // Não carrega carrinho se não houver CPF
+      this.cartSubject.next([]); // Carrinho vazio se não houver dados salvos
     }
   }
 
   // Salva o carrinho no sessionStorage com a chave única
   private saveCart(cart: CartItem[]) {
     const cartKey = this.getCartKey();
-    if (cartKey) {
-      sessionStorage.setItem(cartKey, JSON.stringify(cart));
-    }
+    sessionStorage.setItem(cartKey, JSON.stringify(cart));
   }
 
-  // Chamado após o login para garantir que o carrinho do usuário logado seja carregado
+  // Chamado após o login para transferir o carrinho temporário para o carrinho do usuário
   resetCartForNewUser() {
-    this.loadCart();
+    const tempCart = sessionStorage.getItem(this.TEMP_CART_KEY);
+    if (tempCart) {
+      const tempCartItems: CartItem[] = JSON.parse(tempCart);
+      const userCartKey = this.getCartKey();
+
+      if (userCartKey !== this.TEMP_CART_KEY) {
+        const userCart = sessionStorage.getItem(userCartKey);
+        const userCartItems: CartItem[] = userCart ? JSON.parse(userCart) : [];
+
+        // Mesclar itens do carrinho temporário com o carrinho do usuário
+        const mergedCart = [...userCartItems];
+        tempCartItems.forEach(tempItem => {
+          const existingItem = mergedCart.find(item => item.id === tempItem.id);
+          if (existingItem) {
+            existingItem.quantity += tempItem.quantity;
+          } else {
+            mergedCart.push(tempItem);
+          }
+        });
+
+        // Salvar o carrinho atualizado e limpar o carrinho temporário
+        sessionStorage.setItem(userCartKey, JSON.stringify(mergedCart));
+        sessionStorage.removeItem(this.TEMP_CART_KEY);
+        this.cartSubject.next(mergedCart);
+      }
+    } else {
+      this.loadCart(); // Apenas carrega o carrinho do usuário se não houver carrinho temporário
+    }
   }
 
   // Obtém o carrinho como Observable
@@ -98,7 +117,7 @@ export class CarrinhoService {
   // Atualiza a quantidade de um item no carrinho
   updateCart(item: CartItem): Observable<CartItem[]> {
     const updatedCart = this.cartSubject.getValue().map(cartItem =>
-      cartItem.id === item.id ? {...cartItem, quantity: item.quantity} : cartItem
+      cartItem.id === item.id ? { ...cartItem, quantity: item.quantity } : cartItem
     );
     this.cartSubject.next(updatedCart);
     this.saveCart(updatedCart);
@@ -123,9 +142,7 @@ export class CarrinhoService {
   clearCart(): Observable<void> {
     this.cartSubject.next([]);
     const cartKey = this.getCartKey();
-    if (cartKey) {
-      sessionStorage.removeItem(cartKey);
-    }
+    sessionStorage.removeItem(cartKey);
     return new Observable((observer) => {
       observer.next();
       observer.complete();
