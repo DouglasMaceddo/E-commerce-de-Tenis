@@ -53,7 +53,6 @@ export class MinhacontaPage implements OnInit {
     return CEP.length === 8; // Valida se o CEP tem 8 dígitos
   }
 
-  // Carregar as informações do usuário a partir do token JWT
   loadUserInfo() {
     const token = sessionStorage.getItem('authToken');
     if (token) {
@@ -67,22 +66,6 @@ export class MinhacontaPage implements OnInit {
     }
   }
   
-  carregarEnderecos() {
-    this.enderecoService.getEnderecos().subscribe({
-      next: (response) => {
-        if (response.success) {
-          this.enderecos = response.data;
-          this.presentToast('Endereços carregados com sucesso!', 'success');
-        } else {
-          this.presentToast('Não foi possível carregar os endereços.', 'danger');
-        }
-      },
-      error: () => {
-        this.presentToast('Erro ao carregar os endereços. Tente novamente mais tarde.', 'danger');
-      }
-    });
-  }
-
   buscarEnderecoPorCEP() {
     const cep = this.addressForm.get('CEP')?.value.replace(/\D/g, '');
 
@@ -109,26 +92,39 @@ export class MinhacontaPage implements OnInit {
     }
   }
   
+  carregarEnderecos() {
+    this.enderecoService.getEnderecos().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.enderecos = response.data; // Atualiza a lista de endereços
+          this.presentToast('Endereços carregados com sucesso!', 'success');
+        } else {
+          this.presentToast('Não foi possível carregar os endereços.', 'danger');
+        }
+      },
+      error: () => {
+        this.presentToast('Erro ao carregar os endereços. Tente novamente mais tarde.', 'danger');
+      }
+    });
+  }
+
   onSubmit() {
     if (this.addressForm.valid) {
-      // Captura os valores do formulário e formata corretamente
       const novoEndereco = {
-        cep: this.addressForm.value.CEP,       // 'cep' conforme esperado no backend
+        cep: this.addressForm.value.CEP,
         rua: this.addressForm.value.Rua,
-        bairro: this.addressForm.value.Bairro,       // 'rua'
-        cidade: this.addressForm.value.Cidade, // 'cidade'
-        estado: this.addressForm.value.Estado, // 'estado'
-        complemento: this.addressForm.value.Complemento // 'complemento'
+        bairro: this.addressForm.value.Bairro,
+        cidade: this.addressForm.value.Cidade,
+        estado: this.addressForm.value.Estado,
+        complemento: this.addressForm.value.Complemento
       };
   
-      // Chama o serviço para salvar o novo endereço
       this.enderecoService.salvarEndereco(novoEndereco).subscribe({
         next: (response) => {
           if (response.success) {
             this.presentToast('Endereço atualizado com sucesso!', 'success');
-            this.carregarEnderecos(); // Recarrega os endereços após salvar
-          } else {
-            this.presentToast('Erro ao atualizar o endereço.', 'danger');
+            this.carregarEnderecos();
+            this.addressForm.reset(); 
           }
         },
         error: () => {
@@ -139,6 +135,7 @@ export class MinhacontaPage implements OnInit {
       this.presentToast('Preencha os campos corretamente.', 'warning');
     }
   }
+  
 
   voltar(){
     this.navCtrl.back();
@@ -152,13 +149,12 @@ export class MinhacontaPage implements OnInit {
       telefone: ''
     };
 
-    // Remover o token de autenticação
     sessionStorage.removeItem('authToken');
     const userId = this.carrinhoService.getCpf();
     if (userId) {
       sessionStorage.removeItem(`cart_${userId}`);
     }
-    
+    sessionStorage.removeItem('temp_cart');
     this.router.navigate(['/login']);
   }
 
