@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { OrdersService } from 'src/app/service/orders.service';
 
 @Component({
   selector: 'app-pedidos',
@@ -8,19 +9,23 @@ import { Router } from '@angular/router';
 })
 export class PedidosPage implements OnInit {
 
-  pedidos = [
-    { titulo: 'Pedido #001', descricao: 'Produto A, Produto B', data: new Date('2024-11-01') },
-    { titulo: 'Pedido #002', descricao: 'Produto C, Produto D', data: new Date('2024-11-05') },
-    { titulo: 'Pedido #003', descricao: 'Produto E', data: new Date('2024-10-20') },
-  ];
+  pedidos: any[] = []; // Lista de pedidos do usuário
 
-
-  constructor(private router: Router) { }
+  constructor(private ordersService: OrdersService) {}
 
   ngOnInit() {
-  }
-  voltar() {
-    this.router.navigate(['/catalogo']);
+    this.loadPedidos(); // Carregar os pedidos quando a página for iniciada
   }
 
+  // Método para carregar todos os pedidos
+  loadPedidos() {
+    this.ordersService.getPedidos().subscribe(
+      (data) => {
+        this.pedidos = data; // Armazenando os pedidos recebidos da API
+      },
+      (error) => {
+        console.error('Erro ao carregar os pedidos:', error); // Tratando erros
+      }
+    );
+  }
 }

@@ -3,17 +3,18 @@
   <ion-menu-button slot="start"></ion-menu-button>
   <ion-title class="titulo">Meus Pedidos</ion-title>
   <ion-buttons slot="end">
-    <ion-button (click)="voltar()">Voltar</ion-button>
+    
   </ion-buttons>
 </ion-toolbar>
 <ion-content>
   <ion-list>
-    <!-- Repetir para cada pedido -->
     <ion-item *ngFor="let pedido of pedidos">
       <ion-label>
-        <h2>{{ pedido.titulo }}</h2>
-        <p>{{ pedido.descricao }}</p>
-        <p><small>{{ pedido.data | date:'dd/MM/yyyy' }}</small></p>
+        <h2>{{ pedido.name }}</h2>
+        <p>Marca: {{ pedido.marca }}</p>
+        <p>Valor: {{ pedido.valor | currency }}</p>
+        <p>{{ pedido.description }}</p>
+        <img [src]="pedido.imageUrl" alt="Imagem do pedido" />
       </ion-label>
     </ion-item>
   </ion-list>
