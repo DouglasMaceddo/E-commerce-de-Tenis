@@ -20,6 +20,25 @@
       <p>Telefone: {{ infoUsuario.telefone }}</p>
     </ion-card-content>
   </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title class="titulo">Endereços Cadastrados</ion-card-title>
+    </ion-card-header>
+    <ion-list>
+      <ion-item *ngFor="let endereco of enderecos">
+        <ion-label>
+          <p>Rua: {{ endereco.rua }}</p>
+          <p>Bairro: {{ endereco.bairro }}</p>
+          <p>Cidade: {{ endereco.cidade }}</p>
+          <p>Estado: {{ endereco.estado }}</p>
+          <p>CEP: {{ endereco.cep }}</p>
+          <p>Complemento: {{ endereco.complemento }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-note *ngIf="enderecos.length === 0">Nenhum endereço cadastrado.</ion-note>
+
+  </ion-card>
 
 
   <ion-card>
