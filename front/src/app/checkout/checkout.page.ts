@@ -63,14 +63,8 @@ export class CheckoutPage implements OnInit {
       next: (response) => {
         if (response.success) {
           this.enderecos = response.data;
-          this.presentToast('Endereços carregados com sucesso!', 'success');
-        } else {
-          this.presentToast('Não foi possível carregar os endereços.', 'danger');
         }
       },
-      error: () => {
-        this.presentToast('Erro ao carregar os endereços. Tente novamente mais tarde.', 'danger');
-      }
     });
   }
 
