@@ -13,9 +13,13 @@
 
       <ion-input type="email" label-placement="floating" fill="outline" label="Email" formControlName="email"></ion-input>
 
-      <ion-input type="password" label-placement="floating" fill="outline" label="Senha" formControlName="senha"></ion-input>
+      <ion-input type="password" label-placement="floating" fill="outline" label="Senha" formControlName="senha" placeholder="Exemplo123#">
+        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+      </ion-input>
 
-      <ion-input type="password" label-placement="floating" fill="outline" label="Confirmar Senha" formControlName="confirmarSenha"></ion-input>
+      <ion-input type="password" label-placement="floating" fill="outline" label="Confirmar Senha" formControlName="confirmarSenha" placeholder="Exemplo123#">
+        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+      </ion-input>
 
       <div *ngIf="cadastroForm.hasError('mismatch') && cadastroForm.get('confirmarSenha')?.touched"> As senhas não coincidem!</div>
 
