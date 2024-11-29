@@ -1,12 +1,11 @@
 package com.example.loginauthapi.repositories;
 
 import com.example.loginauthapi.domain.user.CartaoCredito;
+import com.example.loginauthapi.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface CartaoCreditoRepository extends JpaRepository<CartaoCredito, String> {
-    // Você pode adicionar métodos personalizados para buscar os cartões por userId, se necessário.
-    List<CartaoCredito> findByUserId(String userId);
+public interface CartaoCreditoRepository extends JpaRepository<CartaoCredito, Long> {
+    Optional<CartaoCredito> findFirstByUser(User user);
 }
-

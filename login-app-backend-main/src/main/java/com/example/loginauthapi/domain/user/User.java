@@ -36,4 +36,7 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Endereco> endereco;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<CartaoCredito> cartaoCredito;
+
 }
