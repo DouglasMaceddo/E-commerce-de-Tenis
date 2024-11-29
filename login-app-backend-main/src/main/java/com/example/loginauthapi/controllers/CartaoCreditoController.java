@@ -16,8 +16,13 @@ import java.util.Optional;
 @RequestMapping("/cartao")
 @RequiredArgsConstructor
 public class CartaoCreditoController {
+<<<<<<< HEAD
 
     private final CartaoCreditoRepository cartaoCreditoRepository;
+=======
+    @Autowired
+    private CartaoCreditoService cartaoCreditoService;
+>>>>>>> 899df10cd594d5e3af91a90bb9257bbf50350c45
 
     // Método para obter o usuário autenticado
     private User getAuthenticatedUser() {
