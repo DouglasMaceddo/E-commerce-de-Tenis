@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Pagamento via PIX</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="qrCodeImage">
+    <ion-img [src]="qrCodeImage"></ion-img>
+    <ion-label>
+      <p>Escaneie o código QR para realizar o pagamento via PIX.</p>
+    </ion-label>
+  </div>
+
+  <div *ngIf="!qrCodeImage">
+    <ion-spinner name="circles"></ion-spinner>
+    <ion-label>Gerando o QR Code...</ion-label>
+  </div>
+</ion-content>

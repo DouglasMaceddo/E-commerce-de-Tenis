@@ -38,6 +38,14 @@ const routes: Routes = [
     path: 'pedidos',
     loadChildren: () => import('./pedido/pedidos/pedidos.module').then( m => m.PedidosPageModule)
   },
+  {
+    path: 'concluir-pedido',
+    loadChildren: () => import('./concluir-pedido/concluir-pedido.module').then( m => m.ConcluirPedidoPageModule)
+  },
+  {
+    path: 'pagamento-pix',
+    loadChildren: () => import('./pagamento-pix/pagamento-pix.module').then( m => m.PagamentoPixPageModule)
+  },
 
 
 ];

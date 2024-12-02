@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Concluir Pedido</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="qrCodeUrl">
+    <h2>Escaneie o QR Code para realizar o pagamento</h2>
+    <img [src]="qrCodeUrl" alt="QR Code PIX" />
+  </div>
+
+  <div *ngIf="!qrCodeUrl">
+    <p>Erro ao carregar o QR Code.</p>
+  </div>
+</ion-content>

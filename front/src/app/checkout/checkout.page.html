@@ -25,19 +25,19 @@
       </ion-card-title>
     </ion-card-header>
     <ion-card-content *ngFor="let endereco of enderecos">
-      <p>CEP: {{ endereco.cep }}</p>
-      <p>Bairro: {{ endereco.bairro }}</p>
-      <p>Rua: {{ endereco.rua }}</p>
-      <p>Complemento: {{ endereco.complemento }}</p>
-      <p>Cidade: {{ endereco.cidade }}</p>
-      <p>Estado: {{ endereco.estado }}</p>
+      <p><Strong>CEP: </Strong>{{ endereco.cep }}</p>
+      <p><Strong>Rua: </Strong>{{ endereco.rua }}</p>
+      <p><Strong>Bairro: </Strong>{{ endereco.bairro }}</p>
+      <p><Strong>Complemento: </Strong>{{ endereco.complemento }}</p>
+      <p><Strong>Cidade: </Strong>{{ endereco.cidade }}</p>
+      <p><Strong>Estado: </Strong>{{ endereco.estado }}</p>
     </ion-card-content>
     <ion-button class="cadastroend" (click)="cadastrarend()">
       Cadastre Outro Endereço
     </ion-button>
   </ion-card>
-  
-  
+
+
   <ion-card *ngIf="enderecos.length === 0">
     <ion-card-header>
       <ion-card-title>Nenhum endereço cadastrado</ion-card-title>
@@ -47,7 +47,7 @@
       <ion-button expand="full" (click)="cadastrarend()">Cadastrar Endereço</ion-button>
     </ion-card-content>
   </ion-card>
-  
+
   <ion-card>
     <ion-card-header>
       <ion-card-title>
@@ -113,6 +113,8 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
+  <ion-button class="corpadrao" (click)="finalizarCompra()" >Finalizar Compra
+  </ion-button>
 </ion-content>
 <ion-footer>
   <ion-card>

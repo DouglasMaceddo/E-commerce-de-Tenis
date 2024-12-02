@@ -14,33 +14,32 @@
       <ion-card-title class="titulo">Informações da Conta</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>CPF: {{ infoUsuario.cpf }}</p>
-      <p>Nome: {{ infoUsuario.name }}</p>
-      <p>Email: {{ infoUsuario.email }}</p>
-      <p>Telefone: {{ infoUsuario.telefone }}</p>
+      <p><strong>CPF: </strong>{{ infoUsuario.cpf }}</p>
+      <p><Strong>Nome: </Strong>{{ infoUsuario.name }}</p>
+      <p><Strong>Email: </Strong>{{ infoUsuario.email }}</p>
+      <p><Strong>Telefone: </Strong>{{ infoUsuario.telefone }}</p>
     </ion-card-content>
   </ion-card>
   <ion-card>
     <ion-card-header>
-      <ion-card-title class="titulo">Endereços Cadastrados</ion-card-title>
+      <ion-card-title class="titulo">Endereço Cadastrado</ion-card-title>
     </ion-card-header>
     <ion-list>
       <ion-item *ngFor="let endereco of enderecos">
         <ion-label>
-          <p>Rua: {{ endereco.rua }}</p>
-          <p>Bairro: {{ endereco.bairro }}</p>
-          <p>Cidade: {{ endereco.cidade }}</p>
-          <p>Estado: {{ endereco.estado }}</p>
-          <p>CEP: {{ endereco.cep }}</p>
-          <p>Complemento: {{ endereco.complemento }}</p>
+          <p><Strong>CEP: </Strong>{{ endereco.cep }}</p>
+          <p><Strong>Rua: </Strong>{{ endereco.rua }}</p>
+          <p><Strong>Bairro: </Strong>{{ endereco.bairro }}</p>
+          <p><Strong>Complemento: </Strong>{{ endereco.complemento }}</p>
+          <p><Strong>Cidade: </Strong>{{ endereco.cidade }}</p>
+          <p><Strong>Estado: </Strong>{{ endereco.estado }}</p>
         </ion-label>
       </ion-item>
     </ion-list>
-    <ion-note *ngIf="enderecos.length === 0">Nenhum endereço cadastrado.</ion-note>
-
+    <div class="oi">
+      <ion-note *ngIf="enderecos.length === 0" class="oi">Nenhum endereço cadastrado</ion-note>
+    </div>
   </ion-card>
-
-
   <ion-card>
     <ion-card-header>
       <ion-card-title class="titulo">Cadastro de Endereço</ion-card-title>

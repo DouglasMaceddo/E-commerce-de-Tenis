@@ -6,6 +6,7 @@ import { CreditoModalComponent } from './credito-modal/credito-modal.component';
 import { CarrinhoService } from "../service/carrinho.service";
 import { EnderecoService } from '../service/endereco.service';
 import { ToastController } from '@ionic/angular';
+import { PixService } from '../service/pix.service';
 
 @Component({
   selector: 'app-checkout',
@@ -19,13 +20,16 @@ export class CheckoutPage implements OnInit {
   taxaEntrega: number = 0;
   tipoEntrega: string = 'entregaPadrao';
   mostrarTaxa: boolean = false;
+  metodoPagamento: string = '';
+  qrCodeUrl: string = '';
 
   constructor(
     private router: Router,
     private carrinhoService: CarrinhoService,
     private modalController: ModalController,
     private enderecoService: EnderecoService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private pixService: PixService
   ) {}
 
   ngOnInit() {
@@ -82,6 +86,33 @@ export class CheckoutPage implements OnInit {
       cssClass: 'modalcredito'
     });
     return await modal.present();
+  }
+
+  finalizarCompra() {
+
+    if (this.metodoPagamento === 'PIX') {
+      this.gerarQRCodePIX();  // Gera o QR Code se o método for PIX
+    } else if (this.metodoPagamento === 'Cartão de Crédito') {
+      this.presentToast('Por favor, selecione um método de pagamento', 'danger');
+    }
+    this.router.navigate(['/concluir-pedido']);
+  }
+
+  gerarQRCodePIX() {
+    const chavePix = 'dougasdv@gmail.com';  // Substitua com a chave Pix do cliente
+    const identificador = 'Plazzatenis'; // Um identificador para a transação, como um número de pedido
+
+    // Chama o serviço para gerar o QR Code
+    this.pixService.gerarQRCodePix(chavePix, this.totalCarrinho, identificador).then((qrCodeUrl) => {
+      this.qrCodeUrl = qrCodeUrl;  // Armazena o QR Code gerado
+      console.log('QR Code gerado:', qrCodeUrl);
+      
+      // Navega para a página 'ConcluirPedido' e passa o QR Code como parâmetro
+      this.router.navigate(['/concluir-pedido'], { queryParams: { qrCodeUrl: qrCodeUrl } });
+    }).catch((error) => {
+      this.presentToast('Erro ao gerar o QR Code', 'danger');
+      console.error('Erro ao gerar o QR Code:', error);
+    });
   }
 
   async presentToast(message: string, color: string) {

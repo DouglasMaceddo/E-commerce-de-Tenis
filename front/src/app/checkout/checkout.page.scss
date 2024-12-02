@@ -59,6 +59,11 @@ ion-label h4 {
   --background: #6A0DAD;
   text-align: center;
   display: flex;
-  justify-content: center;  /* Centraliza horizontalmente */
-  align-items: center;      /* Centraliza verticalmente */
+  justify-content: center;
+  align-items: center;
+}
+
+Strong{
+  color: #000000;
+  font-weight: bold;
 }
