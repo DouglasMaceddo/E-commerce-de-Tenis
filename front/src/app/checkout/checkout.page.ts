@@ -7,6 +7,7 @@ import { CarrinhoService } from "../service/carrinho.service";
 import { EnderecoService } from '../service/endereco.service';
 import { ToastController } from '@ionic/angular';
 import { PixService } from '../service/pix.service';
+import { OrdersService } from '../service/orders.service';
 
 @Component({
   selector: 'app-checkout',
@@ -22,6 +23,7 @@ export class CheckoutPage implements OnInit {
   mostrarTaxa: boolean = false;
   metodoPagamento: string = '';
   qrCodeUrl: string = '';
+  dataEntregaEstimada: string='';
 
   constructor(
     private router: Router,
@@ -29,7 +31,8 @@ export class CheckoutPage implements OnInit {
     private modalController: ModalController,
     private enderecoService: EnderecoService,
     private toastController: ToastController,
-    private pixService: PixService
+    private pixService: PixService,
+    private ordersService: OrdersService
   ) {}
 
   ngOnInit() {
@@ -56,6 +59,38 @@ export class CheckoutPage implements OnInit {
     this.tipoEntrega = event.detail.value;
     this.taxaEntrega = this.tipoEntrega === 'entregaRapida' ? 15 : 0;
     this.totalCarrinho = this.getTotal(); // Recalcular o total com a taxa de entrega
+    this.calcularDataEntrega();
+  }
+
+  calcularDataEntrega() {
+    const dataCompra = new Date(); // Data de compra é o momento atual
+    let dataEntrega: Date;
+
+    if (this.tipoEntrega === 'entregaRapida') {
+      // Para entrega rápida, por exemplo, a entrega seria no mesmo dia ou no dia seguinte
+      dataEntrega = new Date(dataCompra.getTime() + 24 * 60 * 60 * 1000); // 1 dia depois
+    } else {
+      // Para entrega normal, vamos adicionar 5 dias úteis (simulação simples)
+      dataEntrega = this.adicionarDiasUteis(dataCompra, 5);
+    }
+
+    // Definir a data de entrega estimada no formato ISO
+    this.dataEntregaEstimada = dataEntrega.toISOString();
+  }
+  adicionarDiasUteis(data: Date, dias: number): Date {
+    let dataFinal = new Date(data);
+    let diasAdicionados = 0;
+
+    while (diasAdicionados < dias) {
+      dataFinal.setDate(dataFinal.getDate() + 1);
+
+      // Verifica se é um dia útil (segunda a sexta-feira)
+      if (dataFinal.getDay() !== 0 && dataFinal.getDay() !== 6) { // 0 = Domingo, 6 = Sábado
+        diasAdicionados++;
+      }
+    }
+
+    return dataFinal;
   }
 
   toggleTaxaEntrega() {
@@ -89,14 +124,38 @@ export class CheckoutPage implements OnInit {
   }
 
   finalizarCompra() {
-
-    if (this.metodoPagamento === 'PIX') {
-      this.gerarQRCodePIX();  // Gera o QR Code se o método for PIX
-    } else if (this.metodoPagamento === 'Cartão de Crédito') {
-      this.presentToast('Por favor, selecione um método de pagamento', 'danger');
+      if (this.cart.length === 0) {
+        this.presentToast('Seu carrinho está vazio', 'danger');
+        return;
+      }
+    
+      const pedidos = this.cart.map(item => ({
+        name: item.name,
+        marca: item.marca,
+        quantity: item.quantity,
+        tamanho: item.tamanho,
+        valor: item.valor,
+        total: item.valor * item.quantity + this.taxaEntrega,
+        description: item.description,
+        imageUrl: item.imageUrl,
+        metodoPagamento: this.metodoPagamento,
+        dataPedido: new Date().toISOString(),
+        dataEntregaEstimada: this.dataEntregaEstimada,
+      }));
+      
+      pedidos.forEach(pedido => {
+        this.ordersService.criarPedido(pedido).subscribe({
+          next: (response) => {
+            this.presentToast('Pedido criado com sucesso!', 'success');
+            this.router.navigate(['/pedidos']);
+          },
+          error: (error) => {
+            console.error('Erro ao criar o pedido:', error);
+            this.presentToast('Erro ao criar o pedido', 'danger');
+          },
+        });
+      });
     }
-    this.router.navigate(['/concluir-pedido']);
-  }
 
   gerarQRCodePIX() {
     const chavePix = 'dougasdv@gmail.com';  // Substitua com a chave Pix do cliente

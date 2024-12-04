@@ -37,12 +37,34 @@ public class OrdersController {
             return ResponseEntity.status(401).body("Usuário não autenticado.");
         }
 
+        System.out.println("Pedido recebido: " + createOrderDTO);
+
+        System.out.println("Dados recebidos no DTO:");
+        System.out.println("Nome: " + createOrderDTO.getName());
+        System.out.println("Marca: " + createOrderDTO.getMarca());
+        System.out.println("Quantidade" + createOrderDTO.getQuantity());
+        System.out.println("Tamanho: " + createOrderDTO.getTamanho());
+        System.out.println("Valor: " + createOrderDTO.getValor());
+        System.out.println("Total: " + createOrderDTO.getTotal());
+        System.out.println("Descrição: " + createOrderDTO.getDescription());
+        System.out.println("Imagem: " + createOrderDTO.getImageUrl());
+        System.out.println("Metodo Pagamento: " + createOrderDTO.getMetodoPagamento());
+        System.out.println("Data do Pedido: " + createOrderDTO.getDataPedido());
+        System.out.println("Data da entrega: " + createOrderDTO.getDataEntregaEstimada());
+
+
         Orders order = new Orders();
         order.setName(createOrderDTO.getName());
         order.setMarca(createOrderDTO.getMarca());
+        order.setQuantity(createOrderDTO.getQuantity());
+        order.setTamanho(createOrderDTO.getTamanho());
         order.setValor(createOrderDTO.getValor());
+        order.setTotal(createOrderDTO.getTotal());
         order.setDescription(createOrderDTO.getDescription());
         order.setImageUrl(createOrderDTO.getImageUrl());
+        order.setMetodoPagamento(createOrderDTO.getMetodoPagamento());
+        order.setDataPedido(createOrderDTO.getDataPedido());
+        order.setDataEntregaEstimada(createOrderDTO.getDataEntregaEstimada());
         order.setUser(user);
 
         ordersRepository.save(order);
@@ -110,12 +132,18 @@ public class OrdersController {
             return ResponseEntity.status(403).body("Você não tem permissão para atualizar este pedido.");
         }
 
-        // Atualizando os campos do pedido
         order.setName(updatedOrder.getName());
         order.setMarca(updatedOrder.getMarca());
+        order.setQuantity(updatedOrder.getQuantity());
+        order.setTamanho(updatedOrder.getTamanho());
         order.setValor(updatedOrder.getValor());
+        order.setTotal(updatedOrder.getTotal());
         order.setDescription(updatedOrder.getDescription());
         order.setImageUrl(updatedOrder.getImageUrl());
+        order.setMetodoPagamento(updatedOrder.getMetodoPagamento());
+        order.setDataPedido(updatedOrder.getDataPedido());
+        order.setDataEntregaEstimada(updatedOrder.getDataEntregaEstimada());
+
         ordersRepository.save(order);
 
         return ResponseEntity.ok(new ResponseDTO(user.getName(), "Pedido atualizado com sucesso."));

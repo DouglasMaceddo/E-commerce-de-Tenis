@@ -14,18 +14,20 @@ export class PedidosPage implements OnInit {
   constructor(private ordersService: OrdersService) {}
 
   ngOnInit() {
-    this.loadPedidos(); // Carregar os pedidos quando a página for iniciada
+    this.carregarPedidos();
   }
 
-  // Método para carregar todos os pedidos
-  loadPedidos() {
-    this.ordersService.getPedidos().subscribe(
-      (data) => {
-        this.pedidos = data; // Armazenando os pedidos recebidos da API
+  carregarPedidos() {
+    this.ordersService.listarPedidos().subscribe({
+      next: (response) => {
+        console.log('Pedidos recebidos:', response);
+        if (response && Array.isArray(response)) {
+          this.pedidos = response;
+        }
       },
-      (error) => {
-        console.error('Erro ao carregar os pedidos:', error); // Tratando erros
-      }
-    );
+      error: (error) => {
+        console.error('Erro ao carregar pedidos:', error);
+      },
+    });
   }
 }
