@@ -4,13 +4,19 @@
   <ion-title class="titulo">Meus Pedidos</ion-title>
 </ion-toolbar>
 <ion-content>
+
   <ion-list>
     <ion-item *ngFor="let pedidos of pedidos">
       <ion-label>
         <h2>{{ pedidos.name }}</h2>
-        <p>Valor: {{ pedidos.valor | currency }}</p>
-        <img [src]="pedidos.imageUrl" alt="Imagem do pedido" />
+        <p>Valor: <strong class="corvalor">{{ pedidos.valor | currency: 'BRL' }}</strong> </p>
+        <p>Data da Compra: {{ pedidos.dataPedido | date: 'dd/MM/yyyy' }}</p>
+        <ion-button class="corpadrao" (click)="chamarModal(pedidos)">Ver Pedido</ion-button>
       </ion-label>
+      <ion-thumbnail class="imgPedido" slot="end">
+        <img [src]="pedidos.imageUrl" alt="Imagem do pedido" />
+      </ion-thumbnail>
     </ion-item>
   </ion-list>
+
 </ion-content>

@@ -8,6 +8,8 @@ import { EnderecoService } from '../service/endereco.service';
 import { ToastController } from '@ionic/angular';
 import { PixService } from '../service/pix.service';
 import { OrdersService } from '../service/orders.service';
+import * as moment from 'moment-timezone';
+import { empty } from 'rxjs';
 
 @Component({
   selector: 'app-checkout',
@@ -63,34 +65,33 @@ export class CheckoutPage implements OnInit {
   }
 
   calcularDataEntrega() {
-    const dataCompra = new Date(); // Data de compra é o momento atual
-    let dataEntrega: Date;
-
+    const dataCompra = moment.tz('America/Sao_Paulo'); // Considerando o horário de Brasília
+    let dataEntrega: moment.Moment;
+  
     if (this.tipoEntrega === 'entregaRapida') {
-      // Para entrega rápida, por exemplo, a entrega seria no mesmo dia ou no dia seguinte
-      dataEntrega = new Date(dataCompra.getTime() + 24 * 60 * 60 * 1000); // 1 dia depois
+      dataEntrega = this.adicionarDiasUteis(dataCompra, 10);
     } else {
-      // Para entrega normal, vamos adicionar 5 dias úteis (simulação simples)
-      dataEntrega = this.adicionarDiasUteis(dataCompra, 5);
+      dataEntrega = this.adicionarDiasUteis(dataCompra, 15);
     }
-
+  
     // Definir a data de entrega estimada no formato ISO
     this.dataEntregaEstimada = dataEntrega.toISOString();
   }
-  adicionarDiasUteis(data: Date, dias: number): Date {
-    let dataFinal = new Date(data);
+  
+  adicionarDiasUteis(data: moment.Moment, dias: number): moment.Moment {
     let diasAdicionados = 0;
-
+  
     while (diasAdicionados < dias) {
-      dataFinal.setDate(dataFinal.getDate() + 1);
-
-      // Verifica se é um dia útil (segunda a sexta-feira)
-      if (dataFinal.getDay() !== 0 && dataFinal.getDay() !== 6) { // 0 = Domingo, 6 = Sábado
+      // Avança um dia
+      data.add(1, 'days');
+  
+      // Verifica se o dia é útil (segunda a sexta-feira)
+      if (data.day() !== 0 && data.day() !== 6) { // 0 = Domingo, 6 = Sábado
         diasAdicionados++;
       }
     }
-
-    return dataFinal;
+  
+    return data; // Retorna a data com os dias úteis adicionados
   }
 
   toggleTaxaEntrega() {
@@ -128,6 +129,16 @@ export class CheckoutPage implements OnInit {
         this.presentToast('Seu carrinho está vazio', 'danger');
         return;
       }
+
+      if (!this.metodoPagamento) {
+        this.presentToast('Selecione um método de pagamento', 'danger');
+        return;
+      }
+
+      if (!this.enderecos == null) {
+        this.presentToast('cadastre um endereco', 'danger');
+        return;
+      }
     
       const pedidos = this.cart.map(item => ({
         name: item.name,
@@ -147,6 +158,7 @@ export class CheckoutPage implements OnInit {
         this.ordersService.criarPedido(pedido).subscribe({
           next: (response) => {
             this.presentToast('Pedido criado com sucesso!', 'success');
+            this.carrinhoService.clearCart();
             this.router.navigate(['/pedidos']);
           },
           error: (error) => {

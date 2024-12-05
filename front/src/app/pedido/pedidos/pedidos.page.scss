@@ -1,22 +1,40 @@
 ion-list {
-    margin-top: 10px;
-  }
-  
-  ion-item {
-    background-color: #f8f8f8;
-    margin-bottom: 10px;
-    border-radius: 5px;
-  }
-  
-  ion-label {
-    padding: 10px;
-  }
-  
-  h2 {
-    font-weight: bold;
-    font-size: 1.1rem;
-  }
-  
-  small {
-    color: #888;
-  }
+  margin-top: 10px;
+}
+
+ion-item {
+  background-color: #f8f8f8;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+ion-label {
+  padding: 10px;
+}
+
+h2 {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+small {
+  color: #888;
+}
+
+.imgPedido {
+  width: 100px;   /* Tamanho desejado da bolinha */
+  height: 100px;  /* Tamanho desejado da bolinha */
+  border-radius: 10%; /* Faz a imagem ficar redonda */
+  overflow: hidden;  /* Garante que a imagem se ajuste dentro do contorno da bolinha */
+}
+
+.imgPedido img {
+  width: 100%;  /* A imagem ocupa toda a área do thumbnail */
+  height: 100%; /* A imagem ocupa toda a área do thumbnail */
+  object-fit: cover; /* Garante que a imagem seja cortada, se necessário, para se ajustar ao contorno */
+}
+
+.corvalor{
+  font-weight: bold;
+  color: #6A0DAD;
+}

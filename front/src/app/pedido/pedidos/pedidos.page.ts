@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { OrdersService } from 'src/app/service/orders.service';
+import { ModalController } from '@ionic/angular';
+import { ModalPedidosComponent } from './modal-pedidos/modal-pedidos.component';
+import { CarrinhoService } from 'src/app/service/carrinho.service';
+
 
 @Component({
   selector: 'app-pedidos',
@@ -9,12 +12,23 @@ import { OrdersService } from 'src/app/service/orders.service';
 })
 export class PedidosPage implements OnInit {
 
-  pedidos: any[] = []; // Lista de pedidos do usuário
+  pedidos: any[] = [];
 
-  constructor(private ordersService: OrdersService) {}
+  constructor(private ordersService: OrdersService,
+              private modalController: ModalController,
+              ) {}
 
   ngOnInit() {
     this.carregarPedidos();
+  }
+
+  async chamarModal(pedido: any) {
+    const modal = await this.modalController.create({
+      component: ModalPedidosComponent,
+      componentProps: { pedido }
+    });
+
+    await modal.present();
   }
 
   carregarPedidos() {

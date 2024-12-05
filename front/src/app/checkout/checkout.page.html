@@ -61,7 +61,7 @@
           <ion-item>
             <ion-label>
               Entrega Rápida
-              <p>Receba seu pedido em 5 dias úteis.</p>
+              <p>Receba seu pedido em 10 dias úteis.</p>
             </ion-label>
             <ion-radio slot="start" value="entregaRapida"></ion-radio>
           </ion-item>
@@ -88,14 +88,14 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <ion-radio-group>
+        <ion-radio-group [(ngModel)]="metodoPagamento">
           <ion-item>
             <ion-label>
               Cartão de Crédito
             </ion-label>
             <ion-radio slot="start" value="cartaodecredito" (click)="chamarmodalcredito()"></ion-radio>
           </ion-item>
-
+  
           <ion-item>
             <ion-label>
               PIX
@@ -113,6 +113,7 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
+  
   <ion-button expand="block" class="corpadrao" (click)="finalizarCompra()" >Finalizar Compra
   </ion-button>
 </ion-content>
