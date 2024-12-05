@@ -23,7 +23,7 @@
 
       <div *ngIf="cadastroForm.hasError('mismatch') && cadastroForm.get('confirmarSenha')?.touched"> As senhas não coincidem!</div>
 
-      <ion-button expand="block" type="submit">Cadastrar</ion-button>
+      <ion-button class="corpadrao" expand="block" type="submit">Cadastrar</ion-button>
     </form>
 
     <p>Já tem uma conta? <a (click)="navigateToNovaPagina()">Faça login aqui</a></p>
