@@ -5,6 +5,11 @@
 </ion-toolbar>
 <ion-content>
 
+  <div class="no-pedidos" *ngIf="!pedidos || pedidos.length === 0">
+    <ion-icon name="sad-outline" size="large"></ion-icon>
+    <p>Você ainda não fez nenhum pedido.</p>
+  </div>
+
   <ion-list>
     <ion-item *ngFor="let pedidos of pedidos">
       <ion-label>

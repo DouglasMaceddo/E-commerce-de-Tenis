@@ -1,13 +1,11 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar class="corpadrao">
     <ion-menu-button slot="start"></ion-menu-button>
-    <div>
-      <img class="imagemplazza" src="assets/icon/plazza tenis.png" alt="logo" />
-    </div>
+    <ion-title class="titulo">Catálogo</ion-title>
     <ion-buttons slot="end" (click)="navegarPaginaCarrinho()">
       <ion-button>
         <ion-badge>{{ cartItemCount }}</ion-badge>
-        <ion-icon size="large" name="cart" slot="end" color="dark"></ion-icon>
+        <ion-icon size="large" name="cart" slot="end" color="light"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

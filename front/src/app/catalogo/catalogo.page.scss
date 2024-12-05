@@ -49,3 +49,11 @@ ion-badge {
   padding: 10px; /* Ajusta o espaçamento interno */
   --background: #ffffff; /* Fundo do card */
 }
+
+.search-bar {
+  --background: #f8f9fa; /* Cor de fundo */
+  --placeholder-color: #888; /* Cor do placeholder */
+  --color: #000; /* Cor do texto */
+  margin: 10px auto; /* Espaçamento em volta */
+  width: 100%; /* Tamanho padrão para ocupar a largura total */
+}

@@ -65,7 +65,7 @@ export class MinhacontaPage implements OnInit {
       };
     }
   }
-  
+
   buscarEnderecoPorCEP() {
     const cep = this.addressForm.get('CEP')?.value.replace(/\D/g, '');
 
@@ -91,13 +91,12 @@ export class MinhacontaPage implements OnInit {
       this.presentToast('CEP inválido. Verifique e tente novamente.', 'danger');
     }
   }
-  
+
   carregarEnderecos() {
     this.enderecoService.getEnderecos().subscribe({
       next: (response) => {
         if (response.success) {
           this.enderecos = response.data; // Atualiza a lista de endereços
-          this.presentToast('Endereços carregados com sucesso!', 'success');
         } else {
           this.presentToast('Não foi possível carregar os endereços.', 'danger');
         }
@@ -118,13 +117,13 @@ export class MinhacontaPage implements OnInit {
         estado: this.addressForm.value.Estado,
         complemento: this.addressForm.value.Complemento
       };
-  
+
       this.enderecoService.salvarEndereco(novoEndereco).subscribe({
         next: (response) => {
           if (response.success) {
             this.presentToast('Endereço atualizado com sucesso!', 'success');
             this.carregarEnderecos();
-            this.addressForm.reset(); 
+            this.addressForm.reset();
           }
         },
         error: () => {
@@ -135,7 +134,7 @@ export class MinhacontaPage implements OnInit {
       this.presentToast('Preencha os campos corretamente.', 'warning');
     }
   }
-  
+
 
   voltar(){
     this.navCtrl.back();

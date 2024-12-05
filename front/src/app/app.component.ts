@@ -10,10 +10,10 @@ import { MenuController } from '@ionic/angular';
 export class AppComponent {
   public appPages = [
     { title: 'Minha Conta', url: '/minhaconta', icon: 'person' },
-    { title: 'Catalogo', url: '/catalogo', icon: 'albums' },
+    { title: 'Catálogo', url: '/catalogo', icon: 'albums' },
     { title: 'Carrinho', url: '/carrinho', icon: 'cart' },
     { title: 'Meus Pedidos', url: '/pedidos', icon: 'layers' }
-    
+
   ];
 
   constructor(private router: Router, private menu: MenuController) {}

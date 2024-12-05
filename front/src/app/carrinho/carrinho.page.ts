@@ -37,13 +37,33 @@ export class CarrinhoPage implements OnInit {
     return this.cart.reduce((total, item) => total + (item.valor * item.quantity), 0);
   }
 
-  clearCart() {
-    if (confirm('Tem certeza que deseja limpar o carrinho?')) {
-      this.carrinhoService.clearCart().subscribe(() => {
-        this.cart = [];
-        this.cartItemCount = 0;
-      });
-    }
+  async clearCart() {
+    const toast = await this.toastController.create({
+      message: 'Tem certeza que deseja limpar o carrinho?',
+      position: 'middle',
+      color: 'warning',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+
+          },
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            this.carrinhoService.clearCart().subscribe(() => {
+              this.cart = [];
+              this.cartItemCount = 0;
+              this.presentToast('Carrinho limpo com sucesso!', 'success');
+            });
+          },
+        },
+      ],
+    });
+
+    await toast.present();
   }
 
   voltar() {
@@ -78,7 +98,7 @@ export class CarrinhoPage implements OnInit {
         this.router.navigate(['/login']);
         return;
       }
-    
+
     this.router.navigate(['/checkout']);
   }
 
